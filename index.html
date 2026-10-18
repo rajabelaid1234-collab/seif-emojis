@@ -93,9 +93,25 @@ button{touch-action:manipulation;min-height:42px}
 <header><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10" alt="أيقونة SEIF EMOJIS" style="width:104px;height:104px;object-fit:cover;border-radius:26px;border:2px solid #48e2c2;box-shadow:0 8px 28px #0007;margin:0 auto 12px;display:block" onerror="this.style.display='none'"><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
 <section class="panel" id="keyboardInstall"><h2 style="font-size:clamp(1.5rem,4vw,2rem)">📱 SEIF EMOJIS — لوحة مفاتيح Android</h2><p class="muted">وجوه ورموز في واتساب ويوتيوب وبقية التطبيقات. مجانًا وبخطوات قصيرة.</p><div class="toolgrid"><div class="toolcard" style="border:2px solid #48e2c2;padding:20px"><h3 style="font-size:1.35rem">🤖 Android</h3><p class="muted">تثبيت التطبيق ثم تفعيل لوحة SEIF. اسمح بالتثبيت من هذا المصدر إذا طلب الهاتف ذلك.</p><a id="androidDownloadButton" class="primary" href="https://github.com/rajabelaid1234-collab/seif-emojis/releases/latest/download/app-debug.apk" style="display:block;text-align:center;text-decoration:none;padding:16px;border-radius:14px;font-weight:800;font-size:1.2rem;margin:12px 0">📥 تنزيل Android APK</a><button type="button" id="androidKeyboardGuide">📋 خطوات التفعيل</button><p class="muted small" id="androidKeyboardNotice" hidden>بعد التثبيت: افتح التطبيق ← فعّل لوحة SEIF من الإعدادات ← اخترها عند الكتابة. إذا طلب Android السماح بالتثبيت، فعّل السماح لهذا المصدر فقط.</p></div><div class="toolcard"><h3>🍎 iPhone / iOS</h3><p class="muted small">تنبيه: لا توجد إعدادات تنزيل في Safari تسمح بتثبيت لوحة مفاتيح نظامية مباشرةً من موقع عادي. يلزم تطبيق iOS يحتوي على لوحة مفاتيح، ثم تثبيته بطريقة يدعمها النظام وإضافتها من الإعدادات.</p><button type="button" id="iphoneKeyboardGuide">ℹ️ كيف أثبّتها على iPhone؟</button><p class="muted small" id="iphoneKeyboardNotice" hidden>لا تحاول تعطيل حماية iPhone أو تثبيت ملفات مجهولة. سنوفّر تعليمات التثبيت المدعومة عندما تصبح نسخة iOS جاهزة للتوزيع.</p></div></div><p class="notice" id="keyboardInstallNotice" role="status" aria-live="polite"></p></section>
 <nav class="tabs">
-<button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="bigArtGallery">🖼️ فن كبير</button><button class="tab" data-tab="kaomojiLab">🎭 مصنع الإيموجيات</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button>
+<button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="bigArtGallery">🖼️ فن كبير</button><button class="tab" data-tab="kaomojiLab">🎭 مصنع الإيموجيات</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button><button class="tab" data-tab="emojiPixelArt">🧩 رسم بالإيموجي</button>
 </nav>
-<section id="fancy" class="section show panel"><h2>🔤 Fancy Text Generator — زخرفة النصوص</h2><div class="bar"><input id="fancyInput" value="My Text" placeholder="اكتب اسمك أو النص هنا"><button class="primary" id="fancyAll">نسخ النص المحدد</button></div><p class="muted small">اكتب بالعربية أو الإنجليزية أو بهما معًا؛ يتعرّف الموقع على اللغة تلقائيًا ويعرض زخارف مناسبة دون اختيار يدوي. العربية لها إطارات وزخارف خاصة، والإنجليزية لها أنماط Unicode مثل Bold وItalic وScript.</p><div id="fancyGrid" class="toolgrid"></div><p id="fancyNotice" class="notice"></p></section>
+<section id="emojiPixelArt" class="section panel">
+<h2 style="font-size:1.6rem">🧩 صانع لوحات الإيموجي</h2>
+<p class="muted">اختر رمزًا، ثم اضغط الخلايا أو اسحب للرسم. انسخ اللوحة وانشرها في واتساب أو تيليجرام.</p>
+<div class="bar" style="align-items:center">
+<label for="pixelSize">حجم اللوحة</label><select id="pixelSize"><option value="10">10 × 10</option><option value="16">16 × 16</option></select>
+<label for="pixelBrush">حجم الفرشاة</label><select id="pixelBrush"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+</div>
+<div class="bar" id="pixelPalette" aria-label="اختيار رمز الرسم">
+<button type="button" class="active" data-pixel="🟥">🟥 أحمر</button><button type="button" data-pixel="🟦">🟦 أزرق</button><button type="button" data-pixel="⬜">⬜ أبيض</button><button type="button" data-pixel="⬛">⬛ أسود</button><button type="button" data-pixel="🟨">🟨 أصفر</button><button type="button" data-pixel="🟩">🟩 أخضر</button><button type="button" data-pixel="🟪">🟪 بنفسجي</button><button type="button" data-pixel="🟧">🟧 برتقالي</button><button type="button" data-pixel="❤️">❤️ قلب</button><button type="button" data-pixel="😊">😊 وجه</button><button type="button" data-pixel="🧽">🧽 ممحاة</button>
+</div>
+<div class="bar"><label for="pixelCustom">رمزك الخاص</label><input id="pixelCustom" maxlength="8" placeholder="اكتب إيموجي"><button type="button" id="pixelUseCustom">استخدم الرمز</button></div>
+<div id="pixelGrid" style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:2px;max-width:620px;margin:12px auto;touch-action:pan-y" aria-label="شبكة الرسم"></div>
+<div class="actions"><button type="button" id="pixelUndo">↩️ تراجع</button><button type="button" id="pixelClear">🧹 مسح اللوحة</button><button type="button" class="primary" id="pixelCopy">📋 نسخ اللوحة</button><button type="button" id="pixelDownload">⬇️ حفظ كملف نصي</button></div>
+<p id="pixelStatus" class="notice" role="status" aria-live="polite">اختر لونًا وابدأ الرسم 🎨</p>
+<label for="pixelOutput">معاينة اللوحة المنسوخة</label><textarea id="pixelOutput" class="output" rows="7" readonly placeholder="ستظهر لوحتك هنا..."></textarea>
+<p class="muted small">ملاحظة: بعض التطبيقات قد تغيّر عرض المسافات بين الرموز حسب الخط والجهاز. النسخ يحافظ على ترتيب الصفوف، لكن العرض المثالي ليس مضمونًا في كل تطبيق.</p>
+</section>\n<section id="fancy" class="section show panel"><h2>🔤 Fancy Text Generator — زخرفة النصوص</h2><div class="bar"><input id="fancyInput" value="My Text" placeholder="اكتب اسمك أو النص هنا"><button class="primary" id="fancyAll">نسخ النص المحدد</button></div><p class="muted small">اكتب بالعربية أو الإنجليزية أو بهما معًا؛ يتعرّف الموقع على اللغة تلقائيًا ويعرض زخارف مناسبة دون اختيار يدوي. العربية لها إطارات وزخارف خاصة، والإنجليزية لها أنماط Unicode مثل Bold وItalic وScript.</p><div id="fancyGrid" class="toolgrid"></div><p id="fancyNotice" class="notice"></p></section>
 <section id="randomDecor" class="section panel"><h2>🎲 زخرفة عشوائية للنصوص العربية والإنجليزية</h2><p class="muted">اكتب اسمك أو أي كلمة ثم اضغط «زخرفات عشوائية» لإنشاء 50 شكلًا مختلفًا. كل ضغطة تولّد تركيبات مختلفة من الإطارات والرموز والوجوه التعبيرية وZalgo.</p><div class="bar"><input id="randomDecorInput" placeholder="اكتب اسمك أو أي كلمة هنا"><button id="randomDecorMake" class="primary">🎲 زخرفات عشوائية</button></div><label class="compat-option" style="display:flex;gap:9px;align-items:center;margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:12px"><input id="legacyDecorMode" type="checkbox" style="width:20px;height:20px;flex-shrink:0"><span>🖥️ وضع التوافق مع الكمبيوتر القديم (رموز أبسط وأقل عرضة للمربعات)</span></label><div id="randomDecorGrid" class="toolgrid"></div><p id="randomDecorNotice" class="notice"></p></section>
 <section id="flip" class="section panel"><h2>🙃 Flip / Mirror Text — قلب وعكس النص</h2><div class="bar"><input id="flipInput" placeholder="اكتب النص هنا"><button id="flipCopy" class="primary">نسخ الناتج</button></div><div class="two"><div><p class="muted">مقلوب من الأسفل للأعلى</p><textarea id="flipOut" class="output" readonly></textarea></div><div><p class="muted">معكوس أفقيًا تقريبًا</p><textarea id="mirrorOut" class="output" readonly></textarea></div></div></section>
 <section id="zalgo" class="section panel"><h2>〰️ Zalgo Text — النص المرعب والمشوّش</h2><div class="bar"><input id="zalgoInput" placeholder="اكتب شيئًا ليصبح مرعبًا..."><button id="zalgoCopy" class="primary">نسخ Zalgo</button></div><label>قوة التأثير: <b id="zVal">8</b></label><input class="range" id="zLevel" type="range" min="1" max="24" value="8"><div id="zalgoOut" class="preview"></div><p class="muted small">تمت إضافة خطوط بديلة للرموز والإيموجيات لتحسين ظهورها على الكمبيوتر والهاتف والآيباد. إذا بقيت بعض الرموز مربعات، فقد يكون نظام التشغيل أو التطبيق لا يدعمها بعد؛ ويمكن أن تختلف الرموز المنسوخة حسب الخطوط المتوفرة.</p></section>
@@ -569,6 +585,80 @@ document.querySelectorAll('[data-qfilter]').forEach(b=>b.addEventListener('click
  document.querySelectorAll('[data-qfilter]').forEach(x=>x.classList.toggle('active',x===b));
  quickKaoRender();
 }));
+
+
+// Emoji Pixel Art Grid
+const pixelColors=['🟥','🟦','⬜','⬛','🟨','🟩','🟪','🟧','❤️','😊'];
+let pixelCurrent='🟥',pixelCells=[],pixelHistory=[],pixelDrawing=false,pixelLast=-1;
+const pixelGrid=$('pixelGrid'),pixelStatus=$('pixelStatus'),pixelOutput=$('pixelOutput');
+function pixelInit(){
+ const n=Number($('pixelSize').value);pixelCells=Array(n*n).fill('⬜');pixelHistory=[];pixelRender();
+}
+function pixelSaveHistory(){pixelHistory.push([...pixelCells]);if(pixelHistory.length>50)pixelHistory.shift();}
+function pixelPaint(index){
+ const n=Number($('pixelSize').value);if(index<0||index>=pixelCells.length)return;
+ const brush=Number($('pixelBrush').value),row=Math.floor(index/n),col=index%n;
+ let changed=false;
+ for(let y=row;y<Math.min(n,row+brush);y++)for(let x=col;x<Math.min(n,col+brush);x++){
+  const i=y*n+x;if(pixelCells[i]!==pixelCurrent){pixelCells[i]=pixelCurrent;changed=true;}
+ }
+ if(changed)pixelRender();
+}
+function pixelRender(){
+ const n=Number($('pixelSize').value);
+ pixelGrid.style.gridTemplateColumns='repeat('+n+',minmax(0,1fr))';
+ pixelGrid.innerHTML='';
+ pixelCells.forEach((v,i)=>{
+  const b=document.createElement('button');b.type='button';b.textContent=v;b.dataset.index=i;
+  b.setAttribute('aria-label','خلية '+(Math.floor(i/n)+1)+','+(i%n+1));
+  b.style.cssText='padding:0;border-radius:4px;aspect-ratio:1;min-width:0;min-height:0;display:grid;place-items:center;font-size:clamp(9px,'+(n===16?'2.3':'3.2')+'vw,23px);line-height:1;background:#111a30;border:1px solid #354362;touch-action:manipulation;';
+  pixelGrid.appendChild(b);
+ });
+ pixelOutput.value=Array.from({length:n},(_,y)=>pixelCells.slice(y*n,(y+1)*n).join('')).join('\n');
+}
+$('pixelPalette').addEventListener('click',e=>{
+ const b=e.target.closest('[data-pixel]');if(!b)return;
+ pixelCurrent=b.dataset.pixel;
+ document.querySelectorAll('#pixelPalette [data-pixel]').forEach(x=>x.classList.toggle('active',x===b));
+ pixelStatus.textContent=pixelCurrent==='🧽'?'الممحاة جاهزة — اختر خلية لمسحها.':'الرمز المختار: '+pixelCurrent;
+ if(pixelCurrent==='🧽')pixelCurrent='⬜';
+});
+$('pixelGrid').addEventListener('pointerdown',e=>{
+ const b=e.target.closest('[data-index]');if(!b)return;
+ pixelSaveHistory();pixelDrawing=true;pixelLast=Number(b.dataset.index);pixelPaint(pixelLast);
+});
+$('pixelGrid').addEventListener('pointerover',e=>{
+ if(!pixelDrawing)return;const b=e.target.closest('[data-index]');if(!b)return;
+ const i=Number(b.dataset.index);if(i!==pixelLast){pixelLast=i;pixelPaint(i);}
+});
+window.addEventListener('pointerup',()=>{pixelDrawing=false;pixelLast=-1;});
+$('pixelGrid').addEventListener('click',e=>{
+ const b=e.target.closest('[data-index]');if(!b||pixelDrawing)return;
+ pixelSaveHistory();pixelPaint(Number(b.dataset.index));
+});
+$('pixelSize').addEventListener('change',pixelInit);
+$('pixelUseCustom').addEventListener('click',()=>{
+ const v=$('pixelCustom').value.trim();if(!v){pixelStatus.textContent='اكتب إيموجي أولًا.';return;}
+ pixelCurrent=v;pixelStatus.textContent='الرمز الخاص جاهز: '+v;
+ document.querySelectorAll('#pixelPalette [data-pixel]').forEach(x=>x.classList.remove('active'));
+});
+$('pixelUndo').addEventListener('click',()=>{
+ const prev=pixelHistory.pop();if(prev){pixelCells=prev;pixelRender();pixelStatus.textContent='تم التراجع خطوة ↩️';}else pixelStatus.textContent='لا توجد خطوات للتراجع.';
+});
+$('pixelClear').addEventListener('click',()=>{
+ pixelSaveHistory();pixelCells=Array(pixelCells.length).fill('⬜');pixelRender();pixelStatus.textContent='تم مسح اللوحة.';
+});
+$('pixelCopy').addEventListener('click',async()=>{
+ const text=pixelOutput.value;
+ try{await navigator.clipboard.writeText(text);pixelStatus.textContent='تم نسخ اللوحة بنجاح ✅';}
+ catch(e){pixelOutput.focus();pixelOutput.select();try{document.execCommand('copy');pixelStatus.textContent='تم نسخ اللوحة بنجاح ✅';}catch(_){pixelStatus.textContent='حدّد النص وانسخه يدويًا.';}}
+});
+$('pixelDownload').addEventListener('click',()=>{
+ const blob=new Blob([pixelOutput.value],{type:'text/plain;charset=utf-8'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='seif-emoji-pixel-art.txt';a.click();URL.revokeObjectURL(url);
+ pixelStatus.textContent='تم تجهيز ملف اللوحة للتنزيل.';
+});
+pixelInit();
 
 render();
 })();
