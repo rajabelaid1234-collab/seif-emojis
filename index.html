@@ -83,7 +83,7 @@ function mapStyle(s,upper,lower,digits){return Array.from(s).map(ch=>{let n=ch.c
 function fancyRender(){
  let value=$('fancyInput').value||'My Text';
  const grid=$('fancyGrid');grid.innerHTML='';
- const isArabic=/[\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF]/.test(value);
+ const isArabic=/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(value);
  const arabicStyles=[
  ['★彡','★彡 ',' 彡★'],['قلوب','♡ ',' ♡'],['إطار ملكي','꧁༺ ',' ༻꧂'],['أقواس','『 ',' 』'],['مربعات','【 ',' 】'],
  ['نجوم','✦ ',' ✦'],['قلوب مزدوجة','♥ ',' ♥'],['ورود','❀ ',' ❀'],['تاج','♛ ',' ♛'],['جناحان','乂 ',' 乂'],
