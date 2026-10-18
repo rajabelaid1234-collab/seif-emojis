@@ -73,7 +73,7 @@ class WebActivity : Activity() {
                 runOnUiThread {
                     if (!request.resources.contains(PermissionRequest.RESOURCE_VIDEO_CAPTURE)) {
                         request.deny()
-                    } else if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    } else if (android.os.Build.VERSION.SDK_INT < 23 || checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         request.grant(arrayOf(PermissionRequest.RESOURCE_VIDEO_CAPTURE))
                     } else {
                         pendingCameraRequest = request
