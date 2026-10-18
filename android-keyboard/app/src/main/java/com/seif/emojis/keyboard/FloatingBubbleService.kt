@@ -17,6 +17,10 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import android.media.AudioManager
+import android.media.ToneGenerator
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 
 class FloatingBubbleService : Service() {
     private lateinit var wm: WindowManager
@@ -61,6 +65,39 @@ class FloatingBubbleService : Service() {
         wm.addView(bubble,p)
     }
 
+    private fun swordEffect() {
+        val slash = TextView(this).apply {
+            text = "⚔️"
+            textSize = 42f
+            gravity = Gravity.CENTER
+            setShadowLayer(18f, 0f, 0f, Color.rgb(120, 220, 255))
+        }
+        val p = WindowManager.LayoutParams(
+            -2, -2,
+            if (Build.VERSION.SDK_INT >= 26) WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY else WindowManager.LayoutParams.TYPE_PHONE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+            PixelFormat.TRANSLUCENT
+        ).apply { gravity = Gravity.TOP or Gravity.START; x = 0; y = (resources.displayMetrics.heightPixels * 0.42f).toInt() }
+        try {
+            wm.addView(slash, p)
+            val anim = TranslateAnimation(-resources.displayMetrics.widthPixels.toFloat(), resources.displayMetrics.widthPixels.toFloat(), 0f, -resources.displayMetrics.heightPixels * 0.18f)
+            anim.duration = 420
+            anim.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationRepeat(animation: Animation?) {}
+                override fun onAnimationEnd(animation: Animation?) { try { wm.removeView(slash) } catch (_: Exception) {} }
+            })
+            slash.startAnimation(anim)
+        } catch (_: Exception) {}
+        if (getSharedPreferences("seif_settings", Context.MODE_PRIVATE).getBoolean("sword_sound", false)) {
+            try {
+                val tone = ToneGenerator(AudioManager.STREAM_MUSIC, 35)
+                tone.startTone(ToneGenerator.TONE_PROP_NACK, 100)
+                slash.postDelayed({ tone.release() }, 180)
+            } catch (_: Exception) {}
+        }
+    }
+
     private fun toggleMenu() {
         if (expanded) { removeMenu(); return }
         val box=LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setPadding(7,7,7,7); setBackgroundColor(Color.rgb(18,24,43)) }
@@ -74,6 +111,7 @@ class FloatingBubbleService : Service() {
                 setOnClickListener {
                     val cb=getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     cb.setPrimaryClip(ClipData.newPlainText("SEIF EMOJIS",face))
+                    swordEffect()
                     Toast.makeText(this@FloatingBubbleService,"تم النسخ؛ الصقه في خانة الكتابة",Toast.LENGTH_SHORT).show()
                     removeMenu()
                 }
