@@ -126,6 +126,14 @@ button{touch-action:manipulation;min-height:42px}
 @keyframes heartSettle{0%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #8bdcff);transform:translate(-50%,-50%) scale(.7)}35%{transform:translate(-50%,-50%) scale(1.15)}68%{transform:translate(-50%,-50%) scale(.98)}100%{transform:translate(-50%,-50%) scale(1)}}
 @media(max-width:480px){.motion-stage{min-height:220px}}
 
+
+/* Hot comet trail stays attached to the real star and vanishes while behind the letters */
+.motion-star{width:1em;height:1em;display:grid;place-items:center;line-height:1;transform-style:preserve-3d}
+.motion-star svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 3px #fff8a5) drop-shadow(0 0 9px #ff8a24) drop-shadow(0 0 18px #ff3b0a)}
+.motion-trail{width:clamp(90px,22vw,180px);height:10px;transform-origin:100% 50%;border-radius:50%;background:linear-gradient(90deg,transparent 0%,rgba(255,38,0,.05) 22%,rgba(255,65,8,.45) 52%,#ff8b16 75%,#fff4a5 94%,#fff 100%);filter:blur(1px) drop-shadow(0 0 5px #ff3c00) drop-shadow(0 0 11px #ff7a00) drop-shadow(0 0 19px #ffb52e);clip-path:polygon(0 50%,22% 30%,48% 42%,76% 18%,100% 50%,76% 82%,48% 58%,22% 70%)}
+.motion-trail:before{content:"";position:absolute;inset:-5px 0;background:linear-gradient(90deg,transparent,rgba(255,34,0,.3),rgba(255,130,0,.65),transparent);filter:blur(5px);animation:fireFlicker .16s infinite alternate}
+.motion-trail:after{right:0;width:11px;height:11px;background:#fff8cf;box-shadow:0 0 8px 4px #fff,0 0 20px 10px #ff7900,0 0 34px 14px #ff2d00}
+@keyframes fireFlicker{from{opacity:.55;transform:scaleY(.7)}to{opacity:1;transform:scaleY(1.25)}}
 </style>
 </head>
 <body><main class="wrap">
@@ -159,7 +167,7 @@ button{touch-action:manipulation;min-height:42px}
 <label for="motionSpeed">السرعة</label><select id="motionSpeed"><option value="3600">هادئة</option><option value="2600" selected>متوسطة</option><option value="1700">سريعة</option></select>
 <div class="actions"><button type="button" id="motionPlay" class="primary">✨ شغّل الإعلان</button><button type="button" id="motionStop">⏹ إيقاف</button><button type="button" id="motionVideo">🎥 حفظ فيديو قصير</button></div>
 </div>
-<div id="motionStage" class="motion-stage" aria-label="معاينة أنيميشن الاسم"><span id="motionName" class="motion-name"></span><span id="motionTrail" class="motion-trail"></span><span id="motionImpact" class="motion-impact"></span><span id="motionStar" class="motion-star">💫</span></div>
+<div id="motionStage" class="motion-stage" aria-label="معاينة أنيميشن الاسم"><span id="motionName" class="motion-name"></span><span id="motionTrail" class="motion-trail"></span><span id="motionImpact" class="motion-impact"></span><span id="motionStar" class="motion-star" aria-label="نجمة متحركة"><svg viewBox="0 0 100 100" width="1em" height="1em" aria-hidden="true"><defs><linearGradient id="starMetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".32" stop-color="#fff4a8"/><stop offset=".58" stop-color="#ff9b22"/><stop offset=".78" stop-color="#fff7d1"/><stop offset="1" stop-color="#ff5b18"/></linearGradient></defs><path d="M50 3 L61 35 L96 36 L68 57 L78 91 L50 71 L22 91 L32 57 L4 36 L39 35 Z" fill="url(#starMetal)" stroke="#fff8d0" stroke-width="2.5" stroke-linejoin="round"/></svg></span></div>
 <p id="motionStatus" class="notice" role="status" aria-live="polite">اكتب اسمك واضغط «شغّل الإعلان» ✨</p>
 <p class="muted small">إذا لم يتضمن الاسم حرف i أو í أو ï، تدور النجمة حوله وتختتم الحركة بلمعة. تسجيل الفيديو متاح في المتصفحات الداعمة، وقد يكون WebM بدل MP4.</p>
 </section>
@@ -601,10 +609,8 @@ function quickKaoRender(){
  });
  if(!filtered.length){grid.innerHTML='<p class="muted">لا توجد نتائج. جرّب كلمة أخرى.</p>';}
 }
-// Draggable picker button. Hiding it keeps it hidden until this tab/session is closed.
+// Draggable picker button. Hide only until the next page load; refresh restores it.
 const quickButton=$('quickKaoButton'), quickControls=$('quickKaoControls');
-let quickBubbleHidden=sessionStorage.getItem('seifQuickBubbleHidden')==='1';
-if(quickBubbleHidden)quickButton.style.display='none';
 let dragState=null,dragMoved=false;
 quickButton.addEventListener('pointerdown',e=>{
  dragMoved=false;const r=quickButton.getBoundingClientRect();
@@ -634,7 +640,7 @@ quickButton.addEventListener('pointerup',()=>{
 });
 $('quickKaoHide').addEventListener('click',()=>{
  quickButton.style.display='none';quickControls.style.display='none';
- $('quickKaoPanel').classList.remove('open');sessionStorage.setItem('seifQuickBubbleHidden','1');
+ $('quickKaoPanel').classList.remove('open');
 });
 $('quickKaoMoveHelp').addEventListener('click',()=>{$('quickKaoMessage').textContent='اسحب زر 😊 إلى مكان لا يحجب الكتابة.';});
 
@@ -735,7 +741,6 @@ function motionPlay(){
  const tx=target?target.left-stage.left+target.width/2-cx:0;
  const ty=target?target.top-stage.top+Math.min(8,target.height*.22)-cy:-cy*.22;
  const sx=Math.min(cx*.63,210),sy=Math.min(cy*.7,115);
- // Elliptical figure-eight: several crossings deliberately pass behind the metal lettering.
  const path=[
   {x:-sx,y:-sy*.25,z:1,scale:.55,rot:-18,at:0},
   {x:-sx*.55,y:-sy,z:1,scale:.72,rot:-42,at:.12},
@@ -749,20 +754,21 @@ function motionPlay(){
   {x:tx,y:ty,z:5,scale:.86,rot:360,at:.95},
   {x:tx,y:ty,z:5,scale:1,rot:360,at:1}
  ];
- const frames=path.map(p=>({offset:p.at,transform:'translate(-50%,-50%) translate('+p.x+'px,'+p.y+'px) translateZ('+((p.z===1?-24:22))+'px) rotate('+p.rot+'deg) rotateY('+(p.rot*.55)+'deg) scale('+p.scale+')',zIndex:p.z,filter:'drop-shadow(0 2px 2px #0009) drop-shadow(0 0 '+(p.scale>1?'18px':'8px')+' #9bdcff)'}));
+ const frames=path.map(p=>({offset:p.at,transform:'translate(-50%,-50%) translate('+p.x+'px,'+p.y+'px) translateZ('+(p.z===1?-24:22)+'px) rotate('+p.rot+'deg) rotateY('+(p.rot*.55)+'deg) scale('+p.scale+')',zIndex:p.z,filter:'drop-shadow(0 2px 2px #0009) drop-shadow(0 0 '+(p.scale>1?'18px':'8px')+' #ff6a00)'}));
  motionStage.classList.add('playing');
  const trail=document.getElementById('motionTrail');
- const trailFrames=path.map((p,i)=>({offset:p.at,transform:'translate(-50%,-50%) translate('+(p.x-sx*.22)+'px,'+(p.y+5)+'px) rotate('+(p.rot*.55)+'deg) scaleX('+(i<2?.35:1.0-p.at*.55)+')',opacity:i<2?.15:(p.at>.88?0:.82)}));
+ // Trail coordinates follow the star; opacity is zero on the rear/occluded path sections.
+ const trailFrames=path.map((p,i)=>({offset:p.at,transform:'translate(-50%,-50%) translate('+(p.x-sx*.22)+'px,'+(p.y+3)+'px) rotate('+(p.rot*.55)+'deg) scaleX('+(i<2?.3:1.0-p.at*.55)+')',opacity:(p.z===1?0:(p.at>.88?0:.96))}));
  window.motionTrailAnimation=trail.animate(trailFrames,{duration:dur,easing:'linear',fill:'forwards'});
  motionAnimation=motionStar.animate(frames,{duration:dur,easing:'cubic-bezier(.18,.72,.18,1)',fill:'forwards'});
  motionAnimation.onfinish=()=>{
    motionStar.style.transform='translate(-50%,-50%) translate('+tx+'px,'+ty+'px) translateZ(22px) scale(1)';
    motionStar.style.zIndex='5';motionStage.classList.remove('playing');motionStage.classList.add('impact');
    const impact=document.getElementById('motionImpact');if(impact){impact.style.left='calc(50% + '+tx+'px)';impact.style.top='calc(50% + '+ty+'px)';}
-   motionStatus.textContent=targetIndex>=0?'هبط القلب الزجاجي فوق حرف i مع ومضة ضوئية ✨':'اكتملت دورة القلب حول الاسم مع تأثير هبوط سينمائي 💎';
+   motionStatus.textContent=targetIndex>=0?'هبطت النجمة المعدنية فوق حرف i مع ومضة نارية ✨':'اكتملت دورة النجمة حول الاسم مع تأثير هبوط سينمائي ⭐';
    setTimeout(()=>motionStage.classList.remove('impact'),1100);
  };
- motionStatus.textContent='القلب يتحرك بمسار بيضاوي متقاطع، مع عمق وظلّ ولمعة معدنية…';
+ motionStatus.textContent='النجمة الحقيقية تدور بخط ناري خلفها، ويختفي اللهب عندما تمر خلف الحروف…';
 }
 $('motionSymbols').addEventListener('click',e=>{const b=e.target.closest('[data-motion-emoji]');if(!b)return;motionEmoji=b.dataset.motionEmoji;document.querySelectorAll('#motionSymbols [data-motion-emoji]').forEach(x=>x.classList.toggle('active',x===b));motionStar.textContent=motionEmoji;});
 $('motionText').addEventListener('input',()=>{motionStop();motionRenderName();});
