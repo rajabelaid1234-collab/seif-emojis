@@ -112,13 +112,14 @@ $('asciiConvert').addEventListener('click',()=>{
     const i=p.i;let rr=data[i],gg=data[i+1],bb=data[i+2];
     if(mode==='mono'){
      const sourceLum=lumAt(i)/255;
-     let shade=Math.round(24+(1-sourceLum)*215);
-     shade=Math.max(12,Math.min(45,shade));rr=gg=bb=shade;
-    }else if(mode==='soft'){
-     const lift=.12;
-     rr=Math.round(rr*(1-lift)+255*lift);gg=Math.round(gg*(1-lift)+255*lift);bb=Math.round(bb*(1-lift)+255*lift);
-     const factor=0.88+((p.lum<.5)?0.12:0);
-     rr=Math.round(rr*factor);gg=Math.round(gg*factor);bb=Math.round(bb*factor);
+     const shade=Math.round(48+sourceLum*170);
+     rr=gg=bb=shade;
+    }else{
+     // Reduce excessive saturation and lift dark colors for a clearer, softer illustration.
+     const lum=.2126*rr+.7152*gg+.0722*bb;
+     rr=Math.round(Math.min(255,(rr*.42+lum*.58)*.88+30));
+     gg=Math.round(Math.min(255,(gg*.42+lum*.58)*.88+30));
+     bb=Math.round(Math.min(255,(bb*.42+lum*.58)*.88+30));
     }
     rctx.fillStyle='rgb('+rr+','+gg+','+bb+')';
     rctx.fillText(p.ch,p.x*cellW+cellW/2,p.y*cellH+cellH/2,cellW-1);
@@ -151,17 +152,16 @@ function makeArt(img){
   const sr=Math.max(1,Math.min(3,Math.round(radius*.55)));
   for(let y=0;y<h;y++)for(let x=0;x<w;x++){let sum=0,count=0;for(let yy=Math.max(0,y-sr);yy<=Math.min(h-1,y+sr);yy++)for(let xx=Math.max(0,x-sr);xx<=Math.min(w-1,x+sr);xx++){sum+=gray[yy*w+xx];count++;}soft[y*w+x]=sum/count;}
   for(let y=0;y<h;y++)for(let x=0;x<w;x++){
-   const p=y*w+x,i=p*4,g=gray[p],local=soft[p],left=gray[y*w+Math.max(0,x-1)],right=gray[y*w+Math.min(w-1,x+1)],up=gray[Math.max(0,y-1)*w+x],down=gray[Math.min(h-1,y+1)*w+x];
-   const edge=Math.abs(left-right)+Math.abs(up-down);
-   const denom=Math.max(22,255-blur[p]);
-   let sketch=Math.min(255,g*255/denom);
-   // Blend in gentle pencil hatching at edges and stronger natural shadow depth.
-   const shadow=Math.max(0,(150-local)*.17);
-   const detail=Math.min(48,edge*.34);
-   sketch=Math.max(18,Math.min(255,sketch-shadow-detail));
-   // Warm paper white with graphite-gray marks.
-   const v=Math.max(12,Math.min(255,sketch));
-   d[i]=Math.min(255,v+3);d[i+1]=Math.min(255,v+2);d[i+2]=v;
+   const p=y*w+x,i=p*4,g=gray[p],local=soft[p];
+   const left=gray[y*w+Math.max(0,x-1)],right=gray[y*w+Math.min(w-1,x+1)],up=gray[Math.max(0,y-1)*w+x],down=gray[Math.min(h-1,y+1)*w+x];
+   const edge=Math.min(110,(Math.abs(left-right)+Math.abs(up-down))*.58);
+   const denom=Math.max(35,255-blur[p]);
+   const dodge=Math.min(255,g*255/denom);
+   // Keep broad facial/neck shadows soft, while darkening only meaningful contours.
+   const shadow=Math.max(0,135-local)*.30;
+   const pencil=255-(255-dodge)*.72-shadow-edge;
+   const v=Math.max(42,Math.min(255,pencil));
+   d[i]=Math.min(255,v+2);d[i+1]=Math.min(255,v+1);d[i+2]=v;
   }
  }else if(style==='oil'||style==='watercolor'){
   const src=new Uint8ClampedArray(d),radius=style==='oil'?2:1,binsCount=16;
