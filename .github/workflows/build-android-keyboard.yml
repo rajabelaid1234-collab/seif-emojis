@@ -3,7 +3,8 @@ name: Build SEIF EMOJIS Android Keyboard
 on:
   push:
     paths:
-      - 'android-keyboard/**'\n      - 'index.html'
+      - 'android-keyboard/**'
+      - 'index.html'
       - '.github/workflows/build-android-keyboard.yml'
   workflow_dispatch:
 
