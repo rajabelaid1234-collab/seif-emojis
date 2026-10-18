@@ -108,6 +108,24 @@ button{touch-action:manipulation;min-height:42px}
 
 .motion-stage{overflow:hidden}.motion-trail{position:absolute;left:50%;top:50%;width:150px;height:7px;z-index:2;pointer-events:none;opacity:0;transform-origin:100% 50%;border-radius:100%;background:linear-gradient(90deg,transparent 0%,rgba(105,180,255,.08) 22%,rgba(180,220,255,.65) 62%,#fff7c7 100%);filter:blur(.6px) drop-shadow(0 0 6px #8bd8ff) drop-shadow(0 0 15px #b49cff);clip-path:polygon(0 50%,100% 0,92% 50%,100% 100%)}.motion-trail:after{content:'';position:absolute;right:0;top:50%;width:9px;height:9px;transform:translate(35%,-50%);border-radius:50%;background:#fffbe2;box-shadow:0 0 8px 3px #fff,0 0 18px 7px #8bd8ff}.motion-stage.playing .motion-trail{opacity:1}
 
+
+/* Cinematic metallic 3D treatment for the SEIF name animation */
+.motion-stage{min-height:310px;perspective:1200px;background:radial-gradient(ellipse at 50% 38%,rgba(86,105,145,.48),transparent 34%),radial-gradient(ellipse at 50% 115%,#070a12 0%,#111a2d 48%,#080b14 100%);border-color:#66748c;box-shadow:inset 0 1px 0 #ffffff20,inset 0 -35px 65px #0008,0 18px 45px #0006}
+.motion-stage:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 22%,#e8f4ff66 0 1px,transparent 2px),radial-gradient(circle at 76% 27%,#ffffff66 0 1px,transparent 2px),radial-gradient(circle at 83% 72%,#b4caff66 0 1px,transparent 2px),radial-gradient(circle at 27% 78%,#ffffff55 0 1px,transparent 2px),radial-gradient(circle at 62% 15%,#ffffff55 0 1px,transparent 2px);background-size:190px 150px,230px 180px,170px 220px,260px 190px,210px 170px;opacity:.65;animation:cinemaDust 8s linear infinite}
+.motion-stage:after{content:"";position:absolute;left:8%;right:8%;bottom:18%;height:1px;background:linear-gradient(90deg,transparent,#b8d6ff44,transparent);box-shadow:0 0 30px #9ecbff20;pointer-events:none}
+@keyframes cinemaDust{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(-7px,-10px,0)}100%{transform:translate3d(0,0,0)}}
+.motion-name{z-index:2;color:#aab4c5;background:linear-gradient(180deg,#fff 0%,#dce5f0 12%,#77899f 28%,#f8fbff 42%,#8798ac 55%,#dce4ef 70%,#56657a 88%,#f6f9ff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 0 #273246) drop-shadow(0 5px 0 #121a2a) drop-shadow(0 12px 12px #000d);text-shadow:none;letter-spacing:.055em}
+.motion-letter{transform:translateZ(20px);-webkit-text-stroke:.45px #e9f4ff80}
+.motion-star{z-index:4;font-size:clamp(2rem,5vw,3.5rem);filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #8bdcff) drop-shadow(0 0 22px #7b9fff);transform-style:preserve-3d;text-shadow:0 1px 1px #fff,0 5px 9px #000b}
+.motion-stage.playing .motion-name{animation:namePulse 3s ease-in-out infinite alternate}
+.motion-trail{z-index:3;width:clamp(90px,22vw,180px);height:5px;filter:blur(.7px) drop-shadow(0 0 5px #c8e8ff) drop-shadow(0 0 15px #829fff)}
+.motion-impact{position:absolute;left:50%;top:50%;width:14px;height:14px;border:2px solid #f4fcff;border-radius:50%;opacity:0;z-index:5;pointer-events:none;box-shadow:0 0 12px #9bdfff, inset 0 0 8px #fff}
+.motion-stage.impact .motion-impact{animation:impactExpand .8s cubic-bezier(.12,.7,.2,1) forwards}
+@keyframes impactExpand{0%{opacity:0;transform:translate(-50%,-50%) scale(.1)}18%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(8);border-color:#b7dfff}}
+.motion-stage.impact .motion-star{animation:heartSettle .55s ease-out}
+@keyframes heartSettle{0%{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px #8bdcff);transform:translate(-50%,-50%) scale(.7)}35%{transform:translate(-50%,-50%) scale(1.15)}68%{transform:translate(-50%,-50%) scale(.98)}100%{transform:translate(-50%,-50%) scale(1)}}
+@media(max-width:480px){.motion-stage{min-height:220px}}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -141,7 +159,7 @@ button{touch-action:manipulation;min-height:42px}
 <label for="motionSpeed">السرعة</label><select id="motionSpeed"><option value="3600">هادئة</option><option value="2600" selected>متوسطة</option><option value="1700">سريعة</option></select>
 <div class="actions"><button type="button" id="motionPlay" class="primary">✨ شغّل الإعلان</button><button type="button" id="motionStop">⏹ إيقاف</button><button type="button" id="motionVideo">🎥 حفظ فيديو قصير</button></div>
 </div>
-<div id="motionStage" class="motion-stage" aria-label="معاينة أنيميشن الاسم"><span id="motionName" class="motion-name"></span><span id="motionTrail" class="motion-trail"></span><span id="motionStar" class="motion-star">💫</span></div>
+<div id="motionStage" class="motion-stage" aria-label="معاينة أنيميشن الاسم"><span id="motionName" class="motion-name"></span><span id="motionTrail" class="motion-trail"></span><span id="motionImpact" class="motion-impact"></span><span id="motionStar" class="motion-star">💫</span></div>
 <p id="motionStatus" class="notice" role="status" aria-live="polite">اكتب اسمك واضغط «شغّل الإعلان» ✨</p>
 <p class="muted small">إذا لم يتضمن الاسم حرف i أو í أو ï، تدور النجمة حوله وتختتم الحركة بلمعة. تسجيل الفيديو متاح في المتصفحات الداعمة، وقد يكون WebM بدل MP4.</p>
 </section>
@@ -707,8 +725,45 @@ pixelInit();
 let motionEmoji='💫',motionAnimation=null,motionVideoRecorder=null;
 const motionStage=$('motionStage'),motionStar=$('motionStar'),motionName=$('motionName');
 function motionRenderName(){const name=$('motionText').value.trim()||'SEIF';motionName.innerHTML=Array.from(name).map((c,i)=>'<span class="motion-letter" data-letter="'+i+'">'+esc(c)+'</span>').join('');motionStar.textContent=motionEmoji;}
-function motionStop(){if(motionAnimation){motionAnimation.cancel();motionAnimation=null;}if(window.motionTrailAnimation){window.motionTrailAnimation.cancel();window.motionTrailAnimation=null;}motionStage.classList.remove('playing');motionStar.style.transform='translate(-50%,-50%)';const trail=document.getElementById('motionTrail');if(trail){trail.style.opacity='0';trail.style.transform='translate(-50%,-50%) rotate(0deg) scaleX(.2)';}motionStatus.textContent='تم إيقاف الحركة.';}
-function motionPlay(){motionStop();motionRenderName();const dur=Number($('motionSpeed').value),name=$('motionText').value.trim(),letters=[...motionName.querySelectorAll('.motion-letter')];const targetIndex=letters.findIndex(x=>/[iíïİ]/i.test(x.textContent));const stage=motionStage.getBoundingClientRect(),sr=motionStar.getBoundingClientRect();const cx=stage.width/2,cy=stage.height/2;const target=targetIndex>=0?letters[targetIndex].getBoundingClientRect():null;const tx=target?target.left-stage.left+target.width/2-cx:0;const ty=target?target.top-stage.top+Math.min(8,target.height*.22)-cy:-cy*.25;const frames=[{transform:'translate(-50%,-50%) translate(-'+(cx*.55)+'px,'+(-cy*.2)+'px) rotateY(0deg) scale(.65)',offset:0,zIndex:1},{transform:'translate(-50%,-50%) translate('+(-cx*.25)+'px,'+(-cy*.8)+'px) rotateY(180deg) scale(1.25)',offset:.25,zIndex:1},{transform:'translate(-50%,-50%) translate('+cx*.52+'px,'+(cy*.3)+'px) rotateY(300deg) scale(1)',offset:.55,zIndex:1},{transform:'translate(-50%,-50%) translate('+tx+'px,'+ty+'px) rotateY(360deg) scale(.55)',offset:.88,zIndex:3},{transform:'translate(-50%,-50%) translate('+tx+'px,'+ty+'px) rotateY(360deg) scale(.15)',offset:1,zIndex:3}];motionStage.classList.add('playing');const trail=document.getElementById('motionTrail');const trailFrames=[{transform:'translate(-50%,-50%) translate('+(-cx*.55)+'px,'+(-cy*.2)+'px) rotate(-12deg) scaleX(.2)',opacity:0,offset:0},{transform:'translate(-50%,-50%) translate('+(-cx*.25)+'px,'+(-cy*.8)+'px) rotate(-42deg) scaleX(1)',opacity:.95,offset:.25},{transform:'translate(-50%,-50%) translate('+(cx*.52)+'px,'+(cy*.3)+'px) rotate(28deg) scaleX(1.1)',opacity:1,offset:.55},{transform:'translate(-50%,-50%) translate('+tx+'px,'+ty+'px) rotate(0deg) scaleX(.35)',opacity:.25,offset:.88},{transform:'translate(-50%,-50%) translate('+tx+'px,'+ty+'px) rotate(0deg) scaleX(.05)',opacity:0,offset:1}];window.motionTrailAnimation=trail.animate(trailFrames,{duration:dur,easing:'cubic-bezier(.2,.7,.2,1)',fill:'forwards'});motionAnimation=motionStar.animate(frames,{duration:dur,easing:'cubic-bezier(.2,.7,.2,1)',fill:'forwards'});motionAnimation.onfinish=()=>{motionStar.style.transform='translate(-50%,-50%) translate('+tx+'px,'+ty+'px) scale(.15)';motionStage.classList.remove('playing');motionStatus.textContent=targetIndex>=0?'هبطت النجمة على نقطة حرف i ✨':'اكتملت دورة النجمة حول الاسم 💫';};motionStatus.textContent=targetIndex>=0?'النجمة تدور خلف الاسم وتهبط على نقطة i…':'النجمة تدور حول الاسم 360°…';}
+function motionStop(){if(motionAnimation){motionAnimation.cancel();motionAnimation=null;}if(window.motionTrailAnimation){window.motionTrailAnimation.cancel();window.motionTrailAnimation=null;}motionStage.classList.remove('playing','impact');motionStar.style.transform='translate(-50%,-50%)';motionStar.style.zIndex='4';const trail=document.getElementById('motionTrail');if(trail){trail.style.opacity='0';trail.style.transform='translate(-50%,-50%) rotate(0deg) scaleX(.2)';}motionStatus.textContent='تم إيقاف الحركة.';}
+function motionPlay(){
+ motionStop();motionRenderName();
+ const dur=Number($('motionSpeed').value),letters=[...motionName.querySelectorAll('.motion-letter')];
+ const targetIndex=letters.findIndex(x=>/[iíïİ]/i.test(x.textContent));
+ const stage=motionStage.getBoundingClientRect(),cx=stage.width/2,cy=stage.height/2;
+ const target=targetIndex>=0?letters[targetIndex].getBoundingClientRect():null;
+ const tx=target?target.left-stage.left+target.width/2-cx:0;
+ const ty=target?target.top-stage.top+Math.min(8,target.height*.22)-cy:-cy*.22;
+ const sx=Math.min(cx*.63,210),sy=Math.min(cy*.7,115);
+ // Elliptical figure-eight: several crossings deliberately pass behind the metal lettering.
+ const path=[
+  {x:-sx,y:-sy*.25,z:1,scale:.55,rot:-18,at:0},
+  {x:-sx*.55,y:-sy,z:1,scale:.72,rot:-42,at:.12},
+  {x:0,y:-sy*.15,z:1,scale:.9,rot:12,at:.24},
+  {x:sx*.58,y:sy*.68,z:4,scale:1.08,rot:36,at:.38},
+  {x:sx*.88,y:-sy*.5,z:4,scale:1.14,rot:68,at:.51},
+  {x:0,y:sy*.15,z:1,scale:.92,rot:125,at:.64},
+  {x:-sx*.6,y:sy*.58,z:4,scale:1.02,rot:205,at:.76},
+  {x:tx*.35,y:ty-20,z:4,scale:.78,rot:300,at:.86},
+  {x:tx,y:ty-7,z:4,scale:.72,rot:350,at:.92},
+  {x:tx,y:ty,z:5,scale:.86,rot:360,at:.95},
+  {x:tx,y:ty,z:5,scale:1,rot:360,at:1}
+ ];
+ const frames=path.map(p=>({offset:p.at,transform:'translate(-50%,-50%) translate('+p.x+'px,'+p.y+'px) translateZ('+((p.z===1?-24:22))+'px) rotate('+p.rot+'deg) rotateY('+(p.rot*.55)+'deg) scale('+p.scale+')',zIndex:p.z,filter:'drop-shadow(0 2px 2px #0009) drop-shadow(0 0 '+(p.scale>1?'18px':'8px')+' #9bdcff)'}));
+ motionStage.classList.add('playing');
+ const trail=document.getElementById('motionTrail');
+ const trailFrames=path.map((p,i)=>({offset:p.at,transform:'translate(-50%,-50%) translate('+(p.x-sx*.22)+'px,'+(p.y+5)+'px) rotate('+(p.rot*.55)+'deg) scaleX('+(i<2?.35:1.0-p.at*.55)+')',opacity:i<2?.15:(p.at>.88?0:.82)}));
+ window.motionTrailAnimation=trail.animate(trailFrames,{duration:dur,easing:'linear',fill:'forwards'});
+ motionAnimation=motionStar.animate(frames,{duration:dur,easing:'cubic-bezier(.18,.72,.18,1)',fill:'forwards'});
+ motionAnimation.onfinish=()=>{
+   motionStar.style.transform='translate(-50%,-50%) translate('+tx+'px,'+ty+'px) translateZ(22px) scale(1)';
+   motionStar.style.zIndex='5';motionStage.classList.remove('playing');motionStage.classList.add('impact');
+   const impact=document.getElementById('motionImpact');if(impact){impact.style.left='calc(50% + '+tx+'px)';impact.style.top='calc(50% + '+ty+'px)';}
+   motionStatus.textContent=targetIndex>=0?'هبط القلب الزجاجي فوق حرف i مع ومضة ضوئية ✨':'اكتملت دورة القلب حول الاسم مع تأثير هبوط سينمائي 💎';
+   setTimeout(()=>motionStage.classList.remove('impact'),1100);
+ };
+ motionStatus.textContent='القلب يتحرك بمسار بيضاوي متقاطع، مع عمق وظلّ ولمعة معدنية…';
+}
 $('motionSymbols').addEventListener('click',e=>{const b=e.target.closest('[data-motion-emoji]');if(!b)return;motionEmoji=b.dataset.motionEmoji;document.querySelectorAll('#motionSymbols [data-motion-emoji]').forEach(x=>x.classList.toggle('active',x===b));motionStar.textContent=motionEmoji;});
 $('motionText').addEventListener('input',()=>{motionStop();motionRenderName();});
 $('motionPlay').addEventListener('click',motionPlay);$('motionStop').addEventListener('click',motionStop);motionRenderName();
