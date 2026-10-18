@@ -1104,19 +1104,29 @@ let mosaicDebounce; $('pixelMosaicEmoji').addEventListener('input',()=>{clearTim
  updateMusic();updateShield();updateBubble();updateFit();updateVibe();
 })();
 
-// Real recorded sound effects from DailySounds; no synthesized tones.
+// Ten emoji buttons mapped to actual recordings; no invented electronic tones.
 (function(){
  const sources=[
-  {re:/😂|🤣|😆|😹|😄|😃|😁|😅|😛|😜/,name:'ضحك حقيقي',url:'https://rjzledhnojofyyjtvrzq.supabase.co/storage/v1/object/public/sounds/yt_gN1tERd_WYU_kids_chuckling.mp3'},
-  {re:/❤️|🧡|💛|💚|💙|💜|🖤|🤍|🤎|💕|💞|💓|💗|💖|💘|💝|💟|❣️/,name:'نبض القلب',url:'https://rjzledhnojofyyjtvrzq.supabase.co/storage/v1/object/public/sounds/yt_GYY4TE3gUz4_heartbeat.mp3'},
-  {re:/🔥|🕯️|🧨|💥|🌋/,name:'مؤثر النار والاشتعال',url:'https://rjzledhnojofyyjtvrzq.supabase.co/storage/v1/object/public/sounds/yt_xDf8w_NffIo_lighter_flick_sound_effect.mp3'},
-  {re:/💨|🌪️|🌬️|🌀|🛸|🚀/,name:'مؤثر حركة سريع',url:'https://rjzledhnojofyyjtvrzq.supabase.co/storage/v1/object/public/sounds/yt_83eXhiltkq0_ninja_smoke_screen_poof.mp3'}
+  {re:/😂|🤣/,name:'ضحك حقيقي',url:'https://rjzledhnojofyyjtvrzq.supabase.co/storage/v1/object/public/sounds/yt_gN1tERd_WYU_kids_chuckling.mp3'},
+  {re:/🐺/,name:'عواء الذئب',url:'https://sfxmint.com/dl/wolf-howl-02.mp3'},
+  {re:/🦁/,name:'زئير الأسد',url:'https://sfxmint.com/dl/lion-roar-02.mp3'},
+  {re:/🐶|🐕/,name:'نباح الكلب',url:'https://sfxmint.com/dl/animal-dog-bark-25.mp3'},
+  {re:/🐱|🐈/,name:'مواء القط',url:'https://sfxmint.com/dl/animal-cat-meow-34.mp3'},
+  {re:/🐸/,name:'نقيق الضفدع',url:'https://sfxmint.com/dl/animal-frog-14.mp3'},
+  {re:/🦉/,name:'صوت البومة',url:'https://sfxmint.com/dl/animal-owl-01.mp3'},
+  {re:/🐦|🐤|🐥|🐦‍⬛/,name:'زقزقة الطائر',url:'https://sfxmint.com/dl/animal-bird-24.mp3'},
+  {re:/🐮|🐄/,name:'خوار البقرة',url:'https://sfxmint.com/dl/cow-moo-02.mp3'},
+  {re:/🐴|🐎/,name:'صهيل الحصان',url:'https://sfxmint.com/dl/horse-neigh-03.mp3'}
  ];
  let audio=null;
- function playRealSound(emoji){
+ function playRealSound(emoji,noticeMissing){
   const match=sources.find(x=>x.re.test(emoji));
-  if(!match)return;
-  try{if(audio){audio.pause();audio.currentTime=0;}audio=new Audio(match.url);audio.volume=.65;audio.play().catch(()=>{});}catch(_){}
+  if(!match){if(noticeMissing){const notice=document.getElementById('soundEmojiNotice');if(notice){notice.textContent='الصوت الحقيقي متوفر حاليًا لـ10 رموز فقط؛ اختر أحدها لتسمع الصوت المطابق.';setTimeout(()=>notice.textContent='',2400);}}return;}
+  try{
+   if(audio){audio.pause();audio.currentTime=0;}
+   audio=new Audio(match.url);audio.volume=.8;
+   audio.play().catch(()=>{const notice=document.getElementById('soundEmojiNotice');if(notice){notice.textContent='تعذّر تحميل التسجيل؛ تحقق من اتصال الإنترنت.';setTimeout(()=>notice.textContent='',2400);}});
+  }catch(_){}
  }
  function extractEmoji(el){
   if(el.matches('.card')){const face=el.querySelector('.face');if(face&&face.textContent.trim())return face.textContent.trim();}
@@ -1127,20 +1137,12 @@ let mosaicDebounce; $('pixelMosaicEmoji').addEventListener('input',()=>{clearTim
  }
  document.addEventListener('click',e=>{
   const el=e.target.closest('.card,[data-emoji],.quick-kao-item,[data-motion-emoji]');
-  if(!el)return;
-  const emoji=extractEmoji(el);if(emoji)playRealSound(emoji);
+  if(!el||el.closest('#soundEmojiLibrary'))return;
+  const emoji=extractEmoji(el);if(emoji)playRealSound(emoji,false);
  });
- // Dedicated sound library: play actual recordings only when the emoji has a matching sound.
  document.getElementById('soundEmojiLibrary')?.addEventListener('click',e=>{
   const b=e.target.closest('.sound-emoji');if(!b)return;
-  const emoji=b.dataset.emoji||'';
-  const match=sources.find(x=>x.re.test(emoji));
-  if(match){
-   try{if(audio){audio.pause();audio.currentTime=0;}audio=new Audio(match.url);audio.volume=.65;audio.play().catch(()=>{});}catch(_){}
-  } else {
-   const notice=document.getElementById('soundEmojiNotice');
-   if(notice){notice.textContent='لا يوجد تسجيل صوتي مطابق لهذا الرمز حتى الآن؛ لن نشغّل نغمة إلكترونية بديلة.';setTimeout(()=>notice.textContent='',2200);}
-  }
+  playRealSound(b.dataset.emoji||'',true);
  });
 })();
 render();
