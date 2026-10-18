@@ -31,7 +31,7 @@ jobs:
           mkdir -p android-keyboard/app/src/main/res/drawable-nodpi
           curl -fLsS --retry 3 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&s=10' -o /tmp/seif-site-icon
           python3 -m pip install --quiet Pillow
-          python3 -c "from PIL import Image; im=Image.open('/tmp/seif-site-icon').convert('RGBA'); im.save('android-keyboard/app/src/main/res/drawable-nodpi/seif_site_icon.png')"
+          python3 -c "from PIL import Image; im=Image.open('/tmp/seif-site-icon').convert('RGBA'); im.save('android-keyboard/app/src/main/res/drawable-nodpi/seif_site_icon.png'); im.save('android-keyboard/app/src/main/assets/site-icon.png')"
       - name: Bundle the same website and offline face-analysis model
         run: |
           mkdir -p android-keyboard/app/src/main/assets/models
