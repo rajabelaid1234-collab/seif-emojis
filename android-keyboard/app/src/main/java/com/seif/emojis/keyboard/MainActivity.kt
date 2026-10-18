@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Switch
 import android.graphics.Color
 
 class MainActivity : Activity() {
@@ -42,6 +43,17 @@ class MainActivity : Activity() {
                 imm.showInputMethodPicker()
             }
         })
+        val soundSwitch = Switch(this).apply {
+            text = "🔊 صوت السيف (اختياري)"
+            textSize = 16f
+            setTextColor(Color.WHITE)
+            isChecked = getSharedPreferences("seif_settings", Context.MODE_PRIVATE).getBoolean("sword_sound", false)
+            setOnCheckedChangeListener { _, enabled ->
+                getSharedPreferences("seif_settings", Context.MODE_PRIVATE).edit().putBoolean("sword_sound", enabled).apply()
+            }
+            setPadding(0, 18, 0, 18)
+        }
+        root.addView(soundSwitch)
         root.addView(Button(this).apply {
             text = "3) السماح بالزر العائم"
             setOnClickListener {
