@@ -185,6 +185,13 @@ button{touch-action:manipulation;min-height:42px}
 
 #emojiPixelArt .bar:has(#pixelSize),#emojiPixelArt .bar:has(#pixelCustom){display:none!important}
 #emojiPixelArt label[for="pixelSize"],#emojiPixelArt label[for="pixelBrush"],#emojiPixelArt label[for="pixelCustom"]{display:none!important}
+
+/* Precisely anchored, emoji-colored landing power effect */
+.motion-stage.impact:after{content:none!important;display:none!important}
+#motionImpact{left:50%;top:50%;display:none;position:absolute;width:12px;height:12px;border:2px solid var(--power-glow,#ffc1e0);border-radius:50%;background:var(--power-glow,#ffc1e0);transform:translate(-50%,-50%);z-index:8;pointer-events:none;box-shadow:0 0 8px 3px #fff,0 0 18px 8px var(--power-glow,#ffc1e0),0 0 34px 15px var(--power-color,#ff4f9d)}
+.motion-stage.impact #motionImpact{display:block!important;animation:powerFlash .72s ease-out forwards}
+.motion-stage.impact .motion-star{animation:heartSettle .45s ease-out}
+.motion-stage.impact .motion-star.glass-heart{filter:drop-shadow(0 0 8px var(--power-glow,#ffc1e0)) drop-shadow(0 0 20px var(--power-color,#ff4f9d))}
 </style>
 </head>
 <body><main class="wrap">
@@ -815,12 +822,32 @@ function motionPlay(){
  motionAnimation=motionStar.animate(frames,{duration:dur,easing:'cubic-bezier(.42,0,.24,1)',fill:'forwards'});
  motionAnimation.onfinish=()=>{
    motionStar.style.transform='translate(-50%,-50%) translate('+tx+'px,'+ty+'px) translateZ(22px) scale(.9)';
-   motionStar.style.zIndex='5';motionStage.classList.remove('playing');motionStage.classList.add('impact');
-   motionStage.style.setProperty('--impact-x','calc(50% + '+tx+'px)');
-   motionStage.style.setProperty('--impact-y','calc(50% + '+ty+'px)');
-   const impact=document.getElementById('motionImpact');if(impact){impact.style.left='calc(50% + '+tx+'px)';impact.style.top='calc(50% + '+ty+'px)';}
-   motionStatus.textContent=targetIndex>=0?'استقرّ القلب فوق حرف i وظهرت ومضة قوة عند الهبوط ❤️':'اكتملت الدورة مع ومضة قوة سينمائية ❤️';
-   setTimeout(()=>motionStage.classList.remove('impact'),900);
+   motionStar.style.zIndex='5';
+   motionStage.classList.remove('playing');
+   // Measure the emoji's real rendered landing point after its final transform.
+   const landed=motionStar.getBoundingClientRect(),stageNow=motionStage.getBoundingClientRect();
+   const impactX=landed.left-stageNow.left+landed.width/2;
+   const impactY=landed.top-stageNow.top+landed.height/2;
+   const impact=document.getElementById('motionImpact');
+   const powerColors={
+     '❤️':['#ff245f','#ff8ab0'],'💖':['#ff3e9d','#ff9bd0'],'💗':['#ff4f9d','#ff9bd0'],'💘':['#ff3d76','#ff9bb6'],
+     '🔥':['#ff4b00','#ffbf24'],'⭐':['#ffd21f','#fff0a0'],'🌟':['#ffcf24','#fff2a6'],'✨':['#ffe34a','#fff7b0'],
+     '💙':['#168bff','#8bd8ff'],'🩵':['#37c5f4','#b4f0ff'],'💜':['#9b4dff','#d4a5ff'],'💚':['#22c55e','#9af7b0'],
+     '💛':['#f5c400','#fff1a1'],'🧡':['#ff7a18','#ffc078'],'🤍':['#dce8ff','#ffffff'],'🖤':['#7f8ca8','#d5def0'],
+     '🌈':['#a855f7','#ff8cde'],'⚡':['#facc15','#fff59d'],'☀️':['#ff9d00','#ffe08a'],'🌸':['#ff65b5','#ffc0e0']
+   };
+   const colors=powerColors[motionEmoji]||(/🔵|🌀|❄️|🌊/.test(motionEmoji)?['#2196f3','#8be9ff']:/🟢|🐸|🌿|🍀/.test(motionEmoji)?['#22c55e','#a7f3b0']:/🟡|🌞|🌻/.test(motionEmoji)?['#facc15','#fff4a3']:/🟣|☂️/.test(motionEmoji)?['#a855f7','#e0b4ff']:/🟥|🍎|🌹/.test(motionEmoji)?['#ef4444','#ffaaaa']:['#ff4f9d','#ffc1e0']);
+   motionStage.style.setProperty('--power-color',colors[0]);
+   motionStage.style.setProperty('--power-glow',colors[1]);
+   if(impact){
+     impact.style.left=impactX+'px';impact.style.top=impactY+'px';
+     impact.style.setProperty('--power-color',colors[0]);impact.style.setProperty('--power-glow',colors[1]);
+     impact.style.display='block';
+     impact.style.animation='none';void impact.offsetWidth;impact.style.animation='powerFlash .72s ease-out forwards';
+   }
+   motionStage.classList.add('impact');
+   motionStatus.textContent='وصل الإيموجي إلى نقطة الهبوط؛ انطلقت القوة من مكانه وباللون المناسب له ✨';
+   setTimeout(()=>{motionStage.classList.remove('impact');if(impact)impact.style.display='none';},900);
  };
  motionStatus.textContent='يدور القلب بسلاسة ثم يستقر فوق الحرف، مع عمق ثلاثي الأبعاد وومضة قوة عند الهبوط…';
 }
