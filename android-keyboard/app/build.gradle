@@ -12,9 +12,11 @@ android {
     kotlinOptions { jvmTarget = '17' }
     defaultConfig {
         applicationId 'com.seif.emojis.keyboard'
-        minSdk 23
-        targetSdk 28
-        versionCode 1
-        versionName '1.0.0'
+        // Android 5.0 (Lollipop) and newer, subject to library/device compatibility.
+        minSdk 21
+        // Raise target SDK so modern Android treats the app as less outdated.
+        targetSdk 34
+        versionCode 2
+        versionName '1.0.1'
     }
 }
