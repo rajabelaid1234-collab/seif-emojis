@@ -1,6 +1,7 @@
 package com.seif.emojis.keyboard
 
 import android.inputmethodservice.InputMethodService
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
