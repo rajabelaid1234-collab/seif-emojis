@@ -145,6 +145,12 @@ button{touch-action:manipulation;min-height:42px}
 .motion-star.glass-heart .heart-glint{fill:#fff;filter:drop-shadow(0 0 3px #fff)}
 .motion-stage.playing .motion-star.glass-heart{animation:heartGlassFloat .7s ease-in-out infinite alternate}
 @keyframes heartGlassFloat{from{filter:drop-shadow(0 3px 2px #000b) drop-shadow(0 0 7px #ff5d8c) drop-shadow(0 0 13px #ff245f)}to{filter:drop-shadow(0 4px 3px #000c) drop-shadow(0 0 12px #ff9ec0) drop-shadow(0 0 25px #ff245f)}}
+
+/* Cinematic flame tightly anchored to the 3D heart */
+.motion-trail{width:205px;height:14px;z-index:3;opacity:0;transform-origin:100% 50%;border-radius:50% 8% 8% 50%;background:linear-gradient(90deg,transparent 0%,rgba(110,0,10,.08) 12%,rgba(255,25,0,.65) 38%,rgba(255,92,0,.95) 65%,#fff4a6 91%,#fff 100%);filter:blur(.45px) drop-shadow(0 0 4px #ff1900) drop-shadow(0 0 10px #ff4a00) drop-shadow(0 0 22px #ff8a00);clip-path:polygon(0 50%,10% 24%,28% 38%,48% 8%,68% 30%,84% 12%,100% 50%,84% 88%,65% 72%,47% 95%,25% 65%,10% 78%);mix-blend-mode:screen}
+.motion-trail:before{content:'';position:absolute;inset:2px 0;border-radius:50%;background:linear-gradient(90deg,transparent 0%,rgba(255,20,0,.05) 20%,#ff3a00 58%,#ffd14a 86%,#fff 100%);filter:blur(3px);opacity:.95}
+.motion-trail:after{content:'';position:absolute;right:-2px;top:50%;width:16px;height:16px;transform:translate(35%,-50%);border-radius:50%;background:radial-gradient(circle,#fff 0 12%,#fff8a3 25%,#ff8a00 53%,rgba(255,30,0,0) 75%);filter:blur(1px) drop-shadow(0 0 9px #ff4b00)}
+.motion-stage.playing .motion-trail{filter:blur(.35px) drop-shadow(0 0 5px #ff1900) drop-shadow(0 0 14px #ff4a00) drop-shadow(0 0 26px #ff8a00)}
 </style>
 </head>
 <body><main class="wrap">
@@ -745,41 +751,46 @@ function motionRenderName(){const name=$('motionText').value.trim()||'SEIF';moti
 function motionStop(){if(motionAnimation){motionAnimation.cancel();motionAnimation=null;}if(window.motionTrailAnimation){window.motionTrailAnimation.cancel();window.motionTrailAnimation=null;}motionStage.classList.remove('playing','impact');motionStar.style.transform='translate(-50%,-50%)';motionStar.style.zIndex='4';const trail=document.getElementById('motionTrail');if(trail){trail.style.opacity='0';trail.style.transform='translate(-50%,-50%) rotate(0deg) scaleX(.2)';}motionStatus.textContent='تم إيقاف الحركة.';}
 function motionPlay(){
  motionStop();motionRenderName();
- const dur=Number($('motionSpeed').value),letters=[...motionName.querySelectorAll('.motion-letter')];
+ const dur=Number($('motionSpeed').value)*1.45,letters=[...motionName.querySelectorAll('.motion-letter')];
  const targetIndex=letters.findIndex(x=>/[iíïİ]/i.test(x.textContent));
  const stage=motionStage.getBoundingClientRect(),cx=stage.width/2,cy=stage.height/2;
  const target=targetIndex>=0?letters[targetIndex].getBoundingClientRect():null;
+ // The landing point is measured from the real letter position, not guessed from the stage center.
  const tx=target?target.left-stage.left+target.width/2-cx:0;
- const ty=target?target.top-stage.top+Math.min(8,target.height*.22)-cy:-cy*.22;
- const sx=Math.min(cx*.63,210),sy=Math.min(cy*.7,115);
+ const ty=target?target.top-stage.top-cy- Math.max(18,target.height*.24):-cy*.22;
+ const rx=Math.min(cx*.60,195),ry=Math.min(cy*.66,102);
+ // A deliberate, smooth oval orbit: no sudden jumps or random-looking zigzags.
  const path=[
-  {x:-sx,y:-sy*.25,z:1,scale:.55,rot:-18,at:0},
-  {x:-sx*.55,y:-sy,z:1,scale:.72,rot:-42,at:.12},
-  {x:0,y:-sy*.15,z:1,scale:.9,rot:12,at:.24},
-  {x:sx*.58,y:sy*.68,z:4,scale:1.08,rot:36,at:.38},
-  {x:sx*.88,y:-sy*.5,z:4,scale:1.14,rot:68,at:.51},
-  {x:0,y:sy*.15,z:1,scale:.92,rot:125,at:.64},
-  {x:-sx*.6,y:sy*.58,z:4,scale:1.02,rot:205,at:.76},
-  {x:tx*.35,y:ty-20,z:4,scale:.78,rot:300,at:.86},
-  {x:tx,y:ty-7,z:4,scale:.72,rot:350,at:.92},
-  {x:tx,y:ty,z:5,scale:.86,rot:360,at:.95},
-  {x:tx,y:ty,z:5,scale:1,rot:360,at:1}
+  {x:-rx*.98,y:-ry*.12,z:1,scale:.68,rot:0,at:0},
+  {x:-rx*.78,y:-ry*.72,z:1,scale:.74,rot:42,at:.12},
+  {x:-rx*.25,y:-ry*.98,z:1,scale:.82,rot:82,at:.24},
+  {x:rx*.38,y:-ry*.86,z:4,scale:.94,rot:125,at:.36},
+  {x:rx*.86,y:-ry*.48,z:4,scale:1.04,rot:168,at:.48},
+  {x:rx*.98,y:ry*.12,z:4,scale:1.08,rot:210,at:.60},
+  {x:rx*.60,y:ry*.72,z:4,scale:1.03,rot:252,at:.70},
+  {x:rx*.08,y:ry*.98,z:4,scale:.98,rot:292,at:.79},
+  {x:-rx*.46,y:ry*.76,z:1,scale:.91,rot:326,at:.86},
+  {x:tx*.72,y:ty-ry*.48,z:1,scale:.84,rot:345,at:.91},
+  {x:tx,y:ty-13,z:4,scale:.82,rot:355,at:.965},
+  {x:tx,y:ty,z:5,scale:.9,rot:360,at:1}
  ];
- const frames=path.map(p=>({offset:p.at,transform:'translate(-50%,-50%) translate('+p.x+'px,'+p.y+'px) translateZ('+(p.z===1?-24:22)+'px) rotate('+p.rot+'deg) rotateY('+(p.rot*.55)+'deg) scale('+p.scale+')',zIndex:p.z,filter:'drop-shadow(0 2px 2px #0009) drop-shadow(0 0 '+(p.scale>1?'18px':'8px')+' #ff6a00)'}));
+ const frames=path.map(p=>({offset:p.at,transform:'translate(-50%,-50%) translate('+p.x+'px,'+p.y+'px) translateZ('+(p.z===1?-24:22)+'px) rotate('+p.rot+'deg) rotateY('+(p.rot*.55)+'deg) scale('+p.scale+')',zIndex:p.z,filter:'drop-shadow(0 2px 2px #0009) drop-shadow(0 0 '+(p.scale>1?'22px':'12px')+' #ff4a00)'}));
  motionStage.classList.add('playing');
  const trail=document.getElementById('motionTrail');
- // Trail coordinates follow the star; opacity is zero on the rear/occluded path sections.
- const trailFrames=path.map((p,i)=>({offset:p.at,transform:'translate(-50%,-50%) translate('+(p.x-sx*.22)+'px,'+(p.y+3)+'px) rotate('+(p.rot*.55)+'deg) scaleX('+(i<2?.3:1.0-p.at*.55)+')',opacity:(p.z===1?0:(p.at>.88?0:.96))}));
- window.motionTrailAnimation=trail.animate(trailFrames,{duration:dur,easing:'linear',fill:'forwards'});
- motionAnimation=motionStar.animate(frames,{duration:dur,easing:'cubic-bezier(.18,.72,.18,1)',fill:'forwards'});
+ // The flame tip is anchored to the heart's center; the tail extends directly behind its travel direction.
+ const trailFrames=path.map((p,i)=>({offset:p.at,transform:'translate(-50%,-50%) translate('+p.x+'px,'+(p.y+2)+'px) rotate('+(p.rot+180)+'deg) scaleX('+(i===0?.72:1.22)+')',opacity:(p.z===1?0:(p.at>.965?0:1))}));
+ const easing='cubic-bezier(.42,0,.24,1)';
+ window.motionTrailAnimation=trail.animate(trailFrames,{duration:dur,easing,fill:'forwards'});
+ motionAnimation=motionStar.animate(frames,{duration:dur,easing,fill:'forwards'});
  motionAnimation.onfinish=()=>{
-   motionStar.style.transform='translate(-50%,-50%) translate('+tx+'px,'+ty+'px) translateZ(22px) scale(1)';
+   motionStar.style.transform='translate(-50%,-50%) translate('+tx+'px,'+ty+'px) translateZ(22px) scale(.9)';
    motionStar.style.zIndex='5';motionStage.classList.remove('playing');motionStage.classList.add('impact');
+   trail.style.opacity='0';
    const impact=document.getElementById('motionImpact');if(impact){impact.style.left='calc(50% + '+tx+'px)';impact.style.top='calc(50% + '+ty+'px)';}
-   motionStatus.textContent=targetIndex>=0?'هبطت النجمة المعدنية فوق حرف i مع ومضة نارية ✨':'اكتملت دورة النجمة حول الاسم مع تأثير هبوط سينمائي ⭐';
+   motionStatus.textContent=targetIndex>=0?'استقرّ القلب بدقة فوق حرف i مع ومضة نارية سينمائية ❤️':'اكتملت الدورة البيضاوية بسلاسة مع نهاية سينمائية ❤️';
    setTimeout(()=>motionStage.classList.remove('impact'),1100);
  };
- motionStatus.textContent='النجمة الحقيقية تدور بخط ناري خلفها، ويختفي اللهب عندما تمر خلف الحروف…';
+ motionStatus.textContent='دوران بيضاوي هادئ ومدروس؛ اللهب متصل بالقلب ويتلاشى خلف الاسم…';
 }
 $('motionSymbols').addEventListener('click',e=>{const b=e.target.closest('[data-motion-emoji]');if(!b)return;motionEmoji=b.dataset.motionEmoji;document.querySelectorAll('#motionSymbols [data-motion-emoji]').forEach(x=>x.classList.toggle('active',x===b));motionStar.textContent=motionEmoji;});
 $('motionText').addEventListener('input',()=>{motionStop();motionRenderName();});
