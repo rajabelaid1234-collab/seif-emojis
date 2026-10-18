@@ -22,7 +22,7 @@
 <section id="library" class="section panel"><h2>🥰 مكتبة الإيموجيات والرموز</h2><div class="bar"><input id="search" placeholder="🔎 ابحث: عناق، حب، قط، نجمة، قلب..."><button id="favorites">⭐ المفضلة فقط</button><button id="copyall">📋 نسخ النتائج</button></div><div id="cats" class="cats"></div><div id="grid" class="grid"></div><p id="notice" class="notice"></p><hr style="border-color:var(--line);margin:20px 0"><h2>➕ أضف رمزك الخاص</h2><div class="bar"><input id="newemoji" placeholder="الرمز أو النص المزخرف"><input id="newlabel" placeholder="اسم الرمز"><input id="newcat" placeholder="التصنيف"><button id="add" class="primary">حفظ</button></div><p class="muted small">تُحفظ إضافاتك ومفضلاتك في هذا المتصفح فقط. صدّر نسخة احتياطية للاحتفاظ بها.</p><button id="backup">⬇ تصدير النسخة الاحتياطية</button> <label>استيراد نسخة <input type="file" id="restore" accept="application/json"></label></section>
 <section id="art" class="section panel"><h2>🎨 Text Art — فنون النصوص والزخارف</h2><p class="muted">اضغط على أي زخرفة لنسخها، أو استخدم زر النسخ بجانب النص.</p><div id="artGrid" class="toolgrid"></div><h3>〰️ فواصل وموجات</h3><div id="waves" class="toolgrid"></div></section>
 
-<section id="imageAscii" class="section panel"><h2>🖼️ حوّل صورتك إلى رسمة بالحروف الدقيقة</h2><p class="muted">ارفع صورة، وسيحوّلها الموقع إلى لوحة من الحروف والرموز الصغيرة. تتم المعالجة داخل متصفحك ولا تُرفع الصورة إلى الموقع.</p><div class="bar"><input id="asciiFile" type="file" accept="image/*"><button id="asciiConvert" class="primary">✨ حوّل الصورة</button></div><div class="toolgrid"><div class="toolcard"><label for="asciiWidth">دقة الرسم — عدد الحروف بالعرض: <b id="asciiWidthVal">350</b></label><input class="range" id="asciiWidth" type="range" min="80" max="500" value="350"><p class="muted small">ارفع الدقة لزيادة التفاصيل. إذا كان جهازك بطيئًا، جرّب 250–350.</p><label for="asciiContrast">وضوح تفاصيل الوجه: <b id="asciiContrastVal">1.25</b></label><input class="range" id="asciiContrast" type="range" min="0.7" max="1.8" step="0.05" value="1.25"><p class="muted small">يزيد التباين بين الظلال والإضاءة لإبراز العينين والأنف وحدود الوجه.</p></div><div class="toolcard"><label for="asciiChars">نمط الحروف والرموز</label><select id="asciiChars" style="width:100%"><option value="@%#*+=-:. ">تفاصيل كثيفة: @%#*+=-:.</option><option value="MWNXK0Okxdolc:,. ">حروف وأرقام دقيقة</option><option value="█▓▒░ ">مربعات</option><option value="♥♡♦♣♠•· ">قلوب ورموز</option><option value="♥♦♣♠●◆■▲※+ ">رموز كثيفة</option><option value="♥♡✿❀★☆◆◇●○ ">❤️ قلوب ونجوم وزهور</option></select><p><label><input id="asciiInvert" type="checkbox"> عكس الإضاءة</label></p><label for="asciiColorMode">نمط الألوان</label><select id="asciiColorMode" style="width:100%"><option value="original">🌈 ألوان الصورة الأصلية</option><option value="soft">🎨 ألوان هادئة وواضحة</option><option value="mono">⚫ أبيض وأسود عالي التباين</option></select><p class="muted small">تعالج الصورة داخل متصفحك فقط. النمط الأحادي قد يُظهر تفاصيل الوجه بوضوح أكبر في بعض الصور.</p></div></div><div id="asciiStatus" class="notice"></div><div id="asciiOutput" class="preview art" style="font-size:5px;line-height:1;white-space:pre;max-height:65vh;overflow:auto;direction:ltr;text-align:left;unicode-bidi:plaintext"></div><h3>🎨 تحويل الصورة إلى لوحة فنية</h3><p class="muted small">اختر تأثيرًا فنيًا لإنشاء نسخة مرسومة من صورتك الأصلية.</p><div class="bar"><label for="artStyle">أسلوب الرسم</label><select id="artStyle"><option value="pencil">✏️ رسم بالقلم الرصاص — الافتراضي</option><option value="oil">🖌️ رسم زيتي</option><option value="watercolor">🎨 ألوان مائية</option><option value="cartoon">🌈 رسم كرتوني</option><option value="vintage">🖼️ ألوان كلاسيكية</option></select><button id="artApply" class="primary">✨ أنشئ اللوحة الفنية</button></div><canvas id="artCanvas" style="display:block;width:100%;height:auto;max-height:65vh;object-fit:contain;background:#fff;border-radius:12px"></canvas><div class="actions"><button id="artDownload" class="primary">⬇ تنزيل اللوحة الفنية PNG</button></div><p class="muted small">تأثيرات فنية تُطبّق داخل المتصفح؛ النتيجة تقريبية وليست معالجة ذكاء اصطناعي احترافية.</p><canvas id="asciiCanvas" hidden></canvas></section>
+<section id="imageAscii" class="section panel"><h2>🖼️ حوّل صورتك إلى رسمة بالحروف الدقيقة</h2><p class="muted">ارفع صورة، وسيحوّلها الموقع إلى لوحة من الحروف والرموز الصغيرة. تتم المعالجة داخل متصفحك ولا تُرفع الصورة إلى الموقع.</p><div class="bar"><input id="asciiFile" type="file" accept="image/*"></div><div class="toolgrid"><div class="toolcard"><label for="asciiWidth">دقة الرسم — عدد الحروف بالعرض: <b id="asciiWidthVal">420</b></label><input class="range" id="asciiWidth" type="range" min="100" max="700" value="420"><p class="muted small">الدقة الأعلى تعطي تفاصيل أكثر، لكن النص سيكون أطول. للصور البعيدة جرّب تكبير الموضوع أولًا.</p><label for="asciiZoom">تكبير الشخص أو العنصر البعيد: <b id="asciiZoomVal">1.0×</b></label><input class="range" id="asciiZoom" type="range" min="1" max="3" step="0.1" value="1"><p class="muted small">يكبّر مركز الصورة لملء مساحة الحروف؛ إذا كان الشخص على طرف الصورة، قصّ الصورة أولًا قبل رفعها.</p><label for="asciiContrast">وضوح التفاصيل: <b id="asciiContrastVal">1.35</b></label><input class="range" id="asciiContrast" type="range" min="0.7" max="2.2" step="0.05" value="1.35"><label for="asciiBright">الإضاءة: <b id="asciiBrightVal">1.00</b></label><input class="range" id="asciiBright" type="range" min="0.6" max="1.5" step="0.05" value="1"><label for="asciiSharp">إبراز الحواف: <b id="asciiSharpVal">0.5</b></label><input class="range" id="asciiSharp" type="range" min="0" max="1.5" step="0.1" value="0.5"></div><div class="toolcard"><label for="asciiChars">نمط الحروف والرموز</label><select id="asciiChars" style="width:100%"><option value="@%#*+=-:. ">تفاصيل كثيفة — أفضل للوجوه</option><option value="MWNXK0Okxdolc:,. ">حروف وأرقام</option><option value="█▓▒░ ">مربعات</option><option value="♥♡♦♣♠•· ">قلوب ورموز</option><option value="♥♦♣♠●◆■▲※+ ">رموز كثيفة</option><option value="♥♡✿❀★☆◆◇●○ ">قلوب ونجوم وزهور</option></select><p><label><input id="asciiInvert" type="checkbox"> عكس الإضاءة</label></p><p class="muted small">لأفضل نتيجة للصور الفوتوغرافية: استخدم «تفاصيل كثيفة — أفضل للوجوه»، ودقة 420–600، ثم عدّل الإضاءة والتباين حسب الصورة.</p></div></div><div id="asciiStatus" class="notice"></div><div class="actions"><button id="asciiConvert" class="primary">✨ حوّل الصورة إلى حروف</button><button id="asciiCopy" type="button">📋 نسخ الحروف</button><button id="asciiDownload" type="button">⬇ تنزيل TXT</button></div><div id="asciiOutput" class="preview art" style="font-size:6px;line-height:1;white-space:pre;max-height:65vh;overflow:auto;direction:ltr;text-align:left;unicode-bidi:plaintext"></div><h3>🎨 تحويل الصورة إلى لوحة فنية</h3><p class="muted small">اختر تأثيرًا فنيًا لإنشاء نسخة مرسومة من صورتك الأصلية.</p><div class="bar"><label for="artStyle">أسلوب الرسم</label><select id="artStyle"><option value="pencil">✏️ رسم بالقلم الرصاص — الافتراضي</option><option value="oil">🖌️ رسم زيتي</option><option value="watercolor">🎨 ألوان مائية</option><option value="cartoon">🌈 رسم كرتوني</option><option value="vintage">🖼️ ألوان كلاسيكية</option></select><button id="artApply" class="primary">✨ أنشئ اللوحة الفنية</button></div><canvas id="artCanvas" style="display:block;width:100%;height:auto;max-height:65vh;object-fit:contain;background:#fff;border-radius:12px"></canvas><div class="actions"><button id="artDownload" class="primary">⬇ تنزيل اللوحة الفنية PNG</button></div><p class="muted small">تأثيرات فنية تُطبّق داخل المتصفح؛ النتيجة تقريبية وليست معالجة ذكاء اصطناعي احترافية.</p><canvas id="asciiCanvas" hidden></canvas></section>
 <footer class="footer">SEIF EMOJIS 💜 — صُنع بحب لعشّاق النصوص والرموز</footer>
 </main>
 <script>
@@ -71,9 +71,13 @@ $('artGrid').innerHTML=arts.map(a=>'<div class="toolcard"><h3>'+esc(a[0])+'</h3>
 $('artGrid').addEventListener('click',e=>{let b=e.target.closest('[data-art]');if(b){let a=arts.find(x=>x[0]===b.dataset.art);if(a)copy(a[1].replace(/\\n/g,'\n'),'notice')}});
 const waves=['〰️〰️〰️〰️〰️','〜〜〜〜〜〜〜','﹏﹏﹏﹏﹏﹏﹏','━━━━━━━୨ৎ━━━━━━━','┈┈┈┈┈┈┈┈','• ───── ✾ ───── •','✧･ﾟ: *✧･ﾟ:*','♡━━━━━━━━♡','༺═────────═༻','｡･:*:･ﾟ★,｡･:*:･ﾟ☆'];$('waves').innerHTML=waves.map((w,i)=>'<div class="toolcard"><div class="preview">'+esc(w)+'</div><button data-wave="'+i+'">📋 نسخ</button></div>').join('');$('waves').addEventListener('click',e=>{let b=e.target.closest('[data-wave]');if(b)copy(waves[+b.dataset.wave],'notice')});
 
-const asciiFile=$('asciiFile'),asciiWidth=$('asciiWidth'),asciiChars=$('asciiChars'),asciiInvert=$('asciiInvert'),asciiColorMode=$('asciiColorMode'),asciiContrast=$('asciiContrast');
+const asciiFile=$('asciiFile'),asciiWidth=$('asciiWidth'),asciiChars=$('asciiChars'),asciiInvert=$('asciiInvert'),asciiContrast=$('asciiContrast'),asciiZoom=$('asciiZoom'),asciiBright=$('asciiBright'),asciiSharp=$('asciiSharp');
+function bindRange(id,out,format){$(id).addEventListener('input',()=>$(out).textContent=format(+$ (id).value));}
 asciiWidth.addEventListener('input',()=> $('asciiWidthVal').textContent=asciiWidth.value);
 asciiContrast.addEventListener('input',()=> $('asciiContrastVal').textContent=(+asciiContrast.value).toFixed(2));
+asciiZoom.addEventListener('input',()=> $('asciiZoomVal').textContent=(+asciiZoom.value).toFixed(1)+'×');
+asciiBright.addEventListener('input',()=> $('asciiBrightVal').textContent=(+asciiBright.value).toFixed(2));
+asciiSharp.addEventListener('input',()=> $('asciiSharpVal').textContent=(+asciiSharp.value).toFixed(1));
 let asciiResult='';
 $('asciiConvert').addEventListener('click',()=>{
  const file=asciiFile.files&&asciiFile.files[0];
@@ -83,34 +87,42 @@ $('asciiConvert').addEventListener('click',()=>{
  img.onload=()=>{
   try{
    const width=Number(asciiWidth.value),chars=Array.from(asciiChars.value||'@%#*+=-:. '),canvas=$('asciiCanvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
-   const height=Math.max(1,Math.round(width*img.height/img.width*(9/14)));
-   canvas.width=width;canvas.height=height;ctx.fillStyle='#fff';ctx.fillRect(0,0,width,height);ctx.drawImage(img,0,0,width,height);
-   const data=ctx.getImageData(0,0,width,height).data,contrast=Number(asciiContrast.value),lines=[],chosen=[];
-   const lumAt=(i)=>.2126*data[i]+.7152*data[i+1]+.0722*data[i+2];
+   const aspect=img.height/img.width,cellAspect=.58,height=Math.max(1,Math.round(width*aspect*cellAspect));
+   canvas.width=width;canvas.height=height;ctx.fillStyle='#fff';ctx.fillRect(0,0,width,height);
+   const zoom=+asciiZoom.value,sw=img.width/zoom,sh=img.height/zoom,sx=(img.width-sw)/2,sy=(img.height-sh)/2;
+   ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(img,sx,sy,sw,sh,0,0,width,height);
+   const raw=ctx.getImageData(0,0,width,height),data=raw.data,contrast=+asciiContrast.value,bright=+asciiBright.value,sharp=+asciiSharp.value;
+   const gray=new Float32Array(width*height),blur=new Float32Array(width*height),lines=[];
+   for(let p=0,i=0;p<gray.length;p++,i+=4)gray[p]=(.2126*data[i]+.7152*data[i+1]+.0722*data[i+2])/255;
+   // Gentle local contrast enhancement makes distant faces and silhouettes more legible.
+   for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+    let sum=0,n=0;for(let yy=Math.max(0,y-1);yy<=Math.min(height-1,y+1);yy++)for(let xx=Math.max(0,x-1);xx<=Math.min(width-1,x+1);xx++){sum+=gray[yy*width+xx];n++;}
+    blur[y*width+x]=sum/n;
+   }
    for(let y=0;y<height;y++){
     let line='';
     for(let x=0;x<width;x++){
-     const i=(y*width+x)*4;let lum=lumAt(i)/255;
-     lum=Math.max(0,Math.min(1,(lum-.5)*contrast+.5));
+     const p=y*width+x;let lum=gray[p];
+     lum+=(lum-blur[p])*sharp;
+     lum=(lum-.5)*contrast+.5;
+     lum*=bright;
+     lum=Math.max(0,Math.min(1,lum));
      if(asciiInvert.checked)lum=1-lum;
-     // Dark pixels use dense characters; bright pixels use lighter characters/spaces.
-     const idx=Math.max(0,Math.min(chars.length-1,Math.round((1-lum)*(chars.length-1))));
-     const ch=chars[idx]||' ';line+=ch;chosen.push({ch,idx,x,y,i,lum});
+     // Palette is ordered from dense/dark to light/space: dark pixels must use index 0.
+     const idx=Math.max(0,Math.min(chars.length-1,Math.round(lum*(chars.length-1))));
+     line+=chars[idx]||' ';
     }
     lines.push(line);
    }
    asciiResult=lines.join('\n');$('asciiOutput').textContent=asciiResult;
-   window.seifSourceImage=img;
-   window.seifMakeArt=makeArt;
-   makeArt(img);
-   $('asciiStatus').textContent='تم التحويل! يمكنك أيضًا اختيار أسلوب فني وتنزيل لوحة PNG مستقلة. ❤️';
-  }catch(err){$('asciiStatus').textContent='تعذّر تحويل هذه الصورة؛ جرّب تقليل الدقة إلى 250 ثم أعد المحاولة.';}
+   window.seifSourceImage=img;window.seifMakeArt=makeArt;makeArt(img);
+   $('asciiStatus').textContent='تم التحويل إلى لوحة حروف. إذا كان الشخص بعيدًا، جرّب تكبيره من خيار «تكبير الشخص» وزيادة الدقة إلى 550–700. ✨';
+  }catch(err){$('asciiStatus').textContent='تعذّر تحويل الصورة؛ جرّب دقة أقل أو صورة أصغر.';}
   URL.revokeObjectURL(url);
  };
  img.onerror=()=>{URL.revokeObjectURL(url);$('asciiStatus').textContent='تعذّر فتح الصورة. جرّب ملفًا آخر.';};
  img.src=url;
 });
-
 function makeArt(img){
  const canvas=$('artCanvas'),ctx=canvas.getContext('2d',{willReadFrequently:true}),style=$('artStyle').value;
  const scale=Math.min(1,1000/img.width,1000/img.height),w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
