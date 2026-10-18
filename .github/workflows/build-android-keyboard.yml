@@ -31,6 +31,14 @@ jobs:
           curl -fLsS --retry 3 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&s=10' -o /tmp/seif-site-icon
           python3 -m pip install --quiet Pillow
           python3 -c "from PIL import Image; im=Image.open('/tmp/seif-site-icon').convert('RGBA'); im.save('android-keyboard/app/src/main/res/drawable-nodpi/seif_site_icon.png')"
+      - name: Bundle the same website and offline face-analysis model
+        run: |
+          mkdir -p android-keyboard/app/src/main/assets/models
+          cp index.html android-keyboard/app/src/main/assets/index.html
+          curl -fLsS --retry 3 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/build/face-api.min.js' -o android-keyboard/app/src/main/assets/face-api.min.js
+          for file in tiny_face_detector_model-weights_manifest.json tiny_face_detector_model-shard1 face_expression_model-weights_manifest.json face_expression_model-shard1; do
+            curl -fLsS --retry 3 "https://justadudewhohacks.github.io/face-api.js/models/$file" -o "android-keyboard/app/src/main/assets/models/$file"
+          done
       - name: Build APK
         working-directory: android-keyboard
         run: gradle assembleDebug
