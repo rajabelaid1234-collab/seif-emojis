@@ -28,7 +28,7 @@ class MainActivity : Activity() {
             setTextColor(Color.rgb(72, 226, 194)); gravity = Gravity.CENTER
         })
         root.addView(TextView(this).apply {
-            text = "وجوه ورموز بسرعة في التطبيقات.\nفعّل لوحة المفاتيح للكتابة مباشرة.\nالزر العائم اختياري، قابل للتحريك والإخفاء."
+            text = "استخدم الإيموجيات داخل واتساب وبقية التطبيقات.\nلوحة SEIF تكتب الرمز مباشرة في خانة الرسالة.\nوالزر العائم يفتح قائمة نسخ سريعة فوق التطبيقات."
             textSize = 17f; setTextColor(Color.WHITE); gravity = Gravity.CENTER
             setPadding(0, 20, 0, 22)
         })
@@ -55,7 +55,7 @@ class MainActivity : Activity() {
         }
         root.addView(soundSwitch)
         root.addView(Button(this).apply {
-            text = "3) السماح بالزر العائم"
+            text = "3) تشغيل / إعادة تشغيل الزر العائم"
             setOnClickListener {
                 if (Settings.canDrawOverlays(this@MainActivity)) {
                     startService(Intent(this@MainActivity, FloatingBubbleService::class.java))
@@ -64,8 +64,16 @@ class MainActivity : Activity() {
                 }
             }
         })
+        root.addView(Button(this).apply {
+            text = "💬 فتح واتساب"
+            setOnClickListener {
+                val launch = packageManager.getLaunchIntentForPackage("com.whatsapp")
+                if (launch != null) startActivity(launch)
+                else android.widget.Toast.makeText(this@MainActivity, "واتساب غير مثبت على هذا الجهاز", android.widget.Toast.LENGTH_LONG).show()
+            }
+        })
         root.addView(TextView(this).apply {
-            text = "اسمح بالظهور فوق التطبيقات من إعدادات Android.\nالزر ينسخ الوجوه؛ لوحة المفاتيح تُدرجها مباشرة في خانة الكتابة."
+            text = "لاستخدامها في واتساب: افتح محادثة، اضغط خانة الرسالة، ثم اختر لوحة المفاتيح SEIF من زر تغيير لوحة المفاتيح في أسفل الشاشة. اضغط الرمز ليُدرج مباشرة في الرسالة.\\nإذا لم يظهر الزر العائم بعد منح الإذن، اضغط زر تشغيله هنا وأبقِ إشعار SEIF ظاهرًا."
             textSize = 14f; setTextColor(Color.LTGRAY); gravity = Gravity.CENTER
             setPadding(0, 18, 0, 0)
         })
