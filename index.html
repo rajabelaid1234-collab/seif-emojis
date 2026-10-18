@@ -2,7 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0d1020">\n<meta name="description" content="SEIF EMOJIS: زخرفة النصوص، وجوه كاوموجي وإيموجيات ورموز وفنون نصية. مجاني وسهل النسخ إلى واتساب وبقية التطبيقات.">\n<meta property="og:title" content="SEIF EMOJIS — زخرفة وإيموجيات">\n<meta property="og:description" content="وجوه ورموز وزخرفة نصوص مجانًا، بنقرة واحدة.">
+<meta name="theme-color" content="#0d1020">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SEIF EMOJIS">\n<meta name="description" content="SEIF EMOJIS: زخرفة النصوص، وجوه كاوموجي وإيموجيات ورموز وفنون نصية. مجاني وسهل النسخ إلى واتساب وبقية التطبيقات.">\n<meta property="og:title" content="SEIF EMOJIS — زخرفة وإيموجيات">\n<meta property="og:description" content="وجوه ورموز وزخرفة نصوص مجانًا، بنقرة واحدة.">
 <link rel="icon" type="image/jpeg" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10">
 <link rel="apple-touch-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -211,6 +215,7 @@ button{touch-action:manipulation;min-height:42px}
 </head>
 <body><main class="wrap">
 <header><div class="language-switch" aria-label="Website language"><label for="siteLanguage">🌐 Language / اللغة</label><select id="siteLanguage" aria-label="Choose website language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10" alt="أيقونة SEIF EMOJIS" style="width:104px;height:104px;object-fit:cover;border-radius:26px;border:2px solid #48e2c2;box-shadow:0 8px 28px #0007;margin:0 auto 12px;display:block" onerror="this.style.display='none'"><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
+<div style="text-align:center;margin:8px 0 18px"><button id="installAppBtn" class="primary" type="button" style="font-weight:bold">📲 تثبيت SEIF EMOJIS على الهاتف</button><p id="installAppNotice" class="muted small" style="margin:6px 0">نزّل الموقع كتطبيق على الشاشة الرئيسية</p></div>
 <section class="panel" id="keyboardInstall"><h2 style="font-size:clamp(1.5rem,4vw,2rem)">📱 SEIF EMOJIS — لوحة مفاتيح Android</h2><p class="muted">وجوه ورموز في واتساب ويوتيوب وبقية التطبيقات. مجانًا وبخطوات قصيرة.</p><div class="toolgrid"><div class="toolcard" style="border:2px solid #48e2c2;padding:20px"><h3 style="font-size:1.35rem">🤖 Android</h3><p class="muted">تثبيت التطبيق ثم تفعيل لوحة SEIF. اسمح بالتثبيت من هذا المصدر إذا طلب الهاتف ذلك.</p><a id="androidDownloadButton" class="primary" href="https://github.com/rajabelaid1234-collab/seif-emojis/releases/latest/download/app-debug.apk" style="display:block;text-align:center;text-decoration:none;padding:16px;border-radius:14px;font-weight:800;font-size:1.2rem;margin:12px 0">📥 تنزيل Android APK</a><button type="button" id="androidKeyboardGuide">📋 خطوات التفعيل</button><p class="muted small" id="androidKeyboardNotice" hidden>بعد التثبيت: افتح التطبيق ← فعّل لوحة SEIF من الإعدادات ← اخترها عند الكتابة. إذا طلب Android السماح بالتثبيت، فعّل السماح لهذا المصدر فقط.</p></div><div class="toolcard"><h3>🍎 iPhone / iOS</h3><p class="muted small">تنبيه: لا توجد إعدادات تنزيل في Safari تسمح بتثبيت لوحة مفاتيح نظامية مباشرةً من موقع عادي. يلزم تطبيق iOS يحتوي على لوحة مفاتيح، ثم تثبيته بطريقة يدعمها النظام وإضافتها من الإعدادات.</p><button type="button" id="iphoneKeyboardGuide">ℹ️ كيف أثبّتها على iPhone؟</button><p class="muted small" id="iphoneKeyboardNotice" hidden>لا تحاول تعطيل حماية iPhone أو تثبيت ملفات مجهولة. سنوفّر تعليمات التثبيت المدعومة عندما تصبح نسخة iOS جاهزة للتوزيع.</p></div></div><p class="notice" id="keyboardInstallNotice" role="status" aria-live="polite"></p></section>
 <nav class="tabs">
 <button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="bigArtGallery">🖼️ فن كبير</button><button class="tab" data-tab="kaomojiLab">🎭 مصنع الإيموجيات</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button><button class="tab" data-tab="emojiMotion">🎬 أنيميشن الإيموجي</button><button class="tab" data-tab="emojiWordArt">🔤 حروف بالإيموجي</button><button class="tab" data-tab="emojiPixelArt">🧩 رسم تلقائي بالإيموجي</button><button class="tab" data-tab="nameLab">🎼 أدوات الأسماء</button><button class="tab" data-tab="emojiSoundLab">🔊 صوت الإيموجي</button>
@@ -1210,5 +1215,16 @@ render();
  $('paletteHex')?.addEventListener('keydown',e=>{if(e.key==='Enter')makePalette();});
  $('paletteCopy')?.addEventListener('click',async()=>{const val=$('palettePreview').textContent;try{await navigator.clipboard.writeText(val);$('paletteNotice').textContent='تم نسخ لوحة الإيموجيات بنجاح ✅';}catch(e){$('paletteNotice').textContent='حدّد الإيموجيات وانسخها يدويًا.';}setTimeout(()=>$('paletteNotice').textContent='',2200);});
  makeGreeting();makePalette();
+ let deferredInstallPrompt=null;
+ const installBtn=document.getElementById('installAppBtn');
+ const installNotice=document.getElementById('installAppNotice');
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;installBtn.style.display='inline-block';installNotice.textContent='اضغط هنا لتثبيت الموقع كتطبيق على هاتفك.';});
+ window.addEventListener('appinstalled',()=>{installNotice.textContent='تم تثبيت SEIF EMOJIS بنجاح ✅';installBtn.style.display='none';});
+ installBtn?.addEventListener('click',async()=>{
+   if(deferredInstallPrompt){deferredInstallPrompt.prompt();const choice=await deferredInstallPrompt.userChoice;installNotice.textContent=choice.outcome==='accepted'?'جارٍ تثبيت التطبيق…':'يمكنك التثبيت لاحقًا من قائمة Chrome ⋮ ثم «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».';deferredInstallPrompt=null;}
+   else {installNotice.textContent='في Chrome اضغط ⋮ أعلى الشاشة ثم «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية». إذا لم يظهر الخيار، حدّث الصفحة بعد قليل.';}
+ });
+ if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));}
+
 })();
 </script></body></html>
