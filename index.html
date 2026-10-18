@@ -153,9 +153,12 @@ button{touch-action:manipulation;min-height:42px}
  <input id="quickKaoSearch" placeholder="ابحث عن وجه أو قلب..." autocomplete="off">
  <div id="quickKaoFilters">
   <button type="button" class="active" data-qfilter="all">الكل</button>
-  <button type="button" data-qfilter="رومانسي">❤️ حب</button>
+  <button type="button" data-qfilter="حب">❤️ حب</button>
   <button type="button" data-qfilter="لطيف">🥹 لطيف</button>
-  <button type="button" data-qfilter="قطط وحيوانات">🐱 حيوانات</button>
+  <button type="button" data-qfilter="ضحك">😄 ضحك</button>
+  <button type="button" data-qfilter="حيوانات">🐱 حيوانات</button>
+  <button type="button" data-qfilter="حزين">🥺 حزين</button>
+  <button type="button" data-qfilter="حركة">💫 حركة</button>
   <button type="button" data-qfilter="favorites">⭐ المفضلة</button>
  </div>
  <div id="quickKaoGrid"></div><p id="quickKaoMessage">اضغط على أي وجه لنسخه ثم الصقه في أي تطبيق.</p>
@@ -494,20 +497,30 @@ kaoRenderCats();kaoRender();
 $('androidKeyboardGuide').addEventListener('click',()=>{const n=$('androidKeyboardNotice');n.hidden=!n.hidden;$('keyboardInstallNotice').textContent=n.hidden?'':'Android: التثبيت من المتصفح يحتاج ملف APK حقيقيًا؛ الملف غير جاهز للنشر بعد.';});
 $('iphoneKeyboardGuide').addEventListener('click',()=>{const n=$('iphoneKeyboardNotice');n.hidden=!n.hidden;$('keyboardInstallNotice').textContent=n.hidden?'':'iPhone: لا يمكن تجاوز قيود النظام من صفحة ويب؛ يلزم تطبيق لوحة مفاتيح وتوزيع متوافق مع iOS.';});
 
-/* Quick copy menu for mobile; copies text for pasting into any app. */
+/* Floating quick picker: simple, compact faces only */
+const quickKaoSimple=[
+ ['لطيف','سعيد','(＾▽＾)'],['لطيف','مبتسم','(◕‿◕)'],['لطيف','فرحان','ヽ(・∀・)ﾉ'],['لطيف','مرحبًا','(｡◕‿◕｡)'],
+ ['لطيف','خجول','(⁄ ⁄•⁄ω⁄•⁄ ⁄)'],['لطيف','هادئ','( ˘͈ ᵕ ˘͈♡)'],['لطيف','متحمس','(๑˃ᴗ˂)ﻭ'],['لطيف','لطيف','(✿◠‿◠)'],
+ ['حب','قلب','(♡˙︶˙♡)'],['حب','أحبك','(っ♡‿♡)っ'],['حب','حب','(♥ω♥*)'],['حب','عناق','⊂(・▽・⊂)'],
+ ['ضحك','يضحك','(≧▽≦)'],['ضحك','مبسوط','(๑˃̵ᴗ˂̵)'],['ضحك','غمزة','(^_~)'],['ضحك','مشاغب','(¬‿¬)'],
+ ['حزين','حزين','(╥﹏╥)'],['حزين','يبكي','(ಥ﹏ಥ)'],['حزين','متضايق','(｡•́︿•̀｡)'],['حزين','مصدوم','(⊙_⊙)'],
+ ['حيوانات','قط','(=^･ω･^=)'],['حيوانات','قطة لطيفة','(=｀ω´=)'],['حيوانات','دب','ʕ•ᴥ•ʔ'],['حيوانات','أرنب','(・ x ・)'],
+ ['حركة','موافقة','(๑•̀ㅂ•́)و✧'],['حركة','قتال','(ง •̀_•́)ง'],['حركة','احتفال','＼(＾O＾)／'],['حركة','عناق','ლ(・ヮ・ლ)']
+];
 let quickKaoFilter='all';
 function quickKaoRender(){
  const q=$('quickKaoSearch').value.trim().toLowerCase();
  const favs=kaoRead('seifKaoFav',[]);
- const filtered=kaoAll().filter(x=>{
-  const matchesFilter=quickKaoFilter==='all'||(quickKaoFilter==='favorites'?favs.includes(x[2]):x[0]===quickKaoFilter);
-  return matchesFilter&&(!q||(String(x[1]||'')+' '+String(x[2]||'')+' '+String(x[0]||'')).toLowerCase().includes(q));
- }).slice(0,180);
+ const filtered=quickKaoSimple.filter(x=>{
+  const isFav=favs.includes(x[2]);
+  const matchesFilter=quickKaoFilter==='all'||(quickKaoFilter==='favorites'?isFav:x[0]===quickKaoFilter);
+  return matchesFilter&&(!q||(x[1]+' '+x[2]+' '+x[0]).toLowerCase().includes(q));
+ });
  const grid=$('quickKaoGrid');grid.innerHTML='';
  filtered.forEach(x=>{
   const b=document.createElement('button');b.type='button';b.className='quick-kao-item';
   const face=document.createElement('span');face.className='quick-kao-face';face.textContent=x[2];
-  const label=document.createElement('span');label.className='quick-kao-label';label.textContent=x[1]||'إيموجي';
+  const label=document.createElement('span');label.className='quick-kao-label';label.textContent=x[1];
   b.append(face,label);b.addEventListener('click',async()=>{await copy(x[2], 'quickKaoMessage');$('quickKaoMessage').textContent='تم النسخ بنجاح ✅ الصقه في التطبيق الذي تريده.';});grid.append(b);
  });
  if(!filtered.length){grid.innerHTML='<p class="muted">لا توجد نتائج. جرّب كلمة أخرى.</p>';}
