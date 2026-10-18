@@ -137,9 +137,29 @@ $('asciiConvert').addEventListener('click',()=>{
 function makeArt(img){
  const canvas=$('artCanvas'),ctx=canvas.getContext('2d',{willReadFrequently:true}),style=$('artStyle').value;
  const scale=Math.min(1,1000/img.width,1000/img.height),w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
- canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0,w,h);
- let frame=ctx.getImageData(0,0,w,h),d=frame.data;
- if(style==='oil'||style==='watercolor'){
+ canvas.width=w;canvas.height=h;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(img,0,0,w,h);
+ const frame=ctx.getImageData(0,0,w,h),d=frame.data;
+ if(style==='pencil'){
+  // Classic pencil sketch: grayscale + inverted blur + color-dodge blend.
+  const n=w*h,gray=new Float32Array(n),inv=new Float32Array(n),tmp=new Float32Array(n),blur=new Float32Array(n);
+  for(let p=0,i=0;p<n;p++,i+=4){gray[p]=.299*d[i]+.587*d[i+1]+.114*d[i+2];inv[p]=255-gray[p];}
+  const radius=Math.max(2,Math.min(7,Math.round(Math.min(w,h)/180)));
+  // Separable box blur avoids blocky square artifacts and keeps it reasonably fast.
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+   let sum=0,count=0;for(let k=-radius;k<=radius;k++){const xx=x+k;if(xx>=0&&xx<w){sum+=inv[y*w+xx];count++;}}
+   tmp[y*w+x]=sum/count;
+  }
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+   let sum=0,count=0;for(let k=-radius;k<=radius;k++){const yy=y+k;if(yy>=0&&yy<h){sum+=tmp[yy*w+x];count++;}}
+   blur[y*w+x]=sum/count;
+  }
+  for(let p=0,i=0;p<n;p++,i+=4){
+   const denom=Math.max(18,255-blur[p]),sketch=Math.min(255,gray[p]*255/denom);
+   // Slight paper tone, dark graphite lines, and no pixel-grid overlays.
+   const v=Math.max(0,Math.min(255,255-(255-sketch)*1.12));
+   d[i]=Math.min(255,v*1.005+2);d[i+1]=Math.min(255,v*1.002+1);d[i+2]=v;
+  }
+ }else if(style==='oil'||style==='watercolor'){
   const src=new Uint8ClampedArray(d),radius=style==='oil'?2:1,binsCount=16;
   for(let y=0;y<h;y++)for(let x=0;x<w;x++){
    const counts=new Uint16Array(binsCount),rs=new Float32Array(binsCount),gs=new Float32Array(binsCount),bs=new Float32Array(binsCount);
@@ -153,10 +173,6 @@ function makeArt(img){
   }
  }else if(style==='cartoon'){
   for(let i=0;i<d.length;i+=4){d[i]=Math.round(d[i]/40)*40;d[i+1]=Math.round(d[i+1]/40)*40;d[i+2]=Math.round(d[i+2]/40)*40;}
- }else if(style==='pencil'){
-  const gray=new Uint8ClampedArray(w*h);
-  for(let i=0,p=0;i<d.length;i+=4,p++)gray[p]=Math.round(.299*d[i]+.587*d[i+1]+.114*d[i+2]);
-  for(let y=0;y<h;y++)for(let x=0;x<w;x++){let p=y*w+x,g=gray[p],right=gray[y*w+Math.min(w-1,x+1)],down=gray[Math.min(h-1,y+1)*w+x],edge=Math.abs(g-right)+Math.abs(g-down),v=Math.max(35,Math.min(255,255-edge*2.2+(255-g)*.22)),i=p*4;d[i]=d[i+1]=d[i+2]=v;}
  }else if(style==='vintage'){
   for(let i=0;i<d.length;i+=4){const r=d[i],g=d[i+1],b=d[i+2];d[i]=Math.min(255,.393*r+.769*g+.189*b);d[i+1]=Math.min(255,.349*r+.686*g+.168*b);d[i+2]=Math.min(255,.272*r+.534*g+.131*b);}
  }
