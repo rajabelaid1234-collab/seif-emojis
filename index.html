@@ -474,6 +474,18 @@ button{touch-action:manipulation;min-height:42px}
 <script>
 (function(){
 const $=id=>document.getElementById(id);
+const isOfflineAndroidApp=location.hostname==='appassets.androidplatform.net';
+if(isOfflineAndroidApp){
+ document.getElementById('keyboardInstall')?.remove();
+ document.getElementById('installAppBtn')?.closest('div')?.remove();
+ document.querySelectorAll('header img[alt="أيقونة SEIF EMOJIS"]').forEach(img=>img.src='./site-icon.png');
+ document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]').forEach(link=>link.href='./site-icon.png');
+ const subtitle=document.querySelector('header .sub');
+ if(subtitle) subtitle.innerHTML='مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">📴 نسخة الهاتف • أدوات مضمّنة • دون إنترنت</span>';
+ const offlineStyle=document.createElement('style');
+ offlineStyle.textContent='body{padding-bottom:env(safe-area-inset-bottom)}button,a,.toolcard,select,input{touch-action:manipulation}button,a{min-height:44px}.wrap{width:min(100% - 18px,980px)}.panel,.extra-tool{scroll-margin-top:12px}';
+ document.head.appendChild(offlineStyle);
+}
 if(location.hostname==='appassets.androidplatform.net'){
  document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]').forEach(el=>el.href='./site-icon.png');
  const brandImage=document.querySelector('header img[alt="أيقونة SEIF EMOJIS"]');
