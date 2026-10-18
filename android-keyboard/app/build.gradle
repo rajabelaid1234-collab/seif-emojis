@@ -5,7 +5,7 @@ plugins {
 android {
     namespace 'com.seif.emojis.keyboard'
     compileSdk 35
-    defaultConfig {
+    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n    }\n    kotlinOptions { jvmTarget = '17' }\n    defaultConfig {
         applicationId 'com.seif.emojis.keyboard'
         minSdk 23
         targetSdk 28
