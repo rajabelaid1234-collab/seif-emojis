@@ -53,12 +53,22 @@ button{touch-action:manipulation;min-height:42px}
  button,.tab,.card{ -webkit-tap-highlight-color:transparent}
  button{padding-top:11px;padding-bottom:11px}
 }
+
+.big-art-panel{width:100%;max-width:100%;overflow:hidden}
+.big-art-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.big-art-item{width:100%;min-width:0;background:#080d1b;border:1px solid #4d5b80;border-radius:18px;padding:18px;overflow:hidden}
+.big-art-item h3{margin:0 0 14px;color:#b9f7ee;font-size:1.15rem}
+.big-art-pre{display:block;width:100%;max-width:100%;min-height:180px;max-height:650px;overflow:auto;white-space:pre;word-break:normal;overflow-wrap:normal;text-align:left;direction:ltr;unicode-bidi:plaintext;font-family:Consolas,"DejaVu Sans Mono","Courier New",monospace;font-size:clamp(14px,1.45vw,20px);line-height:1.28;letter-spacing:0;background:#030712;color:#f5f7ff;border:1px solid #303c5a;border-radius:12px;padding:18px;margin:0}
+.big-art-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.big-art-actions button{min-width:130px}
+@media(max-width:650px){.big-art-item{padding:10px}.big-art-pre{font-size:14px;line-height:1.2;padding:12px;max-height:500px}.big-art-actions button{flex:1}}
+
 </style>
 </head>
 <body><main class="wrap">
 <header><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
 <nav class="tabs">
-<button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="kaomojiLab">🎭 مصنع الإيموجيات</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button>
+<button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="bigArtGallery">🖼️ فن كبير</button><button class="tab" data-tab="kaomojiLab">🎭 مصنع الإيموجيات</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button>
 </nav>
 <section id="fancy" class="section show panel"><h2>🔤 Fancy Text Generator — زخرفة النصوص</h2><div class="bar"><input id="fancyInput" value="My Text" placeholder="اكتب اسمك أو النص هنا"><button class="primary" id="fancyAll">نسخ النص المحدد</button></div><p class="muted small">اكتب بالعربية أو الإنجليزية أو بهما معًا؛ يتعرّف الموقع على اللغة تلقائيًا ويعرض زخارف مناسبة دون اختيار يدوي. العربية لها إطارات وزخارف خاصة، والإنجليزية لها أنماط Unicode مثل Bold وItalic وScript.</p><div id="fancyGrid" class="toolgrid"></div><p id="fancyNotice" class="notice"></p></section>
 <section id="randomDecor" class="section panel"><h2>🎲 زخرفة عشوائية للنصوص العربية والإنجليزية</h2><p class="muted">اكتب اسمك أو أي كلمة ثم اضغط «زخرفات عشوائية» لإنشاء 50 شكلًا مختلفًا. كل ضغطة تولّد تركيبات مختلفة من الإطارات والرموز والوجوه التعبيرية وZalgo.</p><div class="bar"><input id="randomDecorInput" placeholder="اكتب اسمك أو أي كلمة هنا"><button id="randomDecorMake" class="primary">🎲 زخرفات عشوائية</button></div><label class="compat-option" style="display:flex;gap:9px;align-items:center;margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:12px"><input id="legacyDecorMode" type="checkbox" style="width:20px;height:20px;flex-shrink:0"><span>🖥️ وضع التوافق مع الكمبيوتر القديم (رموز أبسط وأقل عرضة للمربعات)</span></label><div id="randomDecorGrid" class="toolgrid"></div><p id="randomDecorNotice" class="notice"></p></section>
@@ -99,6 +109,14 @@ button{touch-action:manipulation;min-height:42px}
 </div>
 <div class="panel"><h3>➕ أضف إيموجي من صنعك</h3><div class="bar"><input id="kaoCustomText" placeholder="اكتب الإيموجي أو الحركة"><input id="kaoCustomName" placeholder="اسم الإيموجي"><select id="kaoCustomCat"><option value="خيالي">👽 خيالي</option><option value="رومانسي">❤️ رومانسي</option><option value="مضحك">🤣 مضحك</option><option value="مرعب">👹 مرعب</option><option value="قطط وحيوانات">🐱 حيوانات</option><option value="قتال وأكشن">⚔️ أكشن</option><option value="لطيف">🥹 لطيف</option><option value="حركات">💃 حركات</option></select><button id="kaoAdd" class="primary">حفظ الإيموجي</button></div></div>
 </section>
+
+<section id="bigArtGallery" class="section panel big-art-panel">
+<h2>🖼️ فن كبير — معرض الرسومات النصية العملاقة</h2>
+<p class="muted">خصصت للرسومات مساحة كاملة بعرض الموقع. كل رسمة تظهر في لوحة كبيرة مستقلة، مع الحفاظ على المسافات والأسطر. اسحب داخل اللوحة أفقيًا أو عموديًا إذا كانت الرسمة ضخمة، واضغط نسخ للحصول عليها كاملة.</p>
+<div class="bar"><input id="bigArtSearch" placeholder="🔎 ابحث عن قطة أو قلب أو نجوم أو شخصية..."><button id="bigArtSize">🔎 تكبير الخط</button><button id="bigArtCopyAll" class="primary">📋 نسخ كل الرسومات</button></div>
+<div id="bigArtGrid" class="big-art-grid"></div><p id="bigArtNotice" class="notice"></p>
+</section>
+
 <section id="imageAscii" class="section panel"><h2>🖼️ حوّل صورتك إلى رسمة بالحروف الدقيقة</h2><p class="muted">ارفع صورة، وسيحوّلها الموقع إلى لوحة من الحروف والرموز الصغيرة. تتم المعالجة داخل متصفحك ولا تُرفع الصورة إلى الموقع.</p><div class="bar"><input id="asciiFile" type="file" accept="image/*"></div><div class="toolgrid"><div class="toolcard"><label for="asciiWidth">دقة الرسم — عدد الحروف بالعرض: <b id="asciiWidthVal">420</b></label><input class="range" id="asciiWidth" type="range" min="100" max="700" value="420"><p class="muted small">الدقة الأعلى تعطي تفاصيل أكثر، لكن النص سيكون أطول. للصور البعيدة جرّب تكبير الموضوع أولًا.</p><label for="asciiZoom">تكبير الشخص أو العنصر البعيد: <b id="asciiZoomVal">1.0×</b></label><input class="range" id="asciiZoom" type="range" min="1" max="3" step="0.1" value="1"><p class="muted small">يكبّر مركز الصورة لملء مساحة الحروف؛ إذا كان الشخص على طرف الصورة، قصّ الصورة أولًا قبل رفعها.</p><label for="asciiContrast">وضوح التفاصيل: <b id="asciiContrastVal">1.35</b></label><input class="range" id="asciiContrast" type="range" min="0.7" max="2.2" step="0.05" value="1.35"><label for="asciiBright">الإضاءة: <b id="asciiBrightVal">1.25</b></label><input class="range" id="asciiBright" type="range" min="0.6" max="1.5" step="0.05" value="1.25"><label for="asciiSharp">إبراز الحواف: <b id="asciiSharpVal">0.5</b></label><input class="range" id="asciiSharp" type="range" min="0" max="1.5" step="0.1" value="0.5"><label for="asciiInvert" style="display:flex;align-items:center;gap:12px;margin-top:18px;padding:14px 16px;border:2px solid #a855f7;border-radius:14px;background:linear-gradient(135deg,#24113d,#111827);color:#fff;font-weight:800;box-shadow:0 0 18px #a855f755;cursor:pointer"><input id="asciiInvert" type="checkbox" checked disabled aria-label="عكس الألوان مفعّل دائمًا" style="width:24px;height:24px;accent-color:#d946ef;flex-shrink:0"><span>🌑 عكس الألوان — تأثير بارز مثل فيلم الرعب<br><small style="font-weight:400;opacity:.9">يعكس الفاتح والداكن لإظهار النتيجة بشكل درامي</small></span></label></div><div class="toolcard"><label for="asciiChars">نمط الحروف والرموز</label><select id="asciiChars" style="width:100%"><option value="@%#*+=-:. ">تفاصيل كثيفة — أفضل للوجوه</option><option value="MWNXK0Okxdolc:,. ">حروف وأرقام</option><option value="█▓▒░ ">مربعات</option><option value="♥♡♦♣♠•· ">قلوب ورموز</option><option value="♥♦♣♠●◆■▲※+ ">رموز كثيفة</option><option value="♥♡✿❀★☆◆◇●○ ">قلوب ونجوم وزهور</option></select><p class="muted small">لأفضل نتيجة للصور الفوتوغرافية: استخدم «تفاصيل كثيفة — أفضل للوجوه»، ودقة 420–600، ثم عدّل الإضاءة والتباين حسب الصورة.</p></div></div><div id="asciiStatus" class="notice"></div><div class="actions"><button id="asciiConvert" class="primary">✨ حوّل الصورة إلى حروف</button><button id="asciiCopy" type="button">📋 نسخ الحروف</button><button id="asciiDownload" type="button">⬇ تنزيل TXT</button><button id="asciiImageDownload" type="button">🖼️ تنزيل صورة الحروف بالألوان</button></div><div id="asciiOutput" class="preview art" style="font-size:6px;line-height:1;white-space:pre;max-height:65vh;overflow:auto;direction:ltr;text-align:left;unicode-bidi:plaintext"></div><h3>🎨 تحويل الصورة إلى لوحة فنية</h3><p class="muted small">اختر تأثيرًا فنيًا لإنشاء نسخة مرسومة من صورتك الأصلية.</p><div class="bar"><label for="artStyle">أسلوب الرسم</label><select id="artStyle"><option value="pencil">✏️ رسم بالقلم الرصاص — الافتراضي</option><option value="pencilPro">✏️ قلم رصاص احترافي — خطوط وتظليل</option><option value="oil">🖌️ رسم زيتي</option><option value="watercolor">🎨 ألوان مائية</option><option value="cartoon">🌈 رسم كرتوني</option><option value="vintage">🖼️ ألوان كلاسيكية</option></select><button id="artApply" class="primary">✨ أنشئ اللوحة الفنية</button></div><canvas id="artCanvas" style="display:block;width:100%;height:auto;max-height:65vh;object-fit:contain;background:#fff;border-radius:12px"></canvas><div class="actions"><button id="artDownload" class="primary">⬇ تنزيل اللوحة الفنية PNG</button></div><p class="muted small">تأثيرات فنية تُطبّق داخل المتصفح؛ النتيجة تقريبية وليست معالجة ذكاء اصطناعي احترافية.</p><canvas id="asciiCanvas" hidden></canvas></section>
 <footer class="footer">SEIF EMOJIS 💜 — صُنع بحب لعشّاق النصوص والرموز</footer>
 </main>
@@ -370,6 +388,25 @@ const kaoBigArt=[
 ["فن كبير","موجات ونجوم","✦ ·　　.　　★　　°　　.　　✧\n　　.　　✦　　　°　　　★\n────────── ✧ ──────────\n　★　　　.　　　✦　　.　　°\n✧　　°　　★　　　.　　✦","✨"]
 ].map((x,i)=>[x[0],x[1],x[2],x[3],"bigart"+i]);
 kaoBase.push(...kaoBigArt);
+
+let bigArtZoom=0;
+function renderBigArt(){
+ const q=$('bigArtSearch').value.trim().toLowerCase();
+ const list=kaoBigArt.filter(x=>(x[1]+' '+x[2]).toLowerCase().includes(q));
+ $('bigArtGrid').innerHTML=list.map((x,i)=>'<article class="big-art-item"><h3>'+esc(x[1])+'</h3><pre class="big-art-pre" style="font-size:calc(clamp(14px,1.45vw,20px) + '+bigArtZoom+'px)">'+esc(x[2])+'</pre><div class="big-art-actions"><button data-big-copy="'+i+'" class="primary">📋 نسخ الرسمة كاملة</button><button data-big-expand="'+i+'">↔ تكبير مساحة الرسمة</button></div></article>').join('');
+ $('bigArtNotice').textContent='عدد الرسومات: '+list.length+' — كل لوحة قابلة للتمرير والنسخ.';
+}
+$('bigArtGrid').addEventListener('click',e=>{
+ const c=e.target.closest('[data-big-copy]');
+ if(c){const q=$('bigArtSearch').value.trim().toLowerCase(),list=kaoBigArt.filter(x=>(x[1]+' '+x[2]).toLowerCase().includes(q));if(list[+c.dataset.bigCopy])copy(list[+c.dataset.bigCopy][2],'bigArtNotice');return;}
+ const b=e.target.closest('[data-big-expand]');
+ if(b){const pre=b.closest('.big-art-item').querySelector('.big-art-pre');pre.style.maxHeight=pre.style.maxHeight==='none'?'650px':'none';b.textContent=pre.style.maxHeight==='none'?'↙ تصغير اللوحة':'↔ تكبير مساحة الرسمة';}
+});
+$('bigArtSearch').addEventListener('input',renderBigArt);
+$('bigArtSize').addEventListener('click',()=>{bigArtZoom=bigArtZoom>=12?0:bigArtZoom+3;document.querySelectorAll('.big-art-pre').forEach(p=>p.style.fontSize='calc(clamp(14px,1.45vw,20px) + '+bigArtZoom+'px)');$('bigArtSize').textContent=bigArtZoom>=12?'↩ إعادة حجم الخط':'🔎 تكبير الخط';});
+$('bigArtCopyAll').addEventListener('click',()=>copy(kaoBigArt.map(x=>x[2]).join('\n\n────────────────────────\n\n'),'bigArtNotice'));
+renderBigArt();
+
 
 const kaoCats=['الكل','Love','Dividers','Memes','Frames','Popular Emoji','Popular Symbols','Popular Emoticons','Popular Characters','Popular Text Art','فن كبير','رومانسي','مضحك','مرعب','قطط وحيوانات','قتال وأكشن','خيالي','لطيف','حركات','المفضلة','إضافاتي'];
 let kaoCat='الكل',kaoFav=false;
