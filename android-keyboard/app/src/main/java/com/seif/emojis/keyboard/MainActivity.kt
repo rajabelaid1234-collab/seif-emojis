@@ -33,6 +33,11 @@ class MainActivity : Activity() {
             setPadding(0, 20, 0, 22)
         })
         root.addView(Button(this).apply {
+            text = "🌐 فتح الموقع الكامل SEIF EMOJIS"
+            textSize = 17f
+            setOnClickListener { startActivity(Intent(this@MainActivity, WebActivity::class.java)) }
+        })
+        root.addView(Button(this).apply {
             text = "1) تفعيل لوحة المفاتيح"
             setOnClickListener { startActivity(Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)) }
         })
