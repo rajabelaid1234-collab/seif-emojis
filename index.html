@@ -134,6 +134,17 @@ button{touch-action:manipulation;min-height:42px}
 .motion-trail:before{content:"";position:absolute;inset:-5px 0;background:linear-gradient(90deg,transparent,rgba(255,34,0,.3),rgba(255,130,0,.65),transparent);filter:blur(5px);animation:fireFlicker .16s infinite alternate}
 .motion-trail:after{right:0;width:11px;height:11px;background:#fff8cf;box-shadow:0 0 8px 4px #fff,0 0 20px 10px #ff7900,0 0 34px 14px #ff2d00}
 @keyframes fireFlicker{from{opacity:.55;transform:scaleY(.7)}to{opacity:1;transform:scaleY(1.25)}}
+
+/* 3D glass heart emoji object */
+.motion-star.glass-heart{width:clamp(34px,5vw,58px);height:clamp(34px,5vw,58px);font-size:clamp(34px,5vw,58px);display:grid;place-items:center;line-height:1;transform-style:preserve-3d;filter:drop-shadow(0 3px 2px #000b) drop-shadow(0 0 8px #ff5d8c) drop-shadow(0 0 19px #ff245f)}
+.motion-star.glass-heart .heart-glass{position:relative;display:block;width:1em;height:1em;transform-style:preserve-3d;filter:drop-shadow(0 1px 1px #22040d)}
+.motion-star.glass-heart .heart-glass svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 0 2px #fff8)}
+.motion-star.glass-heart .heart-front{fill:url(#heartGlassGrad);stroke:#ffe8f1;stroke-width:2.5;stroke-linejoin:round}
+.motion-star.glass-heart .heart-back{fill:#8c123f;stroke:#ff7eab;stroke-width:3;transform:translate(4px,5px);opacity:.9}
+.motion-star.glass-heart .heart-highlight{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-opacity:.95}
+.motion-star.glass-heart .heart-glint{fill:#fff;filter:drop-shadow(0 0 3px #fff)}
+.motion-stage.playing .motion-star.glass-heart{animation:heartGlassFloat .7s ease-in-out infinite alternate}
+@keyframes heartGlassFloat{from{filter:drop-shadow(0 3px 2px #000b) drop-shadow(0 0 7px #ff5d8c) drop-shadow(0 0 13px #ff245f)}to{filter:drop-shadow(0 4px 3px #000c) drop-shadow(0 0 12px #ff9ec0) drop-shadow(0 0 25px #ff245f)}}
 </style>
 </head>
 <body><main class="wrap">
@@ -167,7 +178,7 @@ button{touch-action:manipulation;min-height:42px}
 <label for="motionSpeed">السرعة</label><select id="motionSpeed"><option value="3600">هادئة</option><option value="2600" selected>متوسطة</option><option value="1700">سريعة</option></select>
 <div class="actions"><button type="button" id="motionPlay" class="primary">✨ شغّل الإعلان</button><button type="button" id="motionStop">⏹ إيقاف</button><button type="button" id="motionVideo">🎥 حفظ فيديو قصير</button></div>
 </div>
-<div id="motionStage" class="motion-stage" aria-label="معاينة أنيميشن الاسم"><span id="motionName" class="motion-name"></span><span id="motionTrail" class="motion-trail"></span><span id="motionImpact" class="motion-impact"></span><span id="motionStar" class="motion-star" aria-label="نجمة متحركة"><svg viewBox="0 0 100 100" width="1em" height="1em" aria-hidden="true"><defs><linearGradient id="starMetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".32" stop-color="#fff4a8"/><stop offset=".58" stop-color="#ff9b22"/><stop offset=".78" stop-color="#fff7d1"/><stop offset="1" stop-color="#ff5b18"/></linearGradient></defs><path d="M50 3 L61 35 L96 36 L68 57 L78 91 L50 71 L22 91 L32 57 L4 36 L39 35 Z" fill="url(#starMetal)" stroke="#fff8d0" stroke-width="2.5" stroke-linejoin="round"/></svg></span></div>
+<div id="motionStage" class="motion-stage" aria-label="معاينة أنيميشن الاسم"><span id="motionName" class="motion-name"></span><span id="motionTrail" class="motion-trail"></span><span id="motionImpact" class="motion-impact"></span><span id="motionStar" class="motion-star glass-heart" aria-label="قلب زجاجي ثلاثي الأبعاد"><span class="heart-glass"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="heartGlassGrad" x1="0" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="#fff8fc"/><stop offset=".16" stop-color="#ffb8d1"/><stop offset=".38" stop-color="#f52d72"/><stop offset=".58" stop-color="#c90c4e"/><stop offset=".78" stop-color="#ff6d9e"/><stop offset="1" stop-color="#65072b"/></linearGradient><linearGradient id="heartSideGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb4d0"/><stop offset="1" stop-color="#79052e"/></linearGradient></defs><path class="heart-back" d="M50 91 C40 81 8 58 8 32 C8 8 39 2 50 25 C63 1 92 8 92 32 C92 58 61 81 50 91Z"/><path class="heart-front" d="M50 87 C40 77 8 55 8 31 C8 9 37 3 50 25 C63 3 92 9 92 31 C92 55 60 77 50 87Z"/><path class="heart-highlight" d="M22 26 C24 14 39 12 45 23"/><ellipse class="heart-glint" cx="75" cy="29" rx="4" ry="7" transform="rotate(28 75 29)"/><path d="M24 45 C28 62 42 73 49 78" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="3" stroke-linecap="round"/></svg></span></span></div>
 <p id="motionStatus" class="notice" role="status" aria-live="polite">اكتب اسمك واضغط «شغّل الإعلان» ✨</p>
 <p class="muted small">إذا لم يتضمن الاسم حرف i أو í أو ï، تدور النجمة حوله وتختتم الحركة بلمعة. تسجيل الفيديو متاح في المتصفحات الداعمة، وقد يكون WebM بدل MP4.</p>
 </section>
@@ -730,7 +741,7 @@ pixelInit();
 // Name promo animation: orbit behind the name, then land on the i-dot
 let motionEmoji='💫',motionAnimation=null,motionVideoRecorder=null;
 const motionStage=$('motionStage'),motionStar=$('motionStar'),motionName=$('motionName');
-function motionRenderName(){const name=$('motionText').value.trim()||'SEIF';motionName.innerHTML=Array.from(name).map((c,i)=>'<span class="motion-letter" data-letter="'+i+'">'+esc(c)+'</span>').join('');motionStar.textContent=motionEmoji;}
+function motionRenderName(){const name=$('motionText').value.trim()||'SEIF';motionName.innerHTML=Array.from(name).map((c,i)=>'<span class="motion-letter" data-letter="'+i+'">'+esc(c)+'</span>').join('');const heart=motionStar.querySelector('.heart-glass');if(heart){heart.style.transform='rotateY(-18deg) rotateX(8deg)';} }
 function motionStop(){if(motionAnimation){motionAnimation.cancel();motionAnimation=null;}if(window.motionTrailAnimation){window.motionTrailAnimation.cancel();window.motionTrailAnimation=null;}motionStage.classList.remove('playing','impact');motionStar.style.transform='translate(-50%,-50%)';motionStar.style.zIndex='4';const trail=document.getElementById('motionTrail');if(trail){trail.style.opacity='0';trail.style.transform='translate(-50%,-50%) rotate(0deg) scaleX(.2)';}motionStatus.textContent='تم إيقاف الحركة.';}
 function motionPlay(){
  motionStop();motionRenderName();
