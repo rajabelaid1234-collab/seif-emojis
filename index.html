@@ -69,6 +69,22 @@ button{touch-action:manipulation;min-height:42px}
 .big-art-actions button{min-width:130px}
 @media(max-width:650px){.big-art-grid{grid-template-columns:minmax(0,1fr)}.big-art-item,.large-art-grid .big-art-item{padding:10px}.big-art-pre{font-size:13px;line-height:1.2;padding:12px;max-height:280px}.large-art-grid .big-art-pre{font-size:15px;max-height:500px;padding:14px}.big-art-actions button{flex:1}}
 
+
+/* Floating mobile kaomoji picker */
+#quickKaoButton{position:fixed;right:18px;bottom:18px;z-index:1000;border:0;border-radius:999px;padding:14px 18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:800;box-shadow:0 8px 28px #0008}
+#quickKaoPanel{position:fixed;right:12px;bottom:82px;z-index:1001;width:min(390px,calc(100vw - 24px));max-height:min(72vh,620px);overflow:hidden;background:#11182b;border:1px solid #7c6be8;border-radius:18px;box-shadow:0 18px 50px #000b;display:none;direction:rtl}
+#quickKaoPanel.open{display:flex;flex-direction:column}
+#quickKaoHeader{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px;border-bottom:1px solid var(--line)}
+#quickKaoSearch{width:100%;margin:10px 10px 0;width:calc(100% - 20px)}
+#quickKaoFilters{display:flex;gap:6px;flex-wrap:wrap;padding:9px 10px}
+#quickKaoFilters button{padding:7px 10px;font-size:.85rem}
+#quickKaoGrid{overflow:auto;padding:0 10px 12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.quick-kao-item{min-width:0;padding:9px 4px;border-radius:10px;background:#202a46;border:1px solid #354362;color:#fff;overflow-wrap:anywhere}
+.quick-kao-face{display:block;font-size:1.05rem;white-space:pre-wrap;line-height:1.4}
+.quick-kao-label{display:block;color:#c4cde4;font-size:.7rem;margin-top:5px}
+#quickKaoMessage{padding:0 12px 10px;margin:0;color:#48e2c2;font-size:.85rem;min-height:18px}
+@media(max-width:480px){#quickKaoButton{right:12px;bottom:12px;padding:12px 15px}#quickKaoPanel{right:8px;bottom:72px;width:calc(100vw - 16px);max-height:75vh}#quickKaoGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -128,6 +144,21 @@ button{touch-action:manipulation;min-height:42px}
 <section id="imageAscii" class="section panel"><h2>🖼️ حوّل صورتك إلى رسمة بالحروف الدقيقة</h2><p class="muted">ارفع صورة، وسيحوّلها الموقع إلى لوحة من الحروف والرموز الصغيرة. تتم المعالجة داخل متصفحك ولا تُرفع الصورة إلى الموقع.</p><div class="bar"><input id="asciiFile" type="file" accept="image/*"></div><div class="toolgrid"><div class="toolcard"><label for="asciiWidth">دقة الرسم — عدد الحروف بالعرض: <b id="asciiWidthVal">420</b></label><input class="range" id="asciiWidth" type="range" min="100" max="700" value="420"><p class="muted small">الدقة الأعلى تعطي تفاصيل أكثر، لكن النص سيكون أطول. للصور البعيدة جرّب تكبير الموضوع أولًا.</p><label for="asciiZoom">تكبير الشخص أو العنصر البعيد: <b id="asciiZoomVal">1.0×</b></label><input class="range" id="asciiZoom" type="range" min="1" max="3" step="0.1" value="1"><p class="muted small">يكبّر مركز الصورة لملء مساحة الحروف؛ إذا كان الشخص على طرف الصورة، قصّ الصورة أولًا قبل رفعها.</p><label for="asciiContrast">وضوح التفاصيل: <b id="asciiContrastVal">1.35</b></label><input class="range" id="asciiContrast" type="range" min="0.7" max="2.2" step="0.05" value="1.35"><label for="asciiBright">الإضاءة: <b id="asciiBrightVal">1.25</b></label><input class="range" id="asciiBright" type="range" min="0.6" max="1.5" step="0.05" value="1.25"><label for="asciiSharp">إبراز الحواف: <b id="asciiSharpVal">0.5</b></label><input class="range" id="asciiSharp" type="range" min="0" max="1.5" step="0.1" value="0.5"><label for="asciiInvert" style="display:flex;align-items:center;gap:12px;margin-top:18px;padding:14px 16px;border:2px solid #a855f7;border-radius:14px;background:linear-gradient(135deg,#24113d,#111827);color:#fff;font-weight:800;box-shadow:0 0 18px #a855f755;cursor:pointer"><input id="asciiInvert" type="checkbox" checked disabled aria-label="عكس الألوان مفعّل دائمًا" style="width:24px;height:24px;accent-color:#d946ef;flex-shrink:0"><span>🌑 عكس الألوان — تأثير بارز مثل فيلم الرعب<br><small style="font-weight:400;opacity:.9">يعكس الفاتح والداكن لإظهار النتيجة بشكل درامي</small></span></label></div><div class="toolcard"><label for="asciiChars">نمط الحروف والرموز</label><select id="asciiChars" style="width:100%"><option value="@%#*+=-:. ">تفاصيل كثيفة — أفضل للوجوه</option><option value="MWNXK0Okxdolc:,. ">حروف وأرقام</option><option value="█▓▒░ ">مربعات</option><option value="♥♡♦♣♠•· ">قلوب ورموز</option><option value="♥♦♣♠●◆■▲※+ ">رموز كثيفة</option><option value="♥♡✿❀★☆◆◇●○ ">قلوب ونجوم وزهور</option></select><p class="muted small">لأفضل نتيجة للصور الفوتوغرافية: استخدم «تفاصيل كثيفة — أفضل للوجوه»، ودقة 420–600، ثم عدّل الإضاءة والتباين حسب الصورة.</p></div></div><div id="asciiStatus" class="notice"></div><div class="actions"><button id="asciiConvert" class="primary">✨ حوّل الصورة إلى حروف</button><button id="asciiCopy" type="button">📋 نسخ الحروف</button><button id="asciiDownload" type="button">⬇ تنزيل TXT</button><button id="asciiImageDownload" type="button">🖼️ تنزيل صورة الحروف مثل المعاينة</button></div><div id="asciiOutput" class="preview art" style="font-size:6px;line-height:1;white-space:pre;max-height:65vh;overflow:auto;direction:ltr;text-align:left;unicode-bidi:plaintext"></div><h3>🎨 تحويل الصورة إلى لوحة فنية</h3><p class="muted small">اختر تأثيرًا فنيًا لإنشاء نسخة مرسومة من صورتك الأصلية.</p><div class="bar"><label for="artStyle">أسلوب الرسم</label><select id="artStyle"><option value="pencil">✏️ رسم بالقلم الرصاص — الافتراضي</option><option value="pencilPro">✏️ قلم رصاص احترافي — خطوط وتظليل</option><option value="oil">🖌️ رسم زيتي</option><option value="watercolor">🎨 ألوان مائية</option><option value="cartoon">🌈 رسم كرتوني</option><option value="vintage">🖼️ ألوان كلاسيكية</option></select><button id="artApply" class="primary">✨ أنشئ اللوحة الفنية</button></div><canvas id="artCanvas" style="display:block;width:100%;height:auto;max-height:65vh;object-fit:contain;background:#fff;border-radius:12px"></canvas><div class="actions"><button id="artDownload" class="primary">⬇ تنزيل اللوحة الفنية PNG</button></div><p class="muted small">تأثيرات فنية تُطبّق داخل المتصفح؛ النتيجة تقريبية وليست معالجة ذكاء اصطناعي احترافية.</p><canvas id="asciiCanvas" hidden></canvas></section>
 <footer class="footer">SEIF EMOJIS 💜 — صُنع بحب لعشّاق النصوص والرموز</footer>
 </main>
+
+<div id="quickKaoPanel" aria-label="قائمة الإيموجيات السريعة">
+ <div id="quickKaoHeader"><strong>😊 إيموجيات سريعة</strong><button id="quickKaoClose" aria-label="إغلاق القائمة">✕</button></div>
+ <input id="quickKaoSearch" placeholder="ابحث عن وجه أو قلب..." autocomplete="off">
+ <div id="quickKaoFilters">
+  <button type="button" class="active" data-qfilter="all">الكل</button>
+  <button type="button" data-qfilter="رومانسي">❤️ حب</button>
+  <button type="button" data-qfilter="لطيف">🥹 لطيف</button>
+  <button type="button" data-qfilter="قطط وحيوانات">🐱 حيوانات</button>
+  <button type="button" data-qfilter="favorites">⭐ المفضلة</button>
+ </div>
+ <div id="quickKaoGrid"></div><p id="quickKaoMessage">اضغط على أي وجه لنسخه ثم الصقه في أي تطبيق.</p>
+</div>
+<button id="quickKaoButton" type="button" aria-expanded="false">😊 إيموجيات</button>
+
 <script>
 (function(){
 const $=id=>document.getElementById(id);
@@ -455,6 +486,38 @@ function kaoRenderCats(){const c=$('kaoCats');c.innerHTML='';kaoCats.forEach(cat
 function kaoRender(){const q=$('kaoSearch').value.trim().toLowerCase(),favs=kaoRead('seifKaoFav',[]),all=kaoAll();let items=all.filter(x=>(kaoCat==='الكل'||(kaoCat==='المفضلة'?favs.includes(x[2]):kaoCat==='إضافاتي'?x[4]==='custom':x[0]===kaoCat))&&(!kaoFav||favs.includes(x[2]))&&(!q||(x[0]+' '+x[1]+' '+x[2]+' '+x[3]).toLowerCase().includes(q)));if($('kaoView').value==='compact')items=items.filter(x=>x[2].length<18);if($('kaoView').value==='animated')items=items.filter(x=>/حركات|أكشن|قتال|قفز|هجوم|يرقص|يمشي|انطلاق|لكمة/.test(x[0]+' '+x[1]));const grid=$('kaoGrid');grid.innerHTML='';const large=$('kaoSize').value==='large';grid.style.gridTemplateColumns=large?'repeat(auto-fill,minmax(min(100%,220px),1fr))':'repeat(auto-fill,minmax(min(100%,130px),1fr))';items.forEach(x=>{const card=document.createElement('div');card.className='card';const fav=document.createElement('button');fav.className='fav';fav.textContent=favs.includes(x[2])?'⭐':'☆';fav.title='إضافة إلى المفضلة';fav.onclick=e=>{e.stopPropagation();let next=kaoRead('seifKaoFav',[]);next=next.includes(x[2])?next.filter(y=>y!==x[2]):next.concat(x[2]);kaoWrite('seifKaoFav',next);kaoRender()};const face=document.createElement('div');face.className='face';if(x[0]==='فن كبير'){card.classList.add('art-card');face.style.fontSize='clamp(10px,1.15vw,14px)';}else{face.style.fontSize=large?'1.5rem':'1rem';}face.textContent=x[2];const label=document.createElement('div');label.className='label';label.textContent=x[1]+' · '+x[0];const b=document.createElement('button');b.textContent='📋 نسخ';b.style.marginTop='8px';b.onclick=()=>copy(x[2],'kaoNotice');card.append(fav,face,label,b);grid.append(card)});$('kaoNotice').textContent='النتائج: '+items.length+' — اضغط على زر النسخ، أو ⭐ لحفظ المفضلة.';}
 $('kaoSearch').addEventListener('input',kaoRender);$('kaoSize').addEventListener('change',kaoRender);$('kaoView').addEventListener('change',kaoRender);$('kaoFavOnly').onclick=()=>{kaoFav=!kaoFav;$('kaoFavOnly').classList.toggle('active',kaoFav);kaoRender()};$('kaoClear').onclick=()=>{$('kaoSearch').value='';kaoCat='الكل';kaoFav=false;$('kaoFavOnly').classList.remove('active');kaoRenderCats();kaoRender()};$('kaoAdd').onclick=()=>{const t=$('kaoCustomText').value.trim(),n=$('kaoCustomName').value.trim()||'إيموجي من صنعي',c=$('kaoCustomCat').value;if(!t){$('kaoNotice').textContent='اكتب الإيموجي أولًا.';return;}const custom=kaoRead('seifKaoCustom',[]);custom.push([c,n,t,'✨','custom']);kaoWrite('seifKaoCustom',custom);$('kaoCustomText').value='';$('kaoCustomName').value='';kaoCat='إضافاتي';kaoRenderCats();kaoRender();$('kaoNotice').textContent='تم حفظ إيموجيك في هذا المتصفح بنجاح ✅';};
 kaoRenderCats();kaoRender();
+
+
+/* Quick copy menu for mobile; copies text for pasting into any app. */
+let quickKaoFilter='all';
+function quickKaoRender(){
+ const q=$('quickKaoSearch').value.trim().toLowerCase();
+ const favs=kaoRead('seifKaoFav',[]);
+ const filtered=kaoAll().filter(x=>{
+  const matchesFilter=quickKaoFilter==='all'||(quickKaoFilter==='favorites'?favs.includes(x[2]):x[0]===quickKaoFilter);
+  return matchesFilter&&(!q||(String(x[1]||'')+' '+String(x[2]||'')+' '+String(x[0]||'')).toLowerCase().includes(q));
+ }).slice(0,180);
+ const grid=$('quickKaoGrid');grid.innerHTML='';
+ filtered.forEach(x=>{
+  const b=document.createElement('button');b.type='button';b.className='quick-kao-item';
+  const face=document.createElement('span');face.className='quick-kao-face';face.textContent=x[2];
+  const label=document.createElement('span');label.className='quick-kao-label';label.textContent=x[1]||'إيموجي';
+  b.append(face,label);b.addEventListener('click',async()=>{await copy(x[2], 'quickKaoMessage');$('quickKaoMessage').textContent='تم النسخ بنجاح ✅ الصقه في التطبيق الذي تريده.';});grid.append(b);
+ });
+ if(!filtered.length){grid.innerHTML='<p class="muted">لا توجد نتائج. جرّب كلمة أخرى.</p>';}
+}
+$('quickKaoButton').addEventListener('click',()=>{
+ const panel=$('quickKaoPanel');const opening=!panel.classList.contains('open');
+ panel.classList.toggle('open',opening);$('quickKaoButton').setAttribute('aria-expanded',String(opening));
+ if(opening){quickKaoRender();$('quickKaoSearch').focus();}
+});
+$('quickKaoClose').addEventListener('click',()=>{$('quickKaoPanel').classList.remove('open');$('quickKaoButton').setAttribute('aria-expanded','false');});
+$('quickKaoSearch').addEventListener('input',quickKaoRender);
+document.querySelectorAll('[data-qfilter]').forEach(b=>b.addEventListener('click',()=>{
+ quickKaoFilter=b.dataset.qfilter;
+ document.querySelectorAll('[data-qfilter]').forEach(x=>x.classList.toggle('active',x===b));
+ quickKaoRender();
+}));
 
 render();
 })();
