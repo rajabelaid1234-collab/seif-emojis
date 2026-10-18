@@ -213,8 +213,48 @@ button{touch-action:manipulation;min-height:42px}
 <header><div class="language-switch" aria-label="Website language"><label for="siteLanguage">🌐 Language / اللغة</label><select id="siteLanguage" aria-label="Choose website language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10" alt="أيقونة SEIF EMOJIS" style="width:104px;height:104px;object-fit:cover;border-radius:26px;border:2px solid #48e2c2;box-shadow:0 8px 28px #0007;margin:0 auto 12px;display:block" onerror="this.style.display='none'"><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
 <section class="panel" id="keyboardInstall"><h2 style="font-size:clamp(1.5rem,4vw,2rem)">📱 SEIF EMOJIS — لوحة مفاتيح Android</h2><p class="muted">وجوه ورموز في واتساب ويوتيوب وبقية التطبيقات. مجانًا وبخطوات قصيرة.</p><div class="toolgrid"><div class="toolcard" style="border:2px solid #48e2c2;padding:20px"><h3 style="font-size:1.35rem">🤖 Android</h3><p class="muted">تثبيت التطبيق ثم تفعيل لوحة SEIF. اسمح بالتثبيت من هذا المصدر إذا طلب الهاتف ذلك.</p><a id="androidDownloadButton" class="primary" href="https://github.com/rajabelaid1234-collab/seif-emojis/releases/latest/download/app-debug.apk" style="display:block;text-align:center;text-decoration:none;padding:16px;border-radius:14px;font-weight:800;font-size:1.2rem;margin:12px 0">📥 تنزيل Android APK</a><button type="button" id="androidKeyboardGuide">📋 خطوات التفعيل</button><p class="muted small" id="androidKeyboardNotice" hidden>بعد التثبيت: افتح التطبيق ← فعّل لوحة SEIF من الإعدادات ← اخترها عند الكتابة. إذا طلب Android السماح بالتثبيت، فعّل السماح لهذا المصدر فقط.</p></div><div class="toolcard"><h3>🍎 iPhone / iOS</h3><p class="muted small">تنبيه: لا توجد إعدادات تنزيل في Safari تسمح بتثبيت لوحة مفاتيح نظامية مباشرةً من موقع عادي. يلزم تطبيق iOS يحتوي على لوحة مفاتيح، ثم تثبيته بطريقة يدعمها النظام وإضافتها من الإعدادات.</p><button type="button" id="iphoneKeyboardGuide">ℹ️ كيف أثبّتها على iPhone؟</button><p class="muted small" id="iphoneKeyboardNotice" hidden>لا تحاول تعطيل حماية iPhone أو تثبيت ملفات مجهولة. سنوفّر تعليمات التثبيت المدعومة عندما تصبح نسخة iOS جاهزة للتوزيع.</p></div></div><p class="notice" id="keyboardInstallNotice" role="status" aria-live="polite"></p></section>
 <nav class="tabs">
-<button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="bigArtGallery">🖼️ فن كبير</button><button class="tab" data-tab="kaomojiLab">🎭 مصنع الإيموجيات</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button><button class="tab" data-tab="emojiMotion">🎬 أنيميشن الإيموجي</button><button class="tab" data-tab="emojiWordArt">🔤 حروف بالإيموجي</button><button class="tab" data-tab="emojiPixelArt">🧩 رسم تلقائي بالإيموجي</button>
+<button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="bigArtGallery">🖼️ فن كبير</button><button class="tab" data-tab="kaomojiLab">🎭 مصنع الإيموجيات</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button><button class="tab" data-tab="emojiMotion">🎬 أنيميشن الإيموجي</button><button class="tab" data-tab="emojiWordArt">🔤 حروف بالإيموجي</button><button class="tab" data-tab="emojiPixelArt">🧩 رسم تلقائي بالإيموجي</button><button class="tab" data-tab="nameLab">🎼 أدوات الأسماء</button>
 </nav>
+<section id="nameLab" class="section panel">
+<h2 style="font-size:1.6rem">🎼 أدوات زخرفة الأسماء الذكية</h2>
+<p class="muted">زخارف موسيقية، إطارات قوية، فقاعات حروف، وفحص سريع لطول الاسم قبل نسخه. النتائج تقريبية لأن حدود المنصات قد تتغير.</p>
+<div class="toolgrid">
+<div class="toolcard">
+<h3>🎵 صانع الزخرفة الموسيقية</h3>
+<label for="musicName">اكتب الاسم أو النص</label><input id="musicName" value="SEIF" maxlength="100" style="width:100%">
+<div class="actions"><button type="button" data-music-style="music1">🎵 زخرفة ناعمة</button><button type="button" data-music-style="music2">🎧 Beat</button><button type="button" data-music-style="music3">🎼 نوتات</button></div>
+<textarea id="musicOutput" class="output" rows="2" readonly>•.¸¸.• SEIF •.¸¸.• 🎶</textarea><button type="button" class="primary" id="musicCopy">📋 نسخ الزخرفة</button>
+</div>
+<div class="toolcard">
+<h3>🛡️ صانع الإطارات والتوقيع</h3>
+<label for="shieldName">الاسم</label><input id="shieldName" value="SEIF" maxlength="100" style="width:100%">
+<div class="actions"><button type="button" data-shield="shield1">🛡️ درع</button><button type="button" data-shield="shield2">⚔️ سيوف</button><button type="button" data-shield="shield3">░▒▓█ إطار</button></div>
+<textarea id="shieldOutput" class="output" rows="2" readonly>❮❮ SEIF ❯❯</textarea><button type="button" class="primary" id="shieldCopy">📋 نسخ التوقيع</button>
+</div>
+<div class="toolcard">
+<h3>💬 صانع فقاعات الحروف</h3>
+<label for="bubbleName">اكتب أحرفًا أو أرقامًا إنجليزية</label><input id="bubbleName" value="SEIF 123" maxlength="80" style="width:100%">
+<div class="actions"><button type="button" data-bubble="circle">ⓐ دوائر صغيرة</button><button type="button" data-bubble="negative">🅐 دوائر كبيرة</button><button type="button" data-bubble="squared">🅰️ مربعات</button></div>
+<textarea id="bubbleOutput" class="output" rows="2" readonly>ⓈⒺⒾⒻ ①②③</textarea><button type="button" class="primary" id="bubbleCopy">📋 نسخ الفقاعات</button>
+<p class="muted small">التحويل يدعم الحروف اللاتينية والأرقام؛ الحروف العربية تبقى كما هي.</p>
+</div>
+<div class="toolcard">
+<h3>🧮 فاحص طول الاسم</h3>
+<label for="fitName">الصق الاسم المزخرف هنا</label><textarea id="fitName" rows="2" placeholder="اكتب أو الصق اسمك المزخرف" style="width:100%"></textarea>
+<p>عدد محارف Unicode: <strong id="fitCount">0</strong> · عدد وحدات UTF-16: <strong id="fitUnits">0</strong></p>
+<div id="fitResults" class="muted" aria-live="polite">اكتب اسمًا لعرض التقدير.</div>
+<p class="muted small">PUBG: يعتمد الحد على نوع الاسم وإصدار اللعبة، وغالبًا يُذكر نطاق 12–14 محرفًا؛ Instagram Bio حدّه 150 محرفًا؛ TikTok display name حدّه 30 محرفًا. الرموز المركّبة قد تُحسب بشكل مختلف.</p>
+</div>
+<div class="toolcard">
+<h3>🔮 إيموجيات حسب البرج أو المزاج</h3>
+<label for="vibeChoice">اختر برجًا أو مزاجًا</label><select id="vibeChoice" style="width:100%">
+<option value="happy">😊 سعيد / إيجابي</option><option value="love">❤️ حب ورومانسية</option><option value="fire">🔥 حماس وقوة</option><option value="calm">🌙 هدوء</option><option value="creative">🎨 إبداع</option><option value="aries">♈ الحمل</option><option value="taurus">♉ الثور</option><option value="gemini">♊ الجوزاء</option><option value="cancer">♋ السرطان</option><option value="leo">♌ الأسد</option><option value="virgo">♍ العذراء</option><option value="libra">♎ الميزان</option><option value="scorpio">♏ العقرب</option><option value="sagittarius">♐ القوس</option><option value="capricorn">♑ الجدي</option><option value="aquarius">♒ الدلو</option><option value="pisces">♓ الحوت</option>
+</select>
+<div id="vibeOutput" class="preview" style="margin-top:10px">😊 ✨ 🌈 💚 🎉</div><button type="button" class="primary" id="vibeCopy">📋 نسخ التشكيلة</button>
+<p class="muted small">هذه تشكيلة ترفيهية حسب الاختيار وليست تنبؤًا حقيقيًا بالشخصية أو المستقبل.</p>
+</div>
+</div>
+</section>
 <section id="emojiPixelArt" class="section panel">
 <h2 style="font-size:1.6rem">🧩 رسم الإيموجي تلقائيًا</h2>
 <p class="muted">اكتب أو الصق إيموجيًا واحدًا، وسيحوّله الموقع تلقائيًا إلى رسمة كبيرة مكوّنة من إيموجيات صغيرة ملوّنة. لا تحتاج إلى الرسم بيدك ✨</p>
@@ -942,6 +982,102 @@ const mosaicPalette=[{emoji:'⬛',rgb:[25,25,25]},{emoji:'⬜',rgb:[240,240,240]
 })();
 
 let mosaicDebounce; $('pixelMosaicEmoji').addEventListener('input',()=>{clearTimeout(mosaicDebounce);mosaicDebounce=setTimeout(makePixelMosaic,220);}); $('pixelMosaicEmoji').addEventListener('keydown',e=>{if(e.key==='Enter')makePixelMosaic();});$('pixelMosaicCopy').addEventListener('click',async()=>{const t=$('pixelMosaicPreview').dataset.text||'';if(!t){pixelStatus.textContent='أنشئ الرسم أولًا.';return;}try{await navigator.clipboard.writeText(t);pixelStatus.textContent='تم نسخ الرسم المصغر بنجاح ✅';}catch(_){pixelStatus.textContent='تعذّر النسخ التلقائي في هذا المتصفح.';}});makePixelMosaic();
+
+
+// SEIF name tools: musical decorations, frames, bubble alphabets, fit estimates and vibe emojis.
+(function(){
+ const $id=id=>document.getElementById(id);
+ const musicStyles={
+  music1:n=>'•.¸¸.• '+n+' •.¸¸.• 🎶',
+  music2:n=>'▌│█║▌║ '+n+' ║▌║█│▌ 🔊',
+  music3:n=>'♭♪ '+n+' ♪♭ 🎼'
+ };
+ const shieldStyles={
+  shield1:n=>'[̲̅'+Array.from(n).join('̲̅][̲̅')+'̲̅]',
+  shield2:n=>'❮❮ '+n+' ❯❯',
+  shield3:n=>'░▒▓█ '+n+' █▓▒░'
+ };
+ let currentMusic='music1',currentShield='shield2',currentBubble='circle';
+ function updateMusic(){const n=$id('musicName').value||'SEIF';$id('musicOutput').value=musicStyles[currentMusic](n);}
+ function updateShield(){const n=$id('shieldName').value||'SEIF';$id('shieldOutput').value=shieldStyles[currentShield](n);}
+ const bubbleMap={
+  circle:{upper:0x24B6,lower:0x24D0,digit:0x245F},
+  negative:{upper:0x1F150,lower:0x24D0,digit:0x2776},
+  squared:{upper:0x1F130,lower:0x1F130,digit:0x2460}
+ };
+ function bubbleChar(ch,mode){
+  const m=bubbleMap[mode],cp=ch.codePointAt(0);
+  if(cp>=65&&cp<=90){const n=cp-65;if(mode==='squared')return String.fromCodePoint(m.upper+n);return String.fromCodePoint(m.upper+n);}
+  if(cp>=97&&cp<=122){const n=cp-97;if(mode==='squared')return String.fromCodePoint(0x1F130+n);return String.fromCodePoint(m.lower+n);}
+  if(cp>=49&&cp<=57){if(mode==='circle')return String.fromCodePoint(0x2460+cp-49);if(mode==='negative')return String.fromCodePoint(0x2776+cp-49);return String.fromCodePoint(0x2460+cp-49);}
+  if(ch==='0')return mode==='circle'?'⓪':mode==='negative'?'⓿':'⓪';
+  return ch;
+ }
+ function updateBubble(){$id('bubbleOutput').value=Array.from($id('bubbleName').value).map(ch=>bubbleChar(ch,currentBubble)).join('');}
+ document.querySelectorAll('[data-music-style]').forEach(b=>b.addEventListener('click',()=>{currentMusic=b.dataset.musicStyle;updateMusic();}));
+ document.querySelectorAll('[data-shield]').forEach(b=>b.addEventListener('click',()=>{currentShield=b.dataset.shield;updateShield();}));
+ document.querySelectorAll('[data-bubble]').forEach(b=>b.addEventListener('click',()=>{currentBubble=b.dataset.bubble;updateBubble();}));
+ $id('musicName').addEventListener('input',updateMusic);$id('shieldName').addEventListener('input',updateShield);$id('bubbleName').addEventListener('input',updateBubble);
+ async function copyTool(inputId,statusId){const text=$id(inputId).value;try{await navigator.clipboard.writeText(text);$id(statusId).textContent='تم النسخ بنجاح ✅';}catch(e){$id(statusId).textContent='تعذّر النسخ التلقائي؛ حدّد النص وانسخه يدويًا.';}}
+ ['musicCopy','shieldCopy','bubbleCopy'].forEach((id,i)=>{const pairs=[['musicOutput','musicCopyStatus'],['shieldOutput','shieldCopyStatus'],['bubbleOutput','bubbleCopyStatus']];const p=pairs[i];const btn=$id(id);const status=document.createElement('p');status.className='notice';status.setAttribute('aria-live','polite');status.id=p[1];btn.insertAdjacentElement('afterend',status);btn.addEventListener('click',()=>copyTool(p[0],p[1]));});
+ const fit=$id('fitName');
+ function updateFit(){
+  const v=fit.value,chars=Array.from(v).length,units=v.length;
+  $id('fitCount').textContent=chars;$id('fitUnits').textContent=units;
+  const checks=[
+   ['PUBG (تقدير 12–14)',chars<=12?'مرجّح أن يناسب حد 12 محرفًا':chars<=14?'قد يناسب بعض الإصدارات (13–14 محرفًا)':'غالبًا طويل؛ جرّب اسمًا أقصر'],
+   ['Instagram Bio',chars<=150?'ضمن حد 150 محرفًا':'يتجاوز حد 150 محرفًا'],
+   ['TikTok display name',chars<=30?'ضمن حد 30 محرفًا':'يتجاوز حد 30 محرفًا']
+  ];
+  $id('fitResults').innerHTML=checks.map(([label,msg])=>'<p><strong>'+label+':</strong> '+msg+'</p>').join('');
+ }
+ fit.addEventListener('input',updateFit);
+ const vibes={
+  happy:'😊 ✨ 🌈 💚 🎉 😄 🫶',
+  love:'❤️ 💕 🥰 💌 🌹 💖 🫶',
+  fire:'🔥 ⚔️ 💪 👑 ⚡ 🐉 🦁',
+  calm:'🌙 ☁️ 🩵 🕊️ 🌊 ✨ 🪷',
+  creative:'🎨 🪄 🌈 💡 🦋 ✨ 🎭',
+  aries:'♈ 🔥 ⚡ 💪 🦁 👑',taurus:'♉ 🌿 🌷 🍃 💚 🐂',
+  gemini:'♊ 🦋 💬 ✨ 🎭 🌟',cancer:'♋ 🌙 🌊 🩵 🐚 💗',
+  leo:'♌ 👑 ☀️ 🔥 🦁 ✨',virgo:'♍ 🌿 🤍 📚 🍃 ✨',
+  libra:'♎ ⚖️ 🌸 💗 🕊️ ✨',scorpio:'♏ 🦂 🌑 🔥 🖤 ⚡',
+  sagittarius:'♐ 🏹 🌍 ✈️ 🔥 🌠',capricorn:'♑ 🏔️ 🐐 🖤 💎 🌟',
+  aquarius:'♒ 🌊 💡 ⚡ 🩵 🛸',pisces:'♓ 🐟 🌊 🌙 💜 🫧'
+ };
+ function updateVibe(){$id('vibeOutput').textContent=vibes[$id('vibeChoice').value]||vibes.happy;}
+ $id('vibeChoice').addEventListener('change',updateVibe);$id('vibeCopy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($id('vibeOutput').textContent);$id('vibeCopy').textContent='تم النسخ بنجاح ✅';setTimeout(()=>$id('vibeCopy').textContent='📋 نسخ التشكيلة',1600);}catch(e){$id('vibeOutput').focus();}});
+ updateMusic();updateShield();updateBubble();updateFit();updateVibe();
+})();
+
+// Emoji-specific micro-sounds using Web Audio only; no external audio downloads.
+(function(){
+ const AudioCtx=window.AudioContext||window.webkitAudioContext;
+ function playEmojiSound(emoji){
+  if(!AudioCtx)return;
+  try{
+   const ctx=new AudioCtx(),now=ctx.currentTime;
+   const tone=(freq,start,duration,type='sine',gain=.07,endFreq=freq)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,now+start);o.frequency.exponentialRampToValueAtTime(Math.max(1,endFreq),now+start+duration);g.gain.setValueAtTime(.0001,now+start);g.gain.exponentialRampToValueAtTime(gain,now+start+.012);g.gain.exponentialRampToValueAtTime(.0001,now+start+duration);o.connect(g);g.connect(ctx.destination);o.start(now+start);o.stop(now+start+duration+.02);
+   };
+   if(/😂|🤣|😆|😹/.test(emoji)){tone(620,0,.09,'triangle',.055,920);tone(780,.1,.12,'triangle',.05,520);}
+   else if(/🔥|💥|💨|⚡/.test(emoji)){tone(700,0,.16,'sawtooth',.045,95);}
+   else if(/❤️|💕|💖|💗|💘|💓/.test(emoji)){tone(95,0,.12,'sine',.09,58);tone(82,.17,.13,'sine',.075,52);}
+   else if(/⚔️|🗡️|🛡️/.test(emoji)){tone(1050,0,.08,'sawtooth',.06,260);tone(420,.07,.11,'triangle',.04,110);}
+   else if(/🐱|🐈|😺|😸/.test(emoji)){tone(520,0,.11,'sine',.055,780);tone(780,.12,.13,'sine',.05,590);}
+   else if(/🎵|🎶|🎼|🎧|🔊/.test(emoji)){tone(660,0,.11,'sine',.05,880);tone(880,.12,.14,'sine',.05,990);}
+   else {tone(520,0,.08,'sine',.04,720);}
+   setTimeout(()=>ctx.close().catch(()=>{}),600);
+  }catch(_){}
+ }
+ document.addEventListener('click',e=>{
+  const el=e.target.closest('.card,[data-emoji],.quick-kao-item,[data-motion-emoji]');
+  if(!el)return;
+  const txt=(el.innerText||el.textContent||'').trim().slice(0,30);
+  const match=txt.match(/😂|🤣|😆|😹|🔥|💥|💨|⚡|❤️|💕|💖|💗|💘|💓|⚔️|🗡️|🛡️|🐱|🐈|😺|😸|🎵|🎶|🎼|🎧|🔊|😊|✨|⭐|💫|🦋|🌙/u);
+  if(match)playEmojiSound(match[0]);
+ });
+})();
 
 render();
 })();
