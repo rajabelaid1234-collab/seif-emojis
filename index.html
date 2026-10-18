@@ -55,13 +55,19 @@ button{touch-action:manipulation;min-height:42px}
 }
 
 .big-art-panel{width:100%;max-width:100%;overflow:hidden}
-.big-art-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
-.big-art-item{width:100%;min-width:0;background:#080d1b;border:1px solid #4d5b80;border-radius:18px;padding:18px;overflow:hidden}
-.big-art-item h3{margin:0 0 14px;color:#b9f7ee;font-size:1.15rem}
-.big-art-pre{display:block;width:100%;max-width:100%;min-height:180px;max-height:650px;overflow:auto;white-space:pre;word-break:normal;overflow-wrap:normal;text-align:left;direction:ltr;unicode-bidi:plaintext;font-family:Consolas,"DejaVu Sans Mono","Courier New",monospace;font-size:clamp(14px,1.45vw,20px);line-height:1.28;letter-spacing:0;background:#030712;color:#f5f7ff;border:1px solid #303c5a;border-radius:12px;padding:18px;margin:0}
+.big-art-group{margin:22px 0 28px}
+.big-art-group h3{margin:0 0 8px;color:#b9f7ee;font-size:1.25rem}
+.big-art-group-note{margin:0 0 14px;color:var(--muted,#aab3c5)}
+.big-art-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));align-items:start;gap:16px}
+.big-art-grid.large-art-grid{grid-template-columns:minmax(0,1fr)}
+.big-art-item{width:100%;min-width:0;background:#080d1b;border:1px solid #4d5b80;border-radius:18px;padding:16px;overflow:hidden}
+.big-art-item h4{margin:0 0 12px;color:#b9f7ee;font-size:1.05rem}
+.big-art-pre{display:block;width:100%;max-width:100%;min-height:0;max-height:330px;overflow:auto;white-space:pre;word-break:normal;overflow-wrap:normal;text-align:left;direction:ltr;unicode-bidi:plaintext;font-family:Consolas,"DejaVu Sans Mono","Courier New",monospace;font-size:clamp(12px,1.15vw,17px);line-height:1.22;letter-spacing:0;background:#030712;color:#f5f7ff;border:1px solid #303c5a;border-radius:12px;padding:14px;margin:0}
+.large-art-grid .big-art-item{padding:20px}
+.large-art-grid .big-art-pre{min-height:220px;max-height:650px;font-size:clamp(15px,1.55vw,22px);line-height:1.3;padding:20px}
 .big-art-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 .big-art-actions button{min-width:130px}
-@media(max-width:650px){.big-art-item{padding:10px}.big-art-pre{font-size:14px;line-height:1.2;padding:12px;max-height:500px}.big-art-actions button{flex:1}}
+@media(max-width:650px){.big-art-grid{grid-template-columns:minmax(0,1fr)}.big-art-item,.large-art-grid .big-art-item{padding:10px}.big-art-pre{font-size:13px;line-height:1.2;padding:12px;max-height:280px}.large-art-grid .big-art-pre{font-size:15px;max-height:500px;padding:14px}.big-art-actions button{flex:1}}
 
 </style>
 </head>
@@ -111,10 +117,12 @@ button{touch-action:manipulation;min-height:42px}
 </section>
 
 <section id="bigArtGallery" class="section panel big-art-panel">
-<h2>🖼️ فن كبير — معرض الرسومات النصية العملاقة</h2>
-<p class="muted">خصصت للرسومات مساحة كاملة بعرض الموقع. كل رسمة تظهر في لوحة كبيرة مستقلة، مع الحفاظ على المسافات والأسطر. اسحب داخل اللوحة أفقيًا أو عموديًا إذا كانت الرسمة ضخمة، واضغط نسخ للحصول عليها كاملة.</p>
+<h2>🖼️ معرض الفن النصي — كل رسمة بحجم يناسبها</h2>
+<p class="muted">الرسومات الصغيرة والمتوسطة مرتبة في بطاقات متناسقة، أما الرسومات الكبيرة فلها قسم مستقل بعرض الصفحة. حافظنا على المسافات والأسطر الأصلية، ويمكنك تكبير أي لوحة ونسخها كاملة.</p>
 <div class="bar"><input id="bigArtSearch" placeholder="🔎 ابحث عن قطة أو قلب أو نجوم أو شخصية..."><button id="bigArtSize">🔎 تكبير الخط</button><button id="bigArtCopyAll" class="primary">📋 نسخ كل الرسومات</button></div>
-<div id="bigArtGrid" class="big-art-grid"></div><p id="bigArtNotice" class="notice"></p>
+<div class="big-art-group"><h3>✨ رسومات صغيرة ومتوسطة</h3><p class="big-art-group-note">بطاقات أصغر ومنظمة — كل رسمة تأخذ المساحة التي تحتاجها.</p><div id="smallArtGrid" class="big-art-grid"></div></div>
+<div class="big-art-group"><h3>🖼️ الفن الكبير — مساحة مستقلة</h3><p class="big-art-group-note">كل رسمة كبيرة تظهر وحدها بعرض الصفحة حتى تكون أوضح.</p><div id="bigArtGrid" class="big-art-grid large-art-grid"></div></div>
+<p id="bigArtNotice" class="notice"></p>
 </section>
 
 <section id="imageAscii" class="section panel"><h2>🖼️ حوّل صورتك إلى رسمة بالحروف الدقيقة</h2><p class="muted">ارفع صورة، وسيحوّلها الموقع إلى لوحة من الحروف والرموز الصغيرة. تتم المعالجة داخل متصفحك ولا تُرفع الصورة إلى الموقع.</p><div class="bar"><input id="asciiFile" type="file" accept="image/*"></div><div class="toolgrid"><div class="toolcard"><label for="asciiWidth">دقة الرسم — عدد الحروف بالعرض: <b id="asciiWidthVal">420</b></label><input class="range" id="asciiWidth" type="range" min="100" max="700" value="420"><p class="muted small">الدقة الأعلى تعطي تفاصيل أكثر، لكن النص سيكون أطول. للصور البعيدة جرّب تكبير الموضوع أولًا.</p><label for="asciiZoom">تكبير الشخص أو العنصر البعيد: <b id="asciiZoomVal">1.0×</b></label><input class="range" id="asciiZoom" type="range" min="1" max="3" step="0.1" value="1"><p class="muted small">يكبّر مركز الصورة لملء مساحة الحروف؛ إذا كان الشخص على طرف الصورة، قصّ الصورة أولًا قبل رفعها.</p><label for="asciiContrast">وضوح التفاصيل: <b id="asciiContrastVal">1.35</b></label><input class="range" id="asciiContrast" type="range" min="0.7" max="2.2" step="0.05" value="1.35"><label for="asciiBright">الإضاءة: <b id="asciiBrightVal">1.25</b></label><input class="range" id="asciiBright" type="range" min="0.6" max="1.5" step="0.05" value="1.25"><label for="asciiSharp">إبراز الحواف: <b id="asciiSharpVal">0.5</b></label><input class="range" id="asciiSharp" type="range" min="0" max="1.5" step="0.1" value="0.5"><label for="asciiInvert" style="display:flex;align-items:center;gap:12px;margin-top:18px;padding:14px 16px;border:2px solid #a855f7;border-radius:14px;background:linear-gradient(135deg,#24113d,#111827);color:#fff;font-weight:800;box-shadow:0 0 18px #a855f755;cursor:pointer"><input id="asciiInvert" type="checkbox" checked disabled aria-label="عكس الألوان مفعّل دائمًا" style="width:24px;height:24px;accent-color:#d946ef;flex-shrink:0"><span>🌑 عكس الألوان — تأثير بارز مثل فيلم الرعب<br><small style="font-weight:400;opacity:.9">يعكس الفاتح والداكن لإظهار النتيجة بشكل درامي</small></span></label></div><div class="toolcard"><label for="asciiChars">نمط الحروف والرموز</label><select id="asciiChars" style="width:100%"><option value="@%#*+=-:. ">تفاصيل كثيفة — أفضل للوجوه</option><option value="MWNXK0Okxdolc:,. ">حروف وأرقام</option><option value="█▓▒░ ">مربعات</option><option value="♥♡♦♣♠•· ">قلوب ورموز</option><option value="♥♦♣♠●◆■▲※+ ">رموز كثيفة</option><option value="♥♡✿❀★☆◆◇●○ ">قلوب ونجوم وزهور</option></select><p class="muted small">لأفضل نتيجة للصور الفوتوغرافية: استخدم «تفاصيل كثيفة — أفضل للوجوه»، ودقة 420–600، ثم عدّل الإضاءة والتباين حسب الصورة.</p></div></div><div id="asciiStatus" class="notice"></div><div class="actions"><button id="asciiConvert" class="primary">✨ حوّل الصورة إلى حروف</button><button id="asciiCopy" type="button">📋 نسخ الحروف</button><button id="asciiDownload" type="button">⬇ تنزيل TXT</button><button id="asciiImageDownload" type="button">🖼️ تنزيل صورة الحروف بالألوان</button></div><div id="asciiOutput" class="preview art" style="font-size:6px;line-height:1;white-space:pre;max-height:65vh;overflow:auto;direction:ltr;text-align:left;unicode-bidi:plaintext"></div><h3>🎨 تحويل الصورة إلى لوحة فنية</h3><p class="muted small">اختر تأثيرًا فنيًا لإنشاء نسخة مرسومة من صورتك الأصلية.</p><div class="bar"><label for="artStyle">أسلوب الرسم</label><select id="artStyle"><option value="pencil">✏️ رسم بالقلم الرصاص — الافتراضي</option><option value="pencilPro">✏️ قلم رصاص احترافي — خطوط وتظليل</option><option value="oil">🖌️ رسم زيتي</option><option value="watercolor">🎨 ألوان مائية</option><option value="cartoon">🌈 رسم كرتوني</option><option value="vintage">🖼️ ألوان كلاسيكية</option></select><button id="artApply" class="primary">✨ أنشئ اللوحة الفنية</button></div><canvas id="artCanvas" style="display:block;width:100%;height:auto;max-height:65vh;object-fit:contain;background:#fff;border-radius:12px"></canvas><div class="actions"><button id="artDownload" class="primary">⬇ تنزيل اللوحة الفنية PNG</button></div><p class="muted small">تأثيرات فنية تُطبّق داخل المتصفح؛ النتيجة تقريبية وليست معالجة ذكاء اصطناعي احترافية.</p><canvas id="asciiCanvas" hidden></canvas></section>
@@ -390,23 +398,40 @@ const kaoBigArt=[
 kaoBase.push(...kaoBigArt);
 
 let bigArtZoom=0;
+function bigArtIsLarge(x){
+ const text=String(x[2]||'');
+ const lines=text.split('\n');
+ const maxLine=Math.max(0,...lines.map(line=>[...line].length));
+ return lines.length>=5 || text.length>=115 || maxLine>=38;
+}
 function renderBigArt(){
  const q=$('bigArtSearch').value.trim().toLowerCase();
- const list=kaoBigArt.filter(x=>(x[1]+' '+x[2]).toLowerCase().includes(q));
- $('bigArtGrid').innerHTML=list.map((x,i)=>'<article class="big-art-item"><h3>'+esc(x[1])+'</h3><pre class="big-art-pre" style="font-size:calc(clamp(14px,1.45vw,20px) + '+bigArtZoom+'px)">'+esc(x[2])+'</pre><div class="big-art-actions"><button data-big-copy="'+i+'" class="primary">📋 نسخ الرسمة كاملة</button><button data-big-expand="'+i+'">↔ تكبير مساحة الرسمة</button></div></article>').join('');
- $('bigArtNotice').textContent='عدد الرسومات: '+list.length+' — كل لوحة قابلة للتمرير والنسخ.';
+ const list=kaoBigArt.map((x,index)=>({...{x,index},large:bigArtIsLarge(x)}))
+  .filter(o=>(o.x[1]+' '+o.x[2]).toLowerCase().includes(q));
+ function card(o){
+  const x=o.x, i=o.index, size=o.large?'large':'small';
+  const base=o.large?22:17;
+  return '<article class="big-art-item '+size+'-art-item"><h4>'+esc(x[1])+'</h4><pre class="big-art-pre" style="font-size:calc(clamp('+(o.large?'15px':'12px')+','+(o.large?'1.55vw,22px':'1.15vw,17px')+') + '+bigArtZoom+'px)">'+esc(x[2])+'</pre><div class="big-art-actions"><button data-big-copy="'+i+'" class="primary">📋 نسخ الرسمة كاملة</button><button data-big-expand="'+i+'">↔ تكبير مساحة الرسمة</button></div></article>';
+ }
+ const small=list.filter(o=>!o.large), large=list.filter(o=>o.large);
+ $('smallArtGrid').innerHTML=small.map(card).join('');
+ $('bigArtGrid').innerHTML=large.map(card).join('');
+ $('smallArtGrid').closest('.big-art-group').style.display=small.length?'':'none';
+ $('bigArtGrid').closest('.big-art-group').style.display=large.length?'':'none';
+ $('bigArtNotice').textContent='عدد الرسومات: '+list.length+' — صغيرة/متوسطة: '+small.length+'، كبيرة: '+large.length+'.';
 }
-$('bigArtGrid').addEventListener('click',e=>{
+$('bigArtGrid').addEventListener('click',handleBigArtClick);
+$('smallArtGrid').addEventListener('click',handleBigArtClick);
+function handleBigArtClick(e){
  const c=e.target.closest('[data-big-copy]');
- if(c){const q=$('bigArtSearch').value.trim().toLowerCase(),list=kaoBigArt.filter(x=>(x[1]+' '+x[2]).toLowerCase().includes(q));if(list[+c.dataset.bigCopy])copy(list[+c.dataset.bigCopy][2],'bigArtNotice');return;}
+ if(c){const item=kaoBigArt[+c.dataset.bigCopy];if(item)copy(item[2],'bigArtNotice');return;}
  const b=e.target.closest('[data-big-expand]');
- if(b){const pre=b.closest('.big-art-item').querySelector('.big-art-pre');pre.style.maxHeight=pre.style.maxHeight==='none'?'650px':'none';b.textContent=pre.style.maxHeight==='none'?'↙ تصغير اللوحة':'↔ تكبير مساحة الرسمة';}
-});
+ if(b){const pre=b.closest('.big-art-item').querySelector('.big-art-pre');pre.style.maxHeight=pre.style.maxHeight==='none'?(b.closest('.large-art-item')?'650px':'330px'):'none';b.textContent=pre.style.maxHeight==='none'?'↙ تصغير اللوحة':'↔ تكبير مساحة الرسمة';}
+}
 $('bigArtSearch').addEventListener('input',renderBigArt);
-$('bigArtSize').addEventListener('click',()=>{bigArtZoom=bigArtZoom>=12?0:bigArtZoom+3;document.querySelectorAll('.big-art-pre').forEach(p=>p.style.fontSize='calc(clamp(14px,1.45vw,20px) + '+bigArtZoom+'px)');$('bigArtSize').textContent=bigArtZoom>=12?'↩ إعادة حجم الخط':'🔎 تكبير الخط';});
+$('bigArtSize').addEventListener('click',()=>{bigArtZoom=bigArtZoom>=12?0:bigArtZoom+3;document.querySelectorAll('.big-art-pre').forEach(p=>p.style.fontSize='calc(clamp('+(p.closest('.large-art-item')?'15px':'12px')+','+(p.closest('.large-art-item')?'1.55vw,22px':'1.15vw,17px')+') + '+bigArtZoom+'px)');$('bigArtSize').textContent=bigArtZoom>=12?'↩ إعادة حجم الخط':'🔎 تكبير الخط';});
 $('bigArtCopyAll').addEventListener('click',()=>copy(kaoBigArt.map(x=>x[2]).join('\n\n────────────────────────\n\n'),'bigArtNotice'));
 renderBigArt();
-
 
 const kaoCats=['الكل','Love','Dividers','Memes','Frames','Popular Emoji','Popular Symbols','Popular Emoticons','Popular Characters','Popular Text Art','فن كبير','رومانسي','مضحك','مرعب','قطط وحيوانات','قتال وأكشن','خيالي','لطيف','حركات','المفضلة','إضافاتي'];
 let kaoCat='الكل',kaoFav=false;
