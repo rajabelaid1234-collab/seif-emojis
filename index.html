@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0d1020">
+<meta name="theme-color" content="#0d1020">\n<meta name="description" content="SEIF EMOJIS: زخرفة النصوص، وجوه كاوموجي وإيموجيات ورموز وفنون نصية. مجاني وسهل النسخ إلى واتساب وبقية التطبيقات.">\n<meta property="og:title" content="SEIF EMOJIS — زخرفة وإيموجيات">\n<meta property="og:description" content="وجوه ورموز وزخرفة نصوص مجانًا، بنقرة واحدة.">
 <link rel="icon" type="image/jpeg" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10">
 <link rel="apple-touch-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,7 +73,7 @@ button{touch-action:manipulation;min-height:42px}
 
 
 /* Floating mobile kaomoji picker */
-#quickKaoButton{position:fixed;right:18px;bottom:18px;z-index:1000;border:0;border-radius:999px;padding:14px 18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:800;box-shadow:0 8px 28px #0008}
+#quickKaoButton{position:fixed;right:18px;bottom:18px;z-index:1000;touch-action:none;user-select:none;border:0;border-radius:999px;padding:14px 18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:800;box-shadow:0 8px 28px #0008}
 #quickKaoPanel{position:fixed;right:12px;bottom:82px;z-index:1001;width:min(390px,calc(100vw - 24px));max-height:min(72vh,620px);overflow:hidden;background:#11182b;border:1px solid #7c6be8;border-radius:18px;box-shadow:0 18px 50px #000b;display:none;direction:rtl}
 #quickKaoPanel.open{display:flex;flex-direction:column}
 #quickKaoHeader{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px;border-bottom:1px solid var(--line)}
@@ -91,7 +91,7 @@ button{touch-action:manipulation;min-height:42px}
 </head>
 <body><main class="wrap">
 <header><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10" alt="أيقونة SEIF EMOJIS" style="width:104px;height:104px;object-fit:cover;border-radius:26px;border:2px solid #48e2c2;box-shadow:0 8px 28px #0007;margin:0 auto 12px;display:block" onerror="this.style.display='none'"><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
-<section class="panel" id="keyboardInstall"><h2>📱 لوحة مفاتيح SEIF EMOJIS</h2><p class="muted">هدفنا أن تختار الوجه في لوحة المفاتيح فيُدرج مباشرةً داخل واتساب وبقية التطبيقات، دون نسخ ولصق. هذه ميزة تحتاج إلى تطبيق لوحة مفاتيح مستقل؛ زر الموقع وحده لا يستطيع تفعيلها.</p><div class="toolgrid"><div class="toolcard"><h3>🤖 Android</h3><p class="muted small">سنبدأ بنسخة Android حقيقية. بعد تجهيز ملف التثبيت APK، نزّله من هذه الصفحة، وافتح الملف، واسمح للمتصفح أو مدير الملفات بتثبيت التطبيقات من هذا المصدر إذا طلب Android ذلك. ثم افتح التطبيق واتبع خطوات تفعيل لوحة المفاتيح من إعدادات النظام.</p><button type="button" class="primary" id="androidKeyboardGuide">📥 تعليمات Android</button><p class="muted small" id="androidKeyboardNotice" hidden>ملف APK لم يُنشر بعد؛ لن نعرض زر تنزيل وهميًا. يجب بناء تطبيق لوحة مفاتيح فعلي أولًا، ثم إضافة رابط ملفه هنا.</p></div><div class="toolcard"><h3>🍎 iPhone / iOS</h3><p class="muted small">تنبيه: لا توجد إعدادات تنزيل في Safari تسمح بتثبيت لوحة مفاتيح نظامية مباشرةً من موقع عادي. يلزم تطبيق iOS يحتوي على لوحة مفاتيح، ثم تثبيته بطريقة يدعمها النظام وإضافتها من الإعدادات.</p><button type="button" id="iphoneKeyboardGuide">ℹ️ كيف أثبّتها على iPhone؟</button><p class="muted small" id="iphoneKeyboardNotice" hidden>لا تحاول تعطيل حماية iPhone أو تثبيت ملفات مجهولة. سنوفّر تعليمات التثبيت المدعومة عندما تصبح نسخة iOS جاهزة للتوزيع.</p></div></div><p class="notice" id="keyboardInstallNotice" role="status" aria-live="polite"></p></section>
+<section class="panel" id="keyboardInstall"><h2 style="font-size:clamp(1.5rem,4vw,2rem)">📱 SEIF EMOJIS — لوحة مفاتيح Android</h2><p class="muted">وجوه ورموز في واتساب ويوتيوب وبقية التطبيقات. مجانًا وبخطوات قصيرة.</p><div class="toolgrid"><div class="toolcard" style="border:2px solid #48e2c2;padding:20px"><h3 style="font-size:1.35rem">🤖 Android</h3><p class="muted">تثبيت التطبيق ثم تفعيل لوحة SEIF. اسمح بالتثبيت من هذا المصدر إذا طلب الهاتف ذلك.</p><a id="androidDownloadButton" class="primary" href="https://github.com/rajabelaid1234-collab/seif-emojis/releases/latest/download/app-debug.apk" style="display:block;text-align:center;text-decoration:none;padding:16px;border-radius:14px;font-weight:800;font-size:1.2rem;margin:12px 0">📥 تنزيل Android APK</a><button type="button" id="androidKeyboardGuide">📋 خطوات التفعيل</button><p class="muted small" id="androidKeyboardNotice" hidden>بعد التثبيت: افتح التطبيق ← فعّل لوحة SEIF من الإعدادات ← اخترها عند الكتابة. إذا طلب Android السماح بالتثبيت، فعّل السماح لهذا المصدر فقط.</p></div><div class="toolcard"><h3>🍎 iPhone / iOS</h3><p class="muted small">تنبيه: لا توجد إعدادات تنزيل في Safari تسمح بتثبيت لوحة مفاتيح نظامية مباشرةً من موقع عادي. يلزم تطبيق iOS يحتوي على لوحة مفاتيح، ثم تثبيته بطريقة يدعمها النظام وإضافتها من الإعدادات.</p><button type="button" id="iphoneKeyboardGuide">ℹ️ كيف أثبّتها على iPhone؟</button><p class="muted small" id="iphoneKeyboardNotice" hidden>لا تحاول تعطيل حماية iPhone أو تثبيت ملفات مجهولة. سنوفّر تعليمات التثبيت المدعومة عندما تصبح نسخة iOS جاهزة للتوزيع.</p></div></div><p class="notice" id="keyboardInstallNotice" role="status" aria-live="polite"></p></section>
 <nav class="tabs">
 <button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="bigArtGallery">🖼️ فن كبير</button><button class="tab" data-tab="kaomojiLab">🎭 مصنع الإيموجيات</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button>
 </nav>
@@ -163,7 +163,7 @@ button{touch-action:manipulation;min-height:42px}
  </div>
  <div id="quickKaoGrid"></div><p id="quickKaoMessage">اضغط على أي وجه لنسخه ثم الصقه في أي تطبيق.</p>
 </div>
-<button id="quickKaoButton" type="button" aria-expanded="false">😊 إيموجيات</button>
+<div id="quickKaoControls" style="position:fixed;right:18px;bottom:70px;z-index:1002;display:none;gap:6px"><button id="quickKaoHide" type="button" style="background:#b4233c;padding:7px 10px">إخفاء ✕</button><button id="quickKaoMoveHelp" type="button" style="padding:7px 10px">↕ تحريك</button></div><button id="quickKaoButton" type="button" aria-expanded="false" title="اسحب لتحريك الزر، واضغط لفتح الوجوه">😊 إيموجيات</button>
 
 <script>
 (function(){
@@ -525,12 +525,44 @@ function quickKaoRender(){
  });
  if(!filtered.length){grid.innerHTML='<p class="muted">لا توجد نتائج. جرّب كلمة أخرى.</p>';}
 }
-$('quickKaoButton').addEventListener('click',()=>{
- const panel=$('quickKaoPanel');const opening=!panel.classList.contains('open');
- panel.classList.toggle('open',opening);$('quickKaoButton').setAttribute('aria-expanded',String(opening));
- if(opening){quickKaoRender();$('quickKaoSearch').focus();}
+// Draggable picker button. Hiding it keeps it hidden until this tab/session is closed.
+const quickButton=$('quickKaoButton'), quickControls=$('quickKaoControls');
+let quickBubbleHidden=sessionStorage.getItem('seifQuickBubbleHidden')==='1';
+if(quickBubbleHidden)quickButton.style.display='none';
+let dragState=null,dragMoved=false;
+quickButton.addEventListener('pointerdown',e=>{
+ dragMoved=false;const r=quickButton.getBoundingClientRect();
+ dragState={x:e.clientX,y:e.clientY,left:r.left,top:r.top};
+ try{quickButton.setPointerCapture(e.pointerId)}catch(_){}
 });
-$('quickKaoClose').addEventListener('click',()=>{$('quickKaoPanel').classList.remove('open');$('quickKaoButton').setAttribute('aria-expanded','false');});
+quickButton.addEventListener('pointermove',e=>{
+ if(!dragState)return;
+ const dx=e.clientX-dragState.x,dy=e.clientY-dragState.y;
+ if(Math.abs(dx)>5||Math.abs(dy)>5)dragMoved=true;
+ if(dragMoved){
+  quickButton.style.left=Math.max(0,Math.min(innerWidth-quickButton.offsetWidth,dragState.left+dx))+'px';
+  quickButton.style.top=Math.max(0,Math.min(innerHeight-quickButton.offsetHeight,dragState.top+dy))+'px';
+  quickButton.style.right='auto';quickButton.style.bottom='auto';
+  quickControls.style.left=quickButton.style.left;quickControls.style.top=Math.max(0,parseFloat(quickButton.style.top)-42)+'px';
+  quickControls.style.right='auto';quickControls.style.bottom='auto';
+ }
+});
+quickButton.addEventListener('pointerup',()=>{
+ dragState=null;
+ if(!dragMoved){
+  const panel=$('quickKaoPanel'),opening=!panel.classList.contains('open');
+  panel.classList.toggle('open',opening);quickButton.setAttribute('aria-expanded',String(opening));
+  quickControls.style.display=opening?'flex':'none';
+  if(opening){quickKaoRender();$('quickKaoSearch').focus();}
+ }
+});
+$('quickKaoHide').addEventListener('click',()=>{
+ quickButton.style.display='none';quickControls.style.display='none';
+ $('quickKaoPanel').classList.remove('open');sessionStorage.setItem('seifQuickBubbleHidden','1');
+});
+$('quickKaoMoveHelp').addEventListener('click',()=>{$('quickKaoMessage').textContent='اسحب زر 😊 إلى مكان لا يحجب الكتابة.';});
+
+$('quickKaoClose').addEventListener('click',()=>{$('quickKaoPanel').classList.remove('open');$('quickKaoButton').setAttribute('aria-expanded','false');quickControls.style.display='none';});
 $('quickKaoSearch').addEventListener('input',quickKaoRender);
 document.querySelectorAll('[data-qfilter]').forEach(b=>b.addEventListener('click',()=>{
  quickKaoFilter=b.dataset.qfilter;
