@@ -60,7 +60,7 @@ button{touch-action:manipulation;min-height:42px}
 <nav class="tabs">
 <button class="tab active" data-tab="fancy">🔤 زخرفة النص</button><button class="tab" data-tab="randomDecor">🎲 زخرفة عشوائية</button><button class="tab" data-tab="flip">🙃 قلب النص</button><button class="tab" data-tab="zalgo">〰️ Zalgo</button><button class="tab" data-tab="stack">📚 نص متراص</button><button class="tab" data-tab="big">🅰️ نص كبير</button><button class="tab" data-tab="library">🥰 الإيموجيات والرموز</button><button class="tab" data-tab="art">🎨 Text Art</button><button class="tab" data-tab="imageAscii">🖼️ صورة إلى حروف</button>
 </nav>
-<section id="fancy" class="section show panel"><h2>🔤 Fancy Text Generator — زخرفة النصوص</h2><div class="bar"><input id="fancyInput" value="My Text" placeholder="اكتب اسمك أو النص هنا"><button class="primary" id="fancyAll">نسخ النص المحدد</button></div><p class="muted small">يتعرّف الموقع تلقائيًا على العربية والإنجليزية: الإنجليزية تحصل على أنماط حروف إضافية، والعربية تحصل على إطارات وزخارف مناسبة مع الحفاظ على حروفها كما هي.</p><div id="fancyGrid" class="toolgrid"></div><p id="fancyNotice" class="notice"></p></section>
+<section id="fancy" class="section show panel"><h2>🔤 Fancy Text Generator — زخرفة النصوص</h2><div class="bar"><input id="fancyInput" value="My Text" placeholder="اكتب اسمك أو النص هنا"><button class="primary" id="fancyAll">نسخ النص المحدد</button></div><p class="muted small">اكتب بالعربية أو الإنجليزية أو بهما معًا؛ يتعرّف الموقع على اللغة تلقائيًا ويعرض زخارف مناسبة دون اختيار يدوي. العربية لها إطارات وزخارف خاصة، والإنجليزية لها أنماط Unicode مثل Bold وItalic وScript.</p><div id="fancyGrid" class="toolgrid"></div><p id="fancyNotice" class="notice"></p></section>
 <section id="randomDecor" class="section panel"><h2>🎲 زخرفة عشوائية للنصوص العربية والإنجليزية</h2><p class="muted">اكتب اسمك أو أي كلمة ثم اضغط «زخرفات عشوائية» لإنشاء 50 شكلًا مختلفًا. كل ضغطة تولّد تركيبات مختلفة من الإطارات والرموز والوجوه التعبيرية وZalgo.</p><div class="bar"><input id="randomDecorInput" placeholder="اكتب اسمك أو أي كلمة هنا"><button id="randomDecorMake" class="primary">🎲 زخرفات عشوائية</button></div><label class="compat-option" style="display:flex;gap:9px;align-items:center;margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:12px"><input id="legacyDecorMode" type="checkbox" style="width:20px;height:20px;flex-shrink:0"><span>🖥️ وضع التوافق مع الكمبيوتر القديم (رموز أبسط وأقل عرضة للمربعات)</span></label><div id="randomDecorGrid" class="toolgrid"></div><p id="randomDecorNotice" class="notice"></p></section>
 <section id="flip" class="section panel"><h2>🙃 Flip / Mirror Text — قلب وعكس النص</h2><div class="bar"><input id="flipInput" placeholder="اكتب النص هنا"><button id="flipCopy" class="primary">نسخ الناتج</button></div><div class="two"><div><p class="muted">مقلوب من الأسفل للأعلى</p><textarea id="flipOut" class="output" readonly></textarea></div><div><p class="muted">معكوس أفقيًا تقريبًا</p><textarea id="mirrorOut" class="output" readonly></textarea></div></div></section>
 <section id="zalgo" class="section panel"><h2>〰️ Zalgo Text — النص المرعب والمشوّش</h2><div class="bar"><input id="zalgoInput" placeholder="اكتب شيئًا ليصبح مرعبًا..."><button id="zalgoCopy" class="primary">نسخ Zalgo</button></div><label>قوة التأثير: <b id="zVal">8</b></label><input class="range" id="zLevel" type="range" min="1" max="24" value="8"><div id="zalgoOut" class="preview"></div><p class="muted small">تمت إضافة خطوط بديلة للرموز والإيموجيات لتحسين ظهورها على الكمبيوتر والهاتف والآيباد. إذا بقيت بعض الرموز مربعات، فقد يكون نظام التشغيل أو التطبيق لا يدعمها بعد؛ ويمكن أن تختلف الرموز المنسوخة حسب الخطوط المتوفرة.</p></section>
@@ -81,43 +81,60 @@ const styles=[
 ['Bold','𝗔𝗯𝗰 𝟭𝟮𝟯',0x1D400,0x1D41A],['Italic','𝘈𝘣𝘤',0x1D434,0x1D44E],['Bold Italic','𝑨𝒃𝒄',0x1D468,0x1D482],['Script','𝒜𝒷𝒸',0x1D49C,0x1D4B6],['Bold Script','𝓐𝓫𝓬',0x1D4D0,0x1D4EA],['Fraktur','𝔄𝔟𝔠',0x1D504,0x1D51E],['Double-struck','𝔸𝕓𝕔',0x1D538,0x1D552],['Sans Serif','𝖠𝖻𝖼',0x1D5A0,0x1D5BA],['Sans Bold','𝗔𝗯𝗰',0x1D5D4,0x1D5EE],['Sans Italic','𝘈𝘣𝘤',0x1D608,0x1D622],['Monospace','𝙰𝚋𝚌',0x1D670,0x1D68A]];
 function mapStyle(s,upper,lower,digits){return Array.from(s).map(ch=>{let n=ch.codePointAt(0);if(n>=65&&n<=90)return String.fromCodePoint(upper+n-65);if(n>=97&&n<=122)return String.fromCodePoint(lower+n-97);if(digits!==undefined&&n>=48&&n<=57)return String.fromCodePoint(digits+n-48);if(upper===0x1D400&&n===67)return 'ℂ';if(upper===0x1D400&&n===72)return 'ℍ';if(upper===0x1D400&&n===78)return 'ℕ';if(upper===0x1D400&&n===80)return 'ℙ';if(upper===0x1D400&&n===81)return 'ℚ';if(upper===0x1D400&&n===82)return 'ℝ';if(upper===0x1D400&&n===90)return 'ℤ';return ch}).join('')}
 function fancyRender(){
- let value=$('fancyInput').value||'My Text';
+ const value=$('fancyInput').value||'My Text';
  const grid=$('fancyGrid');grid.innerHTML='';
- const isArabic=/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(value);
+ const hasArabic=/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(value);
+ const hasLatin=/[A-Za-z]/.test(value);
+ const isMixed=hasArabic&&hasLatin;
+ function card(name,out,group){const d=document.createElement('div');d.className='toolcard';const h=document.createElement('h3');h.textContent=name;const p=document.createElement('div');p.className='preview';p.textContent=out;const b=document.createElement('button');b.className='primary';b.textContent='📋 نسخ';b.onclick=()=>copy(out,'fancyNotice');d.append(h,p,b);grid.append(d);}
  const arabicStyles=[
- ['★彡','★彡 ',' 彡★'],['قلوب','♡ ',' ♡'],['إطار ملكي','꧁༺ ',' ༻꧂'],['أقواس','『 ',' 』'],['مربعات','【 ',' 】'],
- ['نجوم','✦ ',' ✦'],['قلوب مزدوجة','♥ ',' ♥'],['ورود','❀ ',' ❀'],['تاج','♛ ',' ♛'],['جناحان','乂 ',' 乂'],
- ['لمعة','✧･ﾟ: ',' :･ﾟ✧'],['قمر','☾⋆ ',' ⋆☽'],['خطوط','━━ ',' ━━'],['نقاط','•° ',' °•'],['نجمة ذهبية','✯ ',' ✯'],
- ['زخرفة 1','༺♡ ',' ♡༻'],['زخرفة 2','𓆩♡𓆪 ',' 𓆩♡𓆪'],['زخرفة 3','ღ ',' ღ'],['زخرفة 4','彡 ',' 彡'],['زخرفة 5','⫷ ',' ⫸'],
- ['زخرفة 6','◥꧁ ',' ꧂◤'],['زخرفة 7','༄˖°. ',' .°˖༄'],['زخرفة 8','✿༄ ',' ༄✿'],['زخرفة 9','♕༺ ',' ༻♕'],['زخرفة 10','•.¸♡ ',' ♡¸.•'],
- ['زخرفة 11','╰☆☆ ',' ☆☆╯'],['زخرفة 12','｡･:*:･ﾟ★,｡･:*:･ﾟ☆ ',' ☆ﾟ･:*:･｡,★ﾟ･:*:･｡'],['زخرفة 13','ミ★ ',' ★彡'],['زخرفة 14','《 ',' 》'],['زخرفة 15','〈♡〉 ',' 〈♡〉'],
- ['زخرفة 16','༒ ',' ༒'],['زخرفة 17','♬ ',' ♬'],['زخرفة 18','☁ ',' ☁'],['زخرفة 19','⚜ ',' ⚜'],['زخرفة 20','♡⃝ ',' ♡⃝'],
- ['زخرفة 21','(っ◔◡◔)っ ',' '],['زخرفة 22','*~ ',' ~*'],['زخرفة 23','>>> ',' <<<'],['زخرفة 24','[= ',' =]'],['زخرفة 25','<3 ',' <3'],
- ['زخرفة 26','+·.·´¯·.·+ ',' +·.·´¯·.·+'],['زخرفة 27','╔══ ',' ══╗'],['زخرفة 28','〔 ',' 〕'],['زخرفة 29','◈ ',' ◈'],['زخرفة 30','☯ ',' ☯']
+ ['إطار ملكي','꧁༺ ',' ༻꧂'],['قلوب','♡ ',' ♡'],['نجوم','✦ ',' ✦'],['أقواس','『 ',' 』'],['مربعات','【 ',' 】'],
+ ['ورود','❀ ',' ❀'],['تاج','♛ ',' ♛'],['جناحان','乂 ',' 乂'],['لمعة','✧･ﾟ: ',' :･ﾟ✧'],['قمر','☾⋆ ',' ⋆☽'],
+ ['خطوط','━━ ',' ━━'],['نقاط','•° ',' °•'],['نجمة ذهبية','✯ ',' ✯'],['قلوب وزخرفة','༺♡ ',' ♡༻'],['جناحا قلب','𓆩♡𓆪 ',' 𓆩♡𓆪'],
+ ['رمز الحب','ღ ',' ღ'],['أسهم','⫷ ',' ⫸'],['زخرفة ملكية','◥꧁ ',' ꧂◤'],['زخرفة زهور','✿༄ ',' ༄✿'],['تاج ملكي','♕༺ ',' ༻♕'],
+ ['قلوب ناعمة','•.¸♡ ',' ♡¸.•'],['نجوم مزدوجة','╰☆☆ ',' ☆☆╯'],['نجوم لامعة','ミ★ ',' ★彡'],['أقواس مزخرفة','《 ',' 》'],
+ ['زخرفة داكنة','༒ ',' ༒'],['موسيقى','♬ ',' ♬'],['سحاب','☁ ',' ☁'],['زخرفة كلاسيكية','⚜ ',' ⚜'],['دوائر قلب','♡⃝ ',' ♡⃝'],
+ ['وجهان','(っ◔◡◔)っ ',' '],['موجات','*~ ',' ~*'],['أسهم مزدوجة','>>> ',' <<<'],['إطار بسيط','〔 ',' 〕'],
+ ['زخرفة هندسية','◈ ',' ◈'],['رمز التوازن','☯ ',' ☯'],['إطار مربع','╔══ ',' ══╗'],['زخرفة قلوب صغيرة','♥ » ',' « ♥']
  ];
- function card(name,out){const d=document.createElement('div');d.className='toolcard';const h=document.createElement('h3');h.textContent=name;const p=document.createElement('div');p.className='preview';p.textContent=out;const b=document.createElement('button');b.className='primary';b.textContent='📋 نسخ';b.onclick=()=>copy(out,'fancyNotice');d.append(h,p,b);grid.append(d);}
- if(isArabic){
-   arabicStyles.forEach(([name,left,right])=>card(name,left+value+right));
-   const variants=[value.split('').join(' '),Array.from(value).join('ـ'),value.replace(/ /g,' • '),value.replace(/ /g,' ♡ '),value.replace(/ /g,' ✦ '),value.replace(/ /g,' ـ ')];
-   ['حروف متباعدة','تمديد بسيط','فواصل نقاط','فواصل قلوب','فواصل نجوم','فواصل عربية'].forEach((name,i)=>card(name,variants[i]));
-   $('fancyNotice').textContent='تم التعرف على النص العربي تلقائيًا وعرض 36 شكلًا. بعض الرموز تعتمد على خطوط جهازك.';
+ const arabicVariants=[
+ ['حروف متباعدة',Array.from(value).join(' ')],
+ ['تمديد الحروف',Array.from(value).join('ـ')],
+ ['فواصل نقاط',value.replace(/ /g,' • ')],
+ ['فواصل قلوب',value.replace(/ /g,' ♡ ')],
+ ['فواصل نجوم',value.replace(/ /g,' ✦ ')],
+ ['فواصل عربية',value.replace(/ /g,' ـ ')],
+ ['زخرفة متكررة',value+' ۞ '+value],
+ ['قوسان عربيان','﴿ '+value+' ﴾']
+ ];
+ const englishStyles=styles.map(([name,sample,u,l])=>[name,x=>mapStyle(x,u,l,name==='Bold'?0x1D7CE:undefined)]);
+ const extra=[
+ ['Small Caps',x=>x.replace(/[a-z]/g,c=>({'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ꜰ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'ꜱ','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ'}[c]||c))],
+ ['Full Width',x=>Array.from(x).map(c=>{const n=c.charCodeAt(0);return n>=33&&n<=126?String.fromCharCode(n+0xFEE0):c}).join('')],
+ ['Underline',x=>Array.from(x).map(c=>c===' '?' ':c+'̲').join('')],
+ ['Strike',x=>Array.from(x).map(c=>c===' '?' ':c+'̶').join('')],
+ ['Dot Above',x=>Array.from(x).map(c=>c===' '?' ':c+'̇').join('')],
+ ['Parentheses',x=>'（ '+x+' ）'],['Stars',x=>'✦ '+x+' ✦'],['Hearts',x=>'♡ '+x+' ♡'],['Brackets',x=>'【 '+x+' 】'],['Arrow Style',x=>'➤ '+x+' ◄'],
+ ['Circled',x=>Array.from(x).map(ch=>{const n=ch.codePointAt(0);if(n>=65&&n<=90)return String.fromCodePoint(0x24B6+n-65);if(n>=97&&n<=122)return String.fromCodePoint(0x24D0+n-97);if(n>=49&&n<=57)return String.fromCodePoint(0x2460+n-49);if(n===48)return '⓪';return ch}).join('')],
+ ['Spaced',x=>Array.from(x).join(' ')],
+ ['Tiny Superscript',x=>x.replace(/[a-z0-9]/gi,c=>({'a':'ᵃ','b':'ᵇ','c':'ᶜ','d':'ᵈ','e':'ᵉ','f':'ᶠ','g':'ᵍ','h':'ʰ','i':'ⁱ','j':'ʲ','k':'ᵏ','l':'ˡ','m':'ᵐ','n':'ⁿ','o':'ᵒ','p':'ᵖ','r':'ʳ','s':'ˢ','t':'ᵗ','u':'ᵘ','v':'ᵛ','w':'ʷ','x':'ˣ','y':'ʸ','z':'ᶻ','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'}[c.toLowerCase()]||c))]
+ ];
+ if(hasArabic){
+   arabicStyles.forEach(([name,left,right])=>card(name,left+value+right,'ar'));
+   arabicVariants.forEach(([name,out])=>card(name,out,'ar'));
+   if(hasLatin){
+     englishStyles.forEach(([name,fn])=>card('مختلط • '+name,fn(value),'mixed'));
+     extra.forEach(([name,fn])=>card('مختلط • '+name,fn(value),'mixed'));
+     $('fancyNotice').textContent='اكتشف الموقع العربية والإنجليزية معًا، فاختار زخارف تحافظ على الحروف العربية وتحوّل الحروف اللاتينية تلقائيًا. عدد النتائج كبير؛ بعض الرموز يعتمد ظهورها على جهازك.';
+   }else{
+     $('fancyNotice').textContent='تم اكتشاف العربية تلقائيًا. هذه زخارف عربية مناسبة؛ لأن الحروف العربية لا تملك جميع بدائل Unicode المزخرفة المتاحة للإنجليزية.';
+   }
  }else{
-   styles.forEach(([name,sample,u,l])=>card(name,mapStyle(value,u,l,name==='Bold'?0x1D7CE:undefined)));
-   const extra=[
-    ['Small Caps',x=>x.replace(/[a-z]/g,c=>({'a':'ᴀ','b':'ʙ','c':'ᴄ','d':'ᴅ','e':'ᴇ','f':'ꜰ','g':'ɢ','h':'ʜ','i':'ɪ','j':'ᴊ','k':'ᴋ','l':'ʟ','m':'ᴍ','n':'ɴ','o':'ᴏ','p':'ᴘ','q':'ǫ','r':'ʀ','s':'ꜱ','t':'ᴛ','u':'ᴜ','v':'ᴠ','w':'ᴡ','x':'x','y':'ʏ','z':'ᴢ'}[c]||c))],
-    ['Full Width',x=>Array.from(x).map(c=>{let n=c.charCodeAt(0);return n>=33&&n<=126?String.fromCharCode(n+0xFEE0):c}).join('')],
-    ['Underline',x=>Array.from(x).map(c=>c===' '?' ':c+'̲').join('')],
-    ['Strike',x=>Array.from(x).map(c=>c===' '?' ':c+'̶').join('')],
-    ['Dot Above',x=>Array.from(x).map(c=>c===' '?' ':c+'̇').join('')],
-    ['Parentheses',x=>'（ '+x+' ）'],['Stars',x=>'✦ '+x+' ✦'],['Hearts',x=>'♡ '+x+' ♡'],['Brackets',x=>'【 '+x+' 】'],['Arrow Style',x=>'➤ '+x+' ◄']
-   ];
-   extra.forEach(([name,fn])=>card(name,fn(value)));
-   const circ=Array.from(value).map(ch=>{let n=ch.codePointAt(0);if(n>=65&&n<=90)return String.fromCodePoint(0x24B6+n-65);if(n>=97&&n<=122)return String.fromCodePoint(0x24D0+n-97);if(n>=49&&n<=57)return String.fromCodePoint(0x2460+n-49);if(n===48)return '⓪';return ch}).join('');
-   card('Circled / داخل دوائر',circ);
-   $('fancyNotice').textContent='تم التعرف على النص الإنجليزي أو المختلط تلقائيًا وعرض أنماط إضافية.';
+   englishStyles.forEach(([name,fn])=>card(name,fn(value),'en'));
+   extra.forEach(([name,fn])=>card(name,fn(value),'en'));
+   $('fancyNotice').textContent='تم اكتشاف النص غير العربي تلقائيًا وعرض أنماط الحروف العالمية المتاحة في Unicode.';
  }
-}
-$('fancyInput').addEventListener('input',fancyRender);$('fancyAll').onclick=()=>copy($('fancyGrid').querySelector('.preview')?.textContent||$('fancyInput').value,'fancyNotice');fancyRender();
+}$('fancyInput').addEventListener('input',fancyRender);$('fancyAll').onclick=()=>copy($('fancyGrid').querySelector('.preview')?.textContent||$('fancyInput').value,'fancyNotice');fancyRender();
 $('randomDecorMake').addEventListener('click',makeRandomDecor);
 $('randomDecorInput').addEventListener('keydown',e=>{if(e.key==='Enter')makeRandomDecor();});
 function makeRandomDecor(){const base=$('randomDecorInput').value.trim()||'اسمك';const modernWraps=[['✠ 乂❤‿❤乂 ',' 乂❤‿❤乂 ✠'],['꧁༺ ',' ༻꧂'],['『 ',' 』'],['【 ',' 】'],['♡⃝ ',' ♡⃝'],['彡 ',' 彡'],['★彡 ',' 彡★'],['༄˖°. ',' .°˖༄'],['◥꧁ ',' ꧂◤'],['𓆩♡𓆪 ',' 𓆩♡𓆪'],['✧･ﾟ: ',' :･ﾟ✧'],['꧁ঔৣ☬ ',' ☬ঔৣ꧂'],['☾⋆⁺₊⋆ ',' ⋆⁺₊⋆☽'],['(っ◔◡◔)っ ',' '],['ღ ',' ღ'],['『♥』','『♥』'],['•°¯•• ',' ••¯°•'],['༺♡ ',' ♡༻'],['乂 ',' 乂'],['✿ ',' ✿'],['☁︎ ',' ☁︎'],['⫷ ',' ⫸'],['♛ ',' ♛'],['⊂(・▽・⊂) ',' ⊃(・▽・)⊃']];const legacyWraps=[['*~ ',' ~*'],['=+= ',' =+='],['--- ',' ---'],['>>> ',' <<<'],['[ ',' ]'],['( ',' )'],['<3 ',' <3'],['* ',' *'],['+ ',' +'],['-=- ',' =-='],['// ',' \\'],[':: ',' ::'],['== ',' =='],['~ ',' ~'],['^ ',' ^'],['! ',' !'],['.:: ',' ::.'],['## ',' ##'],['@@ ',' @@'],['| ',' |'],['(= ',' =)'],['<* ',' *>'],['{* ',' *}'],['--== ',' ==--']];const wraps=$('legacyDecorMode').checked?legacyWraps:modernWraps;const tails=['',' ✿',' ❤',' ♡',' ✦',' 𓆩♡𓆪',' (っ◔◡◔)っ',' ᥫ᭡',' ⋆｡°✩',' ❀'];const marks=['̷','̸','͎','̻','͓','͙','̽','ͫ','ͭ','̂','̏','̋','̇'];function mixZalgo(t){return Array.from(t).map(ch=>ch===' '?ch:ch+Array.from({length:Math.floor(Math.random()*3)},()=>marks[Math.floor(Math.random()*marks.length)]).join('')).join('');}const variants=new Set();while(variants.size<50){const w=wraps[Math.floor(Math.random()*wraps.length)],tail=tails[Math.floor(Math.random()*tails.length)];let out=w[0]+base+w[1]+tail;if(!$('legacyDecorMode').checked&&Math.random()<.18)out=mixZalgo(out);variants.add(out);}const grid=$('randomDecorGrid');grid.innerHTML='';for(const out of variants){const card=document.createElement('div');card.className='toolcard';const p=document.createElement('div');p.className='preview';p.textContent=out;const b=document.createElement('button');b.className='primary';b.textContent='📋 نسخ الزخرفة';b.onclick=()=>copy(out,'randomDecorNotice');card.append(p,b);grid.append(card);}$('randomDecorNotice').textContent='تم إنشاء 50 زخرفة جديدة. اضغط مرة أخرى للحصول على تركيبات مختلفة ✨';}
