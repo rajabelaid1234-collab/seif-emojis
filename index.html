@@ -136,22 +136,23 @@ $('asciiConvert').addEventListener('click',()=>{
 
 function makeArt(img){
  const canvas=$('artCanvas'),ctx=canvas.getContext('2d',{willReadFrequently:true}),style=$('artStyle').value;
- const scale=Math.min(1,1600/img.width,1600/img.height),w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
+ const scale=Math.min(1,1000/img.width,1000/img.height),w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
  canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0,w,h);
  let frame=ctx.getImageData(0,0,w,h),d=frame.data;
- if(style==='oil'||style==='watercolor'||style==='cartoon'){
-  const src=new Uint8ClampedArray(d),radius=style==='oil'?3:(style==='watercolor'?2:1),levels=style==='oil'?7:(style==='watercolor'?5:4);
+ if(style==='oil'||style==='watercolor'){
+  const src=new Uint8ClampedArray(d),radius=style==='oil'?2:1,binsCount=16;
   for(let y=0;y<h;y++)for(let x=0;x<w;x++){
-   let bins=new Array(levels*levels*levels).fill(0),rs=new Float32Array(bins.length),gs=new Float32Array(bins.length),bs=new Float32Array(bins.length);
-   for(let yy=Math.max(0,y-radius);yy<=Math.min(h-1,y+radius);yy+=style==='oil'?1:2)for(let xx=Math.max(0,x-radius);xx<=Math.min(w-1,x+radius);xx+=style==='oil'?1:2){
-    const j=(yy*w+xx)*4,ri=Math.min(levels-1,Math.floor(src[j]/256*levels)),gi=Math.min(levels-1,Math.floor(src[j+1]/256*levels)),bi=Math.min(levels-1,Math.floor(src[j+2]/256*levels)),b=(ri*levels+gi)*levels+bi;
-    bins[b]++;rs[b]+=src[j];gs[b]+=src[j+1];bs[b]+=src[j+2];
+   const counts=new Uint16Array(binsCount),rs=new Float32Array(binsCount),gs=new Float32Array(binsCount),bs=new Float32Array(binsCount);
+   for(let yy=Math.max(0,y-radius);yy<=Math.min(h-1,y+radius);yy++)for(let xx=Math.max(0,x-radius);xx<=Math.min(w-1,x+radius);xx++){
+    const j=(yy*w+xx)*4,bright=Math.min(binsCount-1,Math.floor((.299*src[j]+.587*src[j+1]+.114*src[j+2])/256*binsCount));
+    counts[bright]++;rs[bright]+=src[j];gs[bright]+=src[j+1];bs[bright]+=src[j+2];
    }
-   let best=0;for(let k=1;k<bins.length;k++)if(bins[k]>bins[best])best=k;
-   const i=(y*w+x)*4;if(bins[best]){d[i]=rs[best]/bins[best];d[i+1]=gs[best]/bins[best];d[i+2]=bs[best]/bins[best];}
-   if(style==='cartoon'){d[i]=Math.round(d[i]/48)*48;d[i+1]=Math.round(d[i+1]/48)*48;d[i+2]=Math.round(d[i+2]/48)*48;}
-   if(style==='watercolor'){d[i]=Math.min(255,d[i]*1.06+8);d[i+1]=Math.min(255,d[i+1]*1.06+8);d[i+2]=Math.min(255,d[i+2]*1.06+8);}
+   let best=0;for(let k=1;k<binsCount;k++)if(counts[k]>counts[best])best=k;
+   const i=(y*w+x)*4;if(counts[best]){d[i]=rs[best]/counts[best];d[i+1]=gs[best]/counts[best];d[i+2]=bs[best]/counts[best];}
+   if(style==='watercolor'){d[i]=Math.min(255,d[i]*1.08+7);d[i+1]=Math.min(255,d[i+1]*1.08+7);d[i+2]=Math.min(255,d[i+2]*1.08+7);}
   }
+ }else if(style==='cartoon'){
+  for(let i=0;i<d.length;i+=4){d[i]=Math.round(d[i]/40)*40;d[i+1]=Math.round(d[i+1]/40)*40;d[i+2]=Math.round(d[i+2]/40)*40;}
  }else if(style==='pencil'){
   const gray=new Uint8ClampedArray(w*h);
   for(let i=0,p=0;i<d.length;i+=4,p++)gray[p]=Math.round(.299*d[i]+.587*d[i+1]+.114*d[i+2]);
