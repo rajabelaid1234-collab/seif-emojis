@@ -20,7 +20,7 @@ android {
         minSdk 21
         // Raise target SDK so modern Android treats the app as less outdated.
         targetSdk 34
-        versionCode 2
-        versionName '1.0.1'
+        versionCode 3
+        versionName '1.0.2'
     }
 }
