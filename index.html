@@ -159,6 +159,17 @@ button{touch-action:manipulation;min-height:42px}
 .motion-stage.impact .motion-star.glass-heart{filter:drop-shadow(0 0 9px rgba(255,170,205,.9)) drop-shadow(0 0 22px rgba(255,45,115,.7))}
 .motion-stage.impact:after{content:'';position:absolute;left:50%;top:50%;width:90px;height:90px;border:1px solid rgba(255,155,200,.7);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;animation:softImpactRing .85s ease-out forwards}
 @keyframes softImpactRing{0%{opacity:.8;transform:translate(-50%,-50%) scale(.25)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+
+/* Deeper faux-3D ruby heart and a focused power burst on landing */
+.motion-star.glass-heart{perspective:450px;filter:drop-shadow(0 2px 0 #6d082d) drop-shadow(1px 4px 0 #570621) drop-shadow(2px 6px 0 #3b0719) drop-shadow(0 9px 4px #000b) drop-shadow(0 0 9px rgba(255,72,135,.6))}
+.motion-star.glass-heart .heart-glass{transform-style:preserve-3d;transform:perspective(240px) rotateY(-24deg) rotateX(12deg) rotateZ(-5deg);filter:drop-shadow(0 0 2px #fff9)}
+.motion-star.glass-heart .heart-front{stroke:#fff0f7;stroke-width:3.5;paint-order:stroke fill}
+.motion-star.glass-heart .heart-back{fill:#71072d;stroke:#4d031d;stroke-width:5;transform:translate(7px,8px)}
+.motion-star.glass-heart .heart-highlight{stroke-width:5;filter:drop-shadow(0 0 3px #fff)}
+.motion-stage.impact:after{content:'';position:absolute;left:var(--impact-x,50%);top:var(--impact-y,50%);width:24px;height:24px;border:2px solid rgba(255,218,239,.98);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 12px #ff4f9d,0 0 30px #ff2e7a;animation:powerBurst .8s cubic-bezier(.12,.7,.22,1) forwards}
+.motion-stage.impact .motion-impact{display:block!important;position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 8px 4px #fff,0 0 18px 10px #ff75b7,0 0 34px 18px #ff2c7b;transform:translate(-50%,-50%);animation:powerFlash .65s ease-out forwards;z-index:6;pointer-events:none}
+@keyframes powerBurst{0%{opacity:1;transform:translate(-50%,-50%) scale(.15)}45%{opacity:.95}100%{opacity:0;transform:translate(-50%,-50%) scale(5.8)}}
+@keyframes powerFlash{0%{opacity:1;transform:translate(-50%,-50%) scale(.5)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.8)}100%{opacity:0;transform:translate(-50%,-50%) scale(.2)}}
 </style>
 </head>
 <body><main class="wrap">
@@ -763,11 +774,11 @@ function motionPlay(){
  const targetIndex=letters.findIndex(x=>/[iíïİ]/i.test(x.textContent));
  const stage=motionStage.getBoundingClientRect(),cx=stage.width/2,cy=stage.height/2;
  const target=targetIndex>=0?letters[targetIndex].getBoundingClientRect():null;
- // The landing point is measured from the real letter position, not guessed from the stage center.
  const tx=target?target.left-stage.left+target.width/2-cx:0;
- const ty=target?target.top-stage.top-cy- Math.max(18,target.height*.24):-cy*.22;
+ // Aim for the top of the actual i glyph, then settle just above its dot.
+ const heartSize=Math.max(34,motionStar.getBoundingClientRect().height||48);
+ const ty=target?target.top-stage.top-cy-heartSize*.38:-cy*.22;
  const rx=Math.min(cx*.60,195),ry=Math.min(cy*.66,102);
- // A deliberate, smooth oval orbit: no sudden jumps or random-looking zigzags.
  const path=[
   {x:-rx*.98,y:-ry*.12,z:1,scale:.68,rot:0,at:0},
   {x:-rx*.78,y:-ry*.72,z:1,scale:.74,rot:42,at:.12},
@@ -782,19 +793,21 @@ function motionPlay(){
   {x:tx,y:ty-13,z:4,scale:.82,rot:355,at:.965},
   {x:tx,y:ty,z:5,scale:.9,rot:360,at:1}
  ];
- const frames=path.map(p=>({offset:p.at,transform:'translate(-50%,-50%) translate('+p.x+'px,'+p.y+'px) translateZ('+(p.z===1?-24:22)+'px) rotate('+p.rot+'deg) rotateY('+(p.rot*.55)+'deg) scale('+p.scale+')',zIndex:p.z,filter:'drop-shadow(0 2px 2px #0009) drop-shadow(0 0 '+(p.scale>1?'22px':'12px')+' #ff4a00)'}));
+ const frames=path.map(p=>({offset:p.at,transform:'translate(-50%,-50%) translate('+p.x+'px,'+p.y+'px) translateZ('+(p.z===1?-24:22)+'px) rotate('+p.rot+'deg) rotateY('+(p.rot*.55)+'deg) scale('+p.scale+')',zIndex:p.z,filter:'drop-shadow(0 2px 0 #5b0623) drop-shadow(0 5px 0 #3b0719) drop-shadow(0 8px 5px #000b) drop-shadow(0 0 '+(p.scale>1?'20px':'10px')+' #ff4a91)'}));
  motionStage.classList.add('playing');
  const trail=document.getElementById('motionTrail');if(trail)trail.style.opacity='0';
- const easing='cubic-bezier(.42,0,.24,1)';
- motionAnimation=motionStar.animate(frames,{duration:dur,easing,fill:'forwards'});
+ motionStar.style.transformStyle='preserve-3d';
+ motionAnimation=motionStar.animate(frames,{duration:dur,easing:'cubic-bezier(.42,0,.24,1)',fill:'forwards'});
  motionAnimation.onfinish=()=>{
    motionStar.style.transform='translate(-50%,-50%) translate('+tx+'px,'+ty+'px) translateZ(22px) scale(.9)';
    motionStar.style.zIndex='5';motionStage.classList.remove('playing');motionStage.classList.add('impact');
+   motionStage.style.setProperty('--impact-x','calc(50% + '+tx+'px)');
+   motionStage.style.setProperty('--impact-y','calc(50% + '+ty+'px)');
    const impact=document.getElementById('motionImpact');if(impact){impact.style.left='calc(50% + '+tx+'px)';impact.style.top='calc(50% + '+ty+'px)';}
-   motionStatus.textContent=targetIndex>=0?'استقرّ القلب بدقة فوق حرف i مع ومضة نارية سينمائية ❤️':'اكتملت الدورة البيضاوية بسلاسة مع نهاية سينمائية ❤️';
-   setTimeout(()=>motionStage.classList.remove('impact'),1100);
+   motionStatus.textContent=targetIndex>=0?'استقرّ القلب فوق حرف i وظهرت ومضة قوة عند الهبوط ❤️':'اكتملت الدورة مع ومضة قوة سينمائية ❤️';
+   setTimeout(()=>motionStage.classList.remove('impact'),900);
  };
- motionStatus.textContent='دوران بيضاوي هادئ مع توهّج ناعم ولمعة سينمائية، دون لهب.';
+ motionStatus.textContent='يدور القلب بسلاسة ثم يستقر فوق الحرف، مع عمق ثلاثي الأبعاد وومضة قوة عند الهبوط…';
 }
 $('motionSymbols').addEventListener('click',e=>{const b=e.target.closest('[data-motion-emoji]');if(!b)return;motionEmoji=b.dataset.motionEmoji;document.querySelectorAll('#motionSymbols [data-motion-emoji]').forEach(x=>x.classList.toggle('active',x===b));motionStar.textContent=motionEmoji;});
 $('motionText').addEventListener('input',()=>{motionStop();motionRenderName();});
