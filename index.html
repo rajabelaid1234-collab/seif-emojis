@@ -211,10 +211,49 @@ button{touch-action:manipulation;min-height:42px}
 .language-switch select{min-width:150px;border:1px solid #48e2c2;background:#111a30;color:#fff;font-weight:700}
 .auto-draw-title{font-size:clamp(1.1rem,2.5vw,1.5rem);font-weight:800;text-align:center;color:#b9f7ee;margin:14px 0}
 @media(max-width:650px){.language-switch{justify-content:center}.language-switch select{flex:0 1 180px}}
-\n/* SEIF sword-slash copy identity; optional sound is OFF until the visitor enables it */\n#seifSwordSlash{position:fixed;inset:0;z-index:99999;pointer-events:none;overflow:hidden;display:none}\n#seifSwordSlash.slash-go{display:block}\n#seifSwordSlash span{position:absolute;left:-25vw;top:45%;font-size:clamp(42px,9vw,100px);filter:drop-shadow(0 0 12px #8bd8ff) drop-shadow(0 0 24px #fff);transform:rotate(-28deg) scale(.7);opacity:0}\n#seifSwordSlash.slash-go span{animation:seifSlashMove .48s cubic-bezier(.2,.8,.25,1) forwards}\n@keyframes seifSlashMove{0%{left:-20vw;top:62%;opacity:0;transform:rotate(-28deg) scale(.65)}15%{opacity:1}55%{left:55vw;top:35%;transform:rotate(-28deg) scale(1.1)}100%{left:120vw;top:20%;opacity:0;transform:rotate(-28deg) scale(.85)}}\n#seifSoundToggle{position:fixed;left:12px;bottom:14px;z-index:9998;background:#151d34;border:1px solid #48e2c2;color:#fff;border-radius:999px;padding:10px 13px;font-size:.88rem;box-shadow:0 6px 22px #0008}\n@media(prefers-reduced-motion:reduce){#seifSwordSlash.slash-go span{animation-duration:.15s}}\n</style>
+\n/* SEIF sword-slash copy identity; optional sound is OFF until the visitor enables it */\n#seifSwordSlash{position:fixed;inset:0;z-index:99999;pointer-events:none;overflow:hidden;display:none}\n#seifSwordSlash.slash-go{display:block}\n#seifSwordSlash span{position:absolute;left:-25vw;top:45%;font-size:clamp(42px,9vw,100px);filter:drop-shadow(0 0 12px #8bd8ff) drop-shadow(0 0 24px #fff);transform:rotate(-28deg) scale(.7);opacity:0}\n#seifSwordSlash.slash-go span{animation:seifSlashMove .48s cubic-bezier(.2,.8,.25,1) forwards}\n@keyframes seifSlashMove{0%{left:-20vw;top:62%;opacity:0;transform:rotate(-28deg) scale(.65)}15%{opacity:1}55%{left:55vw;top:35%;transform:rotate(-28deg) scale(1.1)}100%{left:120vw;top:20%;opacity:0;transform:rotate(-28deg) scale(.85)}}\n#seifSoundToggle{position:fixed;left:12px;bottom:14px;z-index:9998;background:#151d34;border:1px solid #48e2c2;color:#fff;border-radius:999px;padding:10px 13px;font-size:.88rem;box-shadow:0 6px 22px #0008}\n@media(prefers-reduced-motion:reduce){#seifSwordSlash.slash-go span{animation-duration:.15s}}\n
+/* SEIF EMOJIS extra tools */
+.extra-tool{margin:22px 0;border:1px solid #454d70;border-radius:20px;padding:clamp(14px,3vw,24px);background:linear-gradient(145deg,#171d35,#111629);box-shadow:0 12px 30px #0002}
+.extra-tool h2{margin-top:0;color:#b9f7ee}.invisible-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:15px 0}
+.invisible-option{border:1px solid #414b70;border-radius:14px;padding:13px;background:#0b1020;min-width:0}
+.invisible-code{display:block;font-family:monospace;direction:ltr;text-align:center;font-size:1.2rem;min-height:28px;overflow-wrap:anywhere;color:#d8ccff}
+.extra-tool button,.extra-tool input{max-width:100%}.extra-tool .action-row{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}.extra-tool .action-row button{flex:1 1 150px}
+#lookPreview,#lookVideo{display:block;width:100%;max-width:380px;max-height:420px;object-fit:contain;background:#080d1b;border-radius:16px;border:1px solid #454d70;margin:12px auto}
+#lookResult{font-size:clamp(1.1rem,4vw,1.8rem);text-align:center;padding:16px;border-radius:14px;background:#0a1020;margin-top:12px}
+.look-score{font-size:2.6rem;font-weight:900;color:#5eead4}
+@media(max-width:650px){.extra-tool{padding:13px}.invisible-options{grid-template-columns:1fr}}
+
+</style>
 </head>
 <body><main class="wrap">
 <header><div class="language-switch" aria-label="Website language"><label for="siteLanguage">🌐 Language / اللغة</label><select id="siteLanguage" aria-label="Choose website language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10" alt="أيقونة SEIF EMOJIS" style="width:104px;height:104px;object-fit:cover;border-radius:26px;border:2px solid #48e2c2;box-shadow:0 8px 28px #0007;margin:0 auto 12px;display:block" onerror="this.style.display='none'"><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
+
+<section class="extra-tool" id="invisibleNameTool">
+<h2>🥷 نسخ الاسم المخفي لببجي وفري فاير</h2>
+<p class="muted">جرّب نسخ رمز غير مرئي والصقه في خانة الاسم داخل اللعبة. دعم الرموز يختلف حسب اللعبة والتحديث؛ لا يوجد رمز مضمون القبول في كل الألعاب.</p>
+<div class="invisible-options">
+ <div class="invisible-option"><strong>الخيار 1 — Hangul Filler</strong><span class="invisible-code">ㅤ</span><p class="muted small">رمز U+3164</p><button type="button" class="primary" data-invisible="ㅤ">📋 نسخ هذا الرمز</button></div>
+ <div class="invisible-option"><strong>الخيار 2 — Braille Blank</strong><span class="invisible-code">⠀</span><p class="muted small">رمز U+2800</p><button type="button" data-invisible="⠀">📋 نسخ هذا الرمز</button></div>
+ <div class="invisible-option"><strong>الخيار 3 — Zero Width Space</strong><span class="invisible-code">​</span><p class="muted small">رمز U+200B</p><button type="button" data-invisible="​">📋 نسخ هذا الرمز</button></div>
+</div>
+<div class="action-row"><button type="button" class="primary" id="copyInvisibleCombo">✨ نسخ تركيبة مخفية</button></div>
+<p id="invisibleNotice" class="muted small" aria-live="polite"></p>
+<p class="muted small">إذا رفضت اللعبة الرمز، فهذا بسبب قواعد التسمية لديها. لا تحذف المسافات العادية من اسمك قبل تجربة الرمز في حقل الاسم.</p>
+</section>
+<section class="extra-tool" id="emojiLookalikeTool">
+<h2>🎭 كاميرا الإيموجي — حلّل تعبير وجهك الحقيقي</h2>
+<p class="muted">ترصد الأداة تعبيرات الوجه الفعلية عبر نموذج ذكاء اصطناعي يعمل في المتصفح، ثم تختار الإيموجي الأقرب للتعبير. لا تُنشئ نتيجة عشوائية ولا ترفع صورتك إلى خادمنا. تحتاج إلى اتصال بالإنترنت لتحميل النموذج أول مرة.</p>
+<div class="action-row"><button type="button" class="primary" id="lookStartCamera">📷 تشغيل الكاميرا</button><button type="button" id="lookStopCamera">إيقاف الكاميرا</button></div>
+<label for="lookFile"><strong>أو اختر صورة من هاتفك:</strong></label>
+<input id="lookFile" type="file" accept="image/*" capture="user" style="display:block;margin:12px auto">
+<video id="lookVideo" playsinline autoplay muted hidden></video>
+<img id="lookPreview" alt="معاينة الصورة لتحليل التعبير" hidden>
+<div class="action-row"><button type="button" class="primary" id="lookAnalyze">🔍 حلّل تعبير وجهي</button></div>
+<p id="lookStatus" class="muted small" role="status" aria-live="polite">شغّل الكاميرا أو اختر صورة واضحة يظهر فيها وجه واحد.</p>
+<div id="lookResult" hidden></div>
+<p class="muted small">الدقة تعتمد على الإضاءة ووضوح الوجه. النسبة هي ثقة النموذج في التعبير، وليست نسبة شبه شكلية أو تشخيصًا نفسيًا.</p>
+</section>
+
 <div style="text-align:center;margin:8px 0 18px"><button id="installAppBtn" class="primary" type="button" style="font-weight:bold">📲 تثبيت SEIF EMOJIS على الهاتف</button><p id="installAppNotice" class="muted small" style="margin:6px 0">نزّل الموقع كتطبيق على الشاشة الرئيسية</p></div>
 <section class="panel" id="keyboardInstall"><h2 style="font-size:clamp(1.5rem,4vw,2rem)">📱 SEIF EMOJIS — لوحة مفاتيح Android</h2><p class="muted">وجوه ورموز في واتساب ويوتيوب وبقية التطبيقات. مجانًا وبخطوات قصيرة.</p><div class="toolgrid"><div class="toolcard" style="border:2px solid #48e2c2;padding:20px"><h3 style="font-size:1.35rem">🤖 Android</h3><p class="muted">تثبيت التطبيق ثم تفعيل لوحة SEIF. اسمح بالتثبيت من هذا المصدر إذا طلب الهاتف ذلك.</p><a id="androidDownloadButton" class="primary" href="https://github.com/rajabelaid1234-collab/seif-emojis/releases/latest/download/app-debug.apk" style="display:block;text-align:center;text-decoration:none;padding:16px;border-radius:14px;font-weight:800;font-size:1.2rem;margin:12px 0">📥 تنزيل Android APK</a><button type="button" id="androidKeyboardGuide">📋 خطوات التفعيل</button><p class="muted small" id="androidKeyboardNotice" hidden>بعد التثبيت: افتح التطبيق ← فعّل لوحة SEIF من الإعدادات ← اخترها عند الكتابة. إذا طلب Android السماح بالتثبيت، فعّل السماح لهذا المصدر فقط.</p></div><div class="toolcard"><h3>🍎 iPhone / iOS</h3><p class="muted small">تنبيه: لا توجد إعدادات تنزيل في Safari تسمح بتثبيت لوحة مفاتيح نظامية مباشرةً من موقع عادي. يلزم تطبيق iOS يحتوي على لوحة مفاتيح، ثم تثبيته بطريقة يدعمها النظام وإضافتها من الإعدادات.</p><button type="button" id="iphoneKeyboardGuide">ℹ️ كيف أثبّتها على iPhone؟</button><p class="muted small" id="iphoneKeyboardNotice" hidden>لا تحاول تعطيل حماية iPhone أو تثبيت ملفات مجهولة. سنوفّر تعليمات التثبيت المدعومة عندما تصبح نسخة iOS جاهزة للتوزيع.</p></div></div><p class="notice" id="keyboardInstallNotice" role="status" aria-live="polite"></p></section>
 <nav class="tabs">
@@ -1214,6 +1253,46 @@ render();
  $('paletteColor')?.addEventListener('input',()=>{$('paletteHex').value=$('paletteColor').value.toUpperCase();makePalette();});
  $('paletteHex')?.addEventListener('keydown',e=>{if(e.key==='Enter')makePalette();});
  $('paletteCopy')?.addEventListener('click',async()=>{const val=$('palettePreview').textContent;try{await navigator.clipboard.writeText(val);$('paletteNotice').textContent='تم نسخ لوحة الإيموجيات بنجاح ✅';}catch(e){$('paletteNotice').textContent='حدّد الإيموجيات وانسخها يدويًا.';}setTimeout(()=>$('paletteNotice').textContent='',2200);});
+
+ // Invisible-name copy tools. Some games reject invisible Unicode characters.
+ const copyTextSafe=async(value,notice)=>{try{await navigator.clipboard.writeText(value);notice.textContent='تم النسخ بنجاح ✅ الصقه في خانة الاسم.';}catch(err){const ta=document.createElement('textarea');ta.value=value;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();notice.textContent=ok?'تم النسخ بنجاح ✅':'تعذّر النسخ التلقائي؛ حاول مرة أخرى من متصفح يدعم النسخ.';}};
+ document.querySelectorAll('[data-invisible]').forEach(btn=>btn.addEventListener('click',()=>copyTextSafe(btn.dataset.invisible,document.getElementById('invisibleNotice'))));
+ document.getElementById('copyInvisibleCombo')?.addEventListener('click',()=>copyTextSafe('ㅤㅤㅤ',document.getElementById('invisibleNotice')));
+ // Real facial-expression inference; never substitute a random result if model loading fails.
+ const lookFile=document.getElementById('lookFile'),lookPreview=document.getElementById('lookPreview'),lookVideo=document.getElementById('lookVideo'),lookStatus=document.getElementById('lookStatus'),lookResult=document.getElementById('lookResult');
+ let lookStream=null,lookModelReady=null,lookSource=null;
+ const lookEmojiMap={happy:{emoji:'😄',label:'سعيد / مبتسم'},sad:{emoji:'😢',label:'حزين'},angry:{emoji:'😠',label:'غاضب'},fearful:{emoji:'😨',label:'خائف أو متوتر'},disgusted:{emoji:'🤢',label:'اشمئزاز'},surprised:{emoji:'😲',label:'متفاجئ'},neutral:{emoji:'😐',label:'هادئ / محايد'}};
+ async function loadLookModel(){
+   if(lookModelReady)return lookModelReady;
+   lookStatus.textContent='جارٍ تحميل نموذج تحليل تعبيرات الوجه… قد يستغرق ذلك أول مرة.';
+   lookModelReady=(async()=>{
+     if(!window.faceapi){await new Promise((resolve,reject)=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/build/face-api.min.js';sc.onload=resolve;sc.onerror=()=>reject(new Error('تعذّر تحميل مكتبة تحليل الوجه.'));document.head.appendChild(sc);});}
+     const base='https://justadudewhohacks.github.io/face-api.js/models';
+     await Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(base),faceapi.nets.faceExpressionNet.loadFromUri(base)]);
+   })().catch(err=>{lookModelReady=null;throw err;});
+   return lookModelReady;
+ }
+ document.getElementById('lookStartCamera')?.addEventListener('click',async()=>{
+   try{lookStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});lookVideo.srcObject=lookStream;lookVideo.hidden=false;lookPreview.hidden=true;lookSource=lookVideo;lookStatus.textContent='الكاميرا تعمل. ضع وجهك داخل الإطار واضغط «حلّل تعبير وجهي».';lookResult.hidden=true;}
+   catch(err){lookStatus.textContent='لم نستطع تشغيل الكاميرا. تأكد من إذن الكاميرا وفتح الموقع عبر HTTPS، أو ارفع صورة بدلًا منها.';}
+ });
+ document.getElementById('lookStopCamera')?.addEventListener('click',()=>{if(lookStream)lookStream.getTracks().forEach(t=>t.stop());lookStream=null;lookVideo.srcObject=null;lookVideo.hidden=true;if(lookSource===lookVideo)lookSource=null;lookStatus.textContent='تم إيقاف الكاميرا.';});
+ lookFile?.addEventListener('change',()=>{const file=lookFile.files&&lookFile.files[0];if(!file)return;if(!file.type.startsWith('image/')){lookStatus.textContent='اختر ملف صورة صالحًا.';return;}const url=URL.createObjectURL(file);lookPreview.onload=()=>{if(lookSource===lookVideo&&lookStream)lookStream.getTracks().forEach(t=>t.stop());lookStream=null;lookVideo.srcObject=null;lookVideo.hidden=true;lookPreview.hidden=false;lookSource=lookPreview;lookStatus.textContent='تم تجهيز الصورة. اضغط «حلّل تعبير وجهي».';lookResult.hidden=true;URL.revokeObjectURL(url);};lookPreview.onerror=()=>{lookStatus.textContent='تعذّر فتح الصورة؛ جرّب صورة أخرى.';URL.revokeObjectURL(url);};lookPreview.src=url;});
+ document.getElementById('lookAnalyze')?.addEventListener('click',async()=>{
+   if(!lookSource){lookStatus.textContent='شغّل الكاميرا أو اختر صورة أولًا.';return;}
+   const button=document.getElementById('lookAnalyze');button.disabled=true;lookResult.hidden=true;
+   try{
+     await loadLookModel();
+     const detection=await faceapi.detectSingleFace(lookSource,new faceapi.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.35})).withFaceExpressions();
+     if(!detection){lookStatus.textContent='لم يُعثر على وجه واضح. حسّن الإضاءة، واجعل وجهك مواجهًا للكاميرا، ثم أعد المحاولة.';return;}
+     const entries=Object.entries(detection.expressions).sort((a,b)=>b[1]-a[1]),[key,score]=entries[0],chosen=lookEmojiMap[key]||lookEmojiMap.neutral;
+     lookResult.innerHTML='<div style="font-size:4rem">'+chosen.emoji+'</div><strong>'+chosen.label+'</strong><div class="look-score">'+Math.round(score*100)+'%</div><div class="muted small">ثقة النموذج في التعبير المكتشف</div>';
+     lookResult.hidden=false;lookStatus.textContent='تم تحليل تعبير الوجه الحقيقي بنجاح ✅';
+   }catch(err){lookStatus.textContent='تعذّر تحميل نموذج الذكاء الاصطناعي. تأكد من الإنترنت ثم حاول مرة أخرى. لم نعرض نتيجة عشوائية.';}
+   finally{button.disabled=false;}
+ });
+ window.addEventListener('pagehide',()=>{if(lookStream)lookStream.getTracks().forEach(t=>t.stop());});
+
  makeGreeting();makePalette();
  let deferredInstallPrompt=null;
  const installBtn=document.getElementById('installAppBtn');
