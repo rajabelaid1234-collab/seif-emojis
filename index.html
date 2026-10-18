@@ -198,9 +198,11 @@ function makeArt(img){
    let hatch=0;
    if(shade>45&&((x+y)%8===0))hatch+=6;
    if(shade>100&&((x-y+w*2)%10===0))hatch+=8;
+   // Deliberately invert the tonal map only in horror mode; normal pencil stays a bright-paper sketch.
    const graphite=Math.max(70,Math.min(255,246-shade*.5-edge-hatch));
-   const v=255-graphite;
-   d[i]=Math.max(0,Math.min(255,v-5));d[i+1]=Math.max(0,Math.min(255,v));d[i+2]=Math.max(0,Math.min(255,v+5));
+   const inverted=255-graphite;
+   const v=Math.max(0,Math.min(255,(inverted-90)*1.9+128));
+   d[i]=Math.max(0,Math.min(255,v-10));d[i+1]=Math.max(0,Math.min(255,v-3));d[i+2]=Math.max(0,Math.min(255,v+8));
   }
  }else if(style==='oil'||style==='watercolor'){
   const src=new Uint8ClampedArray(d),radius=style==='oil'?2:1,binsCount=16;
