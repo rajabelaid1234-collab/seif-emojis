@@ -83,7 +83,7 @@ $('asciiConvert').addEventListener('click',()=>{
  img.onload=()=>{
   try{
    const width=Number(asciiWidth.value),chars=Array.from(asciiChars.value||'@%#*+=-:. '),canvas=$('asciiCanvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
-   const height=Math.max(1,Math.round(width*img.height/img.width*0.48));
+   const height=Math.max(1,Math.round(width*img.height/img.width*(9/14)));
    canvas.width=width;canvas.height=height;ctx.fillStyle='#fff';ctx.fillRect(0,0,width,height);ctx.drawImage(img,0,0,width,height);
    const data=ctx.getImageData(0,0,width,height).data,contrast=Number(asciiContrast.value),lines=[],chosen=[];
    const lumAt=(i)=>.2126*data[i]+.7152*data[i+1]+.0722*data[i+2];
@@ -102,7 +102,7 @@ $('asciiConvert').addEventListener('click',()=>{
    asciiResult=lines.join('\n');$('asciiOutput').textContent=asciiResult;
    const render=$('asciiRenderCanvas'),rctx=render.getContext('2d');
    // High-resolution output with a restrained canvas size to avoid browser memory errors.
-   const cellW=14,cellH=17,fontSize=13;
+   const cellW=9,cellH=14,fontSize=12;
    render.width=width*cellW;render.height=height*cellH;
    rctx.fillStyle='#fff';rctx.fillRect(0,0,render.width,render.height);
    rctx.font=fontSize+'px "Courier New",monospace';rctx.textAlign='center';rctx.textBaseline='middle';
