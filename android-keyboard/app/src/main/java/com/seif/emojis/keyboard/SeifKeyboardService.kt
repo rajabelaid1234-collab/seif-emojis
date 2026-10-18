@@ -10,6 +10,8 @@ import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.media.AudioManager
+import android.media.ToneGenerator
 
 class SeifKeyboardService : InputMethodService() {
     private val faces = listOf(
@@ -40,6 +42,12 @@ class SeifKeyboardService : InputMethodService() {
             setOnClickListener { requestHideSelf(0) }
         }
         header.addView(title, LinearLayout.LayoutParams(0, -2, 1f))
+        val slash = TextView(this).apply {
+            text = "⚔️"
+            textSize = 22f
+            alpha = 0f
+        }
+        header.addView(slash)
         header.addView(dismiss)
         root.addView(header)
         val scroll = ScrollView(this)
@@ -51,7 +59,20 @@ class SeifKeyboardService : InputMethodService() {
                 isAllCaps = false
                 setTextColor(Color.WHITE)
                 setBackgroundColor(Color.rgb(32, 42, 70))
-                setOnClickListener { currentInputConnection?.commitText(face, 1) }
+                setOnClickListener {
+                    currentInputConnection?.commitText(face, 1)
+                    slash.animate().cancel()
+                    slash.translationX = -90f
+                    slash.alpha = 1f
+                    slash.animate().translationX(90f).alpha(0f).setDuration(280).start()
+                    if (getSharedPreferences("seif_settings", Context.MODE_PRIVATE).getBoolean("sword_sound", false)) {
+                        try {
+                            val tone = ToneGenerator(AudioManager.STREAM_MUSIC, 30)
+                            tone.startTone(ToneGenerator.TONE_PROP_NACK, 80)
+                            slash.postDelayed({ tone.release() }, 140)
+                        } catch (_: Exception) {}
+                    }
+                }
             }
             val lp = GridLayout.LayoutParams().apply {
                 width = 0
