@@ -29,7 +29,7 @@ class MainActivity : Activity() {
         }
         content.addView(TextView(this).apply { text = "✨ SEIF EMOJIS"; textSize = 28f; typeface = Typeface.DEFAULT_BOLD; setTextColor(accent); gravity = Gravity.CENTER })
         content.addView(TextView(this).apply { text = "اختَر ما يناسبك — تصميم أسهل للهاتف"; textSize = 15f; setTextColor(Color.WHITE); gravity = Gravity.CENTER; setPadding(0, dp(8), 0, dp(18)) })
-        content.addView(infoCard("📴 بدون إنترنت", "إيموجيات ووجوه وزخرفة نصوص واسم مخفي ومفضلة. تحليل تعبير الوجه يعمل بالنموذج المضمّن."), match())
+        content.addView(infoCard("📴 بدون إنترنت", "إيموجيات ووجوه وزخرفة نصوص وألعاب واسم مخفي ومفضلة. تحليل الوجه موجود في قسم الإنترنت."), match())
         content.addView(actionButton("📴 فتح الأدوات دون إنترنت", accent) { startActivity(Intent(this, WebActivity::class.java).putExtra(WebActivity.EXTRA_MODE, WebActivity.MODE_OFFLINE)) })
         content.addView(infoCard("🌐 مع الإنترنت", "افتح الموقع الكامل كما يظهر أونلاين، بما في ذلك أدواته وأزرار التنزيل والمحتوى المتصل."), match())
         content.addView(actionButton("🌐 فتح الموقع الكامل أونلاين", Color.rgb(38, 51, 78)) { startActivity(Intent(this, WebActivity::class.java).putExtra(WebActivity.EXTRA_MODE, WebActivity.MODE_ONLINE)) })
