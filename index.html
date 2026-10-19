@@ -299,7 +299,7 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
    <p class="muted small">هذه الأدوات تعتمد على مواقع أو ملفات صوتية خارجية، وقد لا تعمل دون اتصال.</p>
    <div class="offline-tool-list">
     <button type="button" data-offline-tab="emojiSoundLab">🔊 أصوات الإيموجيات (ملفات صوت خارجية)</button>
-    <a class="toolcard" href="https://www.messletters.com/en/" target="_blank" rel="noopener">🔤 Messletters — زخرفة عبر الإنترنت</a>
+    <button type="button" data-online-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بالذكاء الاصطناعي (يتطلب الإنترنت)</button><a class="toolcard" href="https://www.messletters.com/en/" target="_blank" rel="noopener">🔤 Messletters — زخرفة عبر الإنترنت</a>
     <a class="toolcard" href="https://www.zalgogenerator.com/" target="_blank" rel="noopener">👹 Zalgo Generator — أداة خارجية</a>
     <a class="toolcard" href="https://www.stylemytext.com/" target="_blank" rel="noopener">💖 StyleMyText — أداة خارجية</a>
     <a class="toolcard" href="https://www.flipyourtext.com/" target="_blank" rel="noopener">🔄 FlipYourText — أداة خارجية</a>
@@ -1516,6 +1516,7 @@ render();
  function startWhack(){clearInterval(whackTimer);clearInterval(whackSpawner);whackScore=0;whackMiss=0;whackSeconds=30;whackActive=true;updateWhackStats();renderWhack();document.getElementById('whackStart').disabled=true;document.getElementById('whackStatus').textContent='انطلق! اضغط 😂 وتجنب 💣';whackTimer=setInterval(()=>{whackSeconds--;updateWhackStats();if(whackSeconds<=0)stopWhack();},1000);whackSpawner=setInterval(renderWhack,850);}
  document.getElementById('whackStart')?.addEventListener('click',startWhack);renderWhack();
 
+ document.querySelectorAll('[data-online-open]').forEach(el=>el.addEventListener('click',()=>{const target=document.getElementById(el.dataset.onlineOpen);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.style.outline='2px solid #48e2c2';setTimeout(()=>target.style.outline='',1600);}}));
  makeGreeting();makePalette();
  let deferredInstallPrompt=null;
  const installBtn=document.getElementById('installAppBtn');
