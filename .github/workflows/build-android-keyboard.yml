@@ -41,7 +41,7 @@ jobs:
           test -s android-keyboard/app/src/main/assets/emoji-test.txt
           for file in tiny_face_detector_model-weights_manifest.json tiny_face_detector_model-shard1 face_expression_model-weights_manifest.json face_expression_model-shard1; do
             echo "Bundling model file: $file"
-            curl -fLsS --retry 3 "https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights/$file" -o "android-keyboard/app/src/main/assets/models/$file"
+            curl -fLsS --retry 3 "https://justadudewhohacks.github.io/face-api.js/models/$file" -o "android-keyboard/app/src/main/assets/models/$file"
             test -s "android-keyboard/app/src/main/assets/models/$file"
           done
       - name: Build APK
