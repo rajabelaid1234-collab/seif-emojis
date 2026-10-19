@@ -26,6 +26,7 @@ class SeifKeyboardService : InputMethodService() {
  private val completeEmojiSet:List<String> by lazy { try { assets.open("emoji-test.txt").bufferedReader(Charsets.UTF_8).useLines { lines -> lines.mapNotNull { line -> val left=line.substringBefore("#").trim(); if(left.isEmpty() || !left.contains(";")) null else { val parts=left.split(";"); if(parts.size<2 || parts[1].trim()!="fully-qualified") null else { val cps=parts[0].trim().split(Regex("\\s+")).filter{it.isNotBlank()}.mapNotNull{it.toIntOrNull(16)}.toIntArray(); if(cps.isEmpty()) null else String(cps,0,cps.size) } } }.distinct().toList() } } catch (_: Exception) { emptyList() } }
  private var tab="😀 إيموجي"
  private var query=""
+ private var allEmojiLimit=210
  private lateinit var body:LinearLayout
  override fun onCreateInputView():View {
   val root=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL;setBackgroundColor(Color.rgb(18,24,43));setPadding(5,4,5,4)}
@@ -35,7 +36,7 @@ class SeifKeyboardService : InputMethodService() {
   val search=EditText(this).apply{hint="🔎 ابحث عن إيموجي أو وجه";setSingleLine(true);textSize=14f;setTextColor(Color.WHITE);setHintTextColor(Color.LTGRAY)}
   root.addView(search)
   val tabs=LinearLayout(this).apply{gravity=Gravity.CENTER}
-  listOf("😀 إيموجي","🌈 الكل","٩٩ وجوه","♡ رموز").forEach{t->tabs.addView(Button(this).apply{text=t;textSize=11f;isAllCaps=false;setOnClickListener{tab=t;render()}},LinearLayout.LayoutParams(0,-2,1f))}
+  listOf("😀 إيموجي","🌈 الكل","٩٩ وجوه","♡ رموز").forEach{t->tabs.addView(Button(this).apply{text=t;textSize=11f;isAllCaps=false;setOnClickListener{tab=t;allEmojiLimit=210;render()}},LinearLayout.LayoutParams(0,-2,1f))}
   root.addView(tabs)
   val scroll=ScrollView(this);body=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL};scroll.addView(body);root.addView(scroll,LinearLayout.LayoutParams(-1,0,1f))
   search.addTextChangedListener(object:TextWatcher{override fun beforeTextChanged(s:CharSequence?,start:Int,count:Int,after:Int){};override fun onTextChanged(s:CharSequence?,start:Int,before:Int,count:Int){query=s?.toString()?.trim()?: "";render()};override fun afterTextChanged(s:Editable?){}})
@@ -44,7 +45,13 @@ class SeifKeyboardService : InputMethodService() {
  private fun render(){
   if(!::body.isInitialized)return
   body.removeAllViews();val q=query.lowercase()
-  if(tab=="🌈 الكل"){grid(body,completeEmojiSet.filter{q.isEmpty()||it.contains(q)});return}
+  if(tab=="🌈 الكل"){
+   val filtered=completeEmojiSet.filter{q.isEmpty()||it.contains(q)}
+   val shown=filtered.take(if(q.isEmpty()) allEmojiLimit else 500)
+   grid(body,shown)
+   if(filtered.size>shown.size)body.addView(Button(this).apply{text="عرض المزيد من الإيموجيات ("+(filtered.size-shown.size)+")";isAllCaps=false;setOnClickListener{allEmojiLimit+=210;render()}})
+   return
+  }
   if(tab=="٩٩ وجوه"){grid(body,faces.filter{q.isEmpty()||it.contains(q)});return}
   if(tab=="♡ رموز"){val s="♡ ♥ ❤ ❣ ❥ ღ ❦ ❧ ✨ ⭐ 🌟 💫 🔥 ⚡ ☀ ☁ ☂ ☃ ☾ ☽ ♠ ♣ ♦ ♪ ♫ ♬ ✓ ✔ ✕ ✖ ✗ ★ ☆ ☎ ☮ ☯ ⚠ ⚜ ☑ ☐ ➜ ➤ ➵ ➸ ➺ ➻ ➼ ➔ ➡ ⇢ ⇧ ⇩ ⇦ ↔ ↕ ↗ ↘ ↙ ↖ ∞ ∴ ∵ ≈ ≠ ≤ ≥ ± × ÷ √ ∑ ∆ π Ω α β γ δ λ ∫ ∩ ∪ ⊂ ⊃ ⊆ ⊇ ∈ ∉ ∧ ∨ ¬ ∀ ∃ ∅ ∇ ∂ ∝ ∠ ⊥".split(" ");grid(body,s.filter{q.isEmpty()||it.contains(q)});return}
   groups.forEach{(name,raw)->val all=raw.split(Regex("\\s+")).filter{it.isNotBlank()};val list=all.filter{q.isEmpty()||it.contains(q)||name.lowercase().contains(q)};if(list.isNotEmpty()){body.addView(TextView(this).apply{text=name;textSize=13f;typeface=Typeface.DEFAULT_BOLD;setTextColor(Color.rgb(72,226,194));setPadding(6,8,6,3)});grid(body,list)}}
