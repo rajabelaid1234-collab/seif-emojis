@@ -52,33 +52,47 @@ class MainActivity : Activity() {
             setPadding(dp(6), dp(6), dp(6), dp(18))
         })
 
-        val tiles = LinearLayout(this).apply {
+        val mainTiles = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
         }
-        tiles.addView(tile("📴\nدون إنترنت") {
+        mainTiles.addView(tile("📴\nدون إنترنت\nألعاب وأدوات محلية", Color.rgb(25, 94, 80)) {
             startActivity(Intent(this, WebActivity::class.java).putExtra(WebActivity.EXTRA_MODE, WebActivity.MODE_OFFLINE))
         }, weighted())
-        tiles.addView(tile("🌐\nأونلاين") {
+        mainTiles.addView(tile("🌐\nأونلاين\nالموقع الكامل والتنزيل", Color.rgb(67, 52, 125)) {
             startActivity(Intent(this, WebActivity::class.java).putExtra(WebActivity.EXTRA_MODE, WebActivity.MODE_ONLINE))
         }, weighted())
-        tiles.addView(tile("⌨️\nلوحة SEIF") { showKeyboardSetup() }, weighted())
-        content.addView(tiles)
+        content.addView(mainTiles)
 
-        content.addView(actionButton("😊 تشغيل زر إيموجي عائم", Color.rgb(105, 76, 205)) {
+        val utilityTiles = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+        }
+        utilityTiles.addView(tile("⌨️\nلوحة SEIF", Color.rgb(38, 51, 78)) { showKeyboardSetup() }, weighted())
+        utilityTiles.addView(tile("😊\nالزر العائم", Color.rgb(105, 76, 205)) {
             if (Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
                 AlertDialog.Builder(this)
                     .setTitle("إذن الزر العائم")
-                    .setMessage("يلزم السماح لـ SEIF EMOJIS بالظهور فوق التطبيقات حتى يبقى زر 😊 ظاهرًا. هذا الإذن اختياري؛ لوحة المفاتيح تعمل بدونه.")
-                    .setPositiveButton("فتح الإعدادات") { _, _ ->
+                    .setMessage("اسمح لـ SEIF EMOJIS بالظهور فوق التطبيقات إذا أردت الزر العائم. هذا الإذن اختياري، ويمكنك استخدام لوحة SEIF بدونه.")
+                    .setPositiveButton("فتح إعداد الإذن") { _, _ ->
                         startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")))
                     }
-                    .setNegativeButton("إلغاء", null).show()
+                    .setNegativeButton("ليس الآن", null).show()
             } else {
                 startService(Intent(this, FloatingBubbleService::class.java))
-                android.widget.Toast.makeText(this, "زر SEIF العائم يعمل. اضغط وجهًا لنسخه ثم الصقه، أو استخدم لوحة SEIF للإدراج المباشر.", android.widget.Toast.LENGTH_LONG).show()
+                android.widget.Toast.makeText(this, "زر 😊 يعمل فوق التطبيقات. اضغطه لفتح أدوات النسخ.", android.widget.Toast.LENGTH_LONG).show()
             }
-        }, match(dp(12)))
+        }, weighted())
+        content.addView(utilityTiles)
+
+        content.addView(infoCard(
+            "📴 ماذا يعمل دون إنترنت؟",
+            "الألعاب، الوجوه النصية، الرموز، الزخرفة والاسم المخفي. ميزات الكاميرا والنماذج الخارجية قد تحتاج إلى الإنترنت في النسخة الحالية."
+        ), match(dp(10)))
+        content.addView(infoCard(
+            "🌐 ماذا يحتاج إلى الإنترنت؟",
+            "فتح الموقع المباشر، التحديثات، وتحميل الأدوات أو النماذج الخارجية. تنزيل التطبيق يظهر في النسخة المتصلة فقط."
+        ), match(dp(10)))
 
         content.addView(infoCard(
             "📴 النسخة المحلية",
@@ -159,14 +173,14 @@ class MainActivity : Activity() {
         }.start()
     }
 
-    private fun tile(label: String, action: () -> Unit): Button = Button(this).apply {
+    private fun tile(label: String, color: Int = Color.rgb(38, 51, 78), action: () -> Unit): Button = Button(this).apply {
         text = label
         textSize = 13f
         isAllCaps = false
         gravity = Gravity.CENTER
         setTextColor(Color.WHITE)
-        setBackgroundColor(Color.rgb(38, 51, 78))
-        minHeight = dp(74)
+        setBackgroundColor(color)
+        minHeight = dp(86)
         setPadding(dp(3), dp(8), dp(3), dp(8))
         setOnClickListener { action() }
     }
