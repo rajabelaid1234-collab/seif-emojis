@@ -12,6 +12,8 @@ import android.webkit.PermissionRequest
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import java.io.ByteArrayInputStream
 import android.webkit.WebView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -28,6 +30,7 @@ class WebActivity : Activity() {
     }
     private lateinit var webView: WebView
     private lateinit var assetLoader: WebViewAssetLoader
+    private var offlineMode = true
     private var uploadCallback: ValueCallback<Array<Uri>>? = null
     private var pendingCameraRequest: PermissionRequest? = null
     private val fileChooserRequest = 701
@@ -54,9 +57,17 @@ class WebActivity : Activity() {
         webView.settings.domStorageEnabled = true
         webView.settings.loadsImagesAutomatically = true
         webView.settings.allowFileAccess = false
+        val mode = intent.getStringExtra(EXTRA_MODE) ?: MODE_OFFLINE
+        offlineMode = mode != MODE_ONLINE
         webView.webViewClient = object : WebViewClientCompat() {
-            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest) =
-                assetLoader.shouldInterceptRequest(request.url)
+            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+                val local = assetLoader.shouldInterceptRequest(request.url)
+                if (local != null) return local
+                if (offlineMode && request.url.host != "appassets.androidplatform.net") {
+                    return WebResourceResponse("text/plain", "utf-8", ByteArrayInputStream(ByteArray(0)))
+                }
+                return null
+            }
         }
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
@@ -93,7 +104,6 @@ class WebActivity : Activity() {
         root.addView(webView, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
         setContentView(root)
         if (savedInstanceState == null) {
-            val mode = intent.getStringExtra(EXTRA_MODE) ?: MODE_OFFLINE
             webView.loadUrl(if (mode == MODE_ONLINE) ONLINE_URL else OFFLINE_URL)
         }
         else webView.restoreState(savedInstanceState)
