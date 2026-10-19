@@ -42,7 +42,7 @@ jobs:
           p = Path('android-keyboard/app/src/main/assets/offline.html')
           s = p.read_text()
           s = s.replace('<title>SEIF EMOJIS | مولّد النصوص والرموز</title>', '<title>SEIF EMOJIS — نسخة الهاتف دون إنترنت</title>')
-          s = s.replace('</head>', '<style>#installAppBtn, #installAppNotice, #keyboardInstall, #emojiLookalikeTool{display:none!important} body:before{content:"📴 نسخة الهاتف — الأدوات المحلية تعمل دون إنترنت";display:block;text-align:center;background:#17352f;color:#b8fff0;padding:10px;font-weight:bold}</style></head>')
+          s = s.replace('</head>', '<style>#installAppBtn, #installAppNotice, #keyboardInstall{display:none!important} body:before{content:"📴 نسخة الهاتف — الأدوات المحلية تعمل دون إنترنت";display:block;text-align:center;background:#17352f;color:#b8fff0;padding:10px;font-weight:bold}</style></head>')
           s = s.replace('<button type="button" data-online-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بالذكاء الاصطناعي (يتطلب الإنترنت)</button>', '<div class="toolcard">🎭 تحليل تعبير الوجه بالذكاء الاصطناعي — متاح عند فتح النسخة المتصلة بالإنترنت</div>')
           s = s.replace('</body>', '<script>document.getElementById("installAppBtn")?.closest("div")?.remove();document.getElementById("keyboardInstall")?.remove();document.querySelectorAll("[data-offline-open=emojiLookalikeTool]").forEach(el=>el.remove());</script></body>')
           p.write_text(s)
