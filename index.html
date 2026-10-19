@@ -484,7 +484,7 @@ if(isOfflineAndroidApp){
  const subtitle=document.querySelector('header .sub');
  if(subtitle) subtitle.innerHTML='مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">📴 نسخة الهاتف • أدوات مضمّنة • دون إنترنت</span>';
  const offlineStyle=document.createElement('style');
- offlineStyle.textContent='body{padding-bottom:env(safe-area-inset-bottom)}button,a,.toolcard,select,input{touch-action:manipulation}button,a{min-height:44px}.wrap{width:min(100% - 18px,980px)}.panel,.extra-tool{scroll-margin-top:12px}';
+ offlineStyle.textContent='body{padding-bottom:env(safe-area-inset-bottom)}button,a,.toolcard,select,input{touch-action:manipulation}button,a{min-height:44px}.wrap{width:min(100% - 18px,980px)}.panel,.extra-tool{scroll-margin-top:12px}#quickKaoButton{position:static;display:block;margin:14px auto;box-shadow:none;touch-action:manipulation}#quickKaoControls{position:static!important;justify-content:center;margin:8px auto}';
  document.head.appendChild(offlineStyle);
 }
 if(location.hostname==='appassets.androidplatform.net'){
