@@ -241,6 +241,24 @@ body.seif-offline-app .tabs{scroll-margin-top:8px}
 body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يحتاج إلى الإنترنت لأن ملفات الصوت مستضافة خارجيًا.";display:block;padding:12px;border-radius:12px;background:#352b19;color:#ffe4a3;margin-bottom:12px}
 @media(max-width:600px){body.seif-offline-app #offlineOnlineHub{padding:12px}body.seif-offline-app .offline-hub-card{padding:12px}}
 
+
+/* Mobile-friendly mini games */
+.game-card{min-width:0}
+.game-card .game-button{min-width:0;flex:1 1 72px;min-height:48px;font-size:1.1rem}
+#moodWheel{display:block;width:min(76vw,280px);height:auto;margin:14px auto;filter:drop-shadow(0 8px 20px #0005)}
+#moodWheelSpin{display:block;margin:10px auto;min-width:180px;min-height:50px}
+#moodWheelResult{font-size:1.05rem;text-align:center;background:#0b1225;border:1px solid var(--line);padding:14px;border-radius:14px;line-height:1.8}
+#slidePuzzle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;width:min(88vw,330px);margin:14px auto}
+.slide-tile{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(1.5rem,8vw,2.7rem);font-weight:800;padding:0;background:linear-gradient(145deg,#27375d,#171e38);border:1px solid #56668f;border-radius:12px}
+.slide-tile.empty{background:#090e1b;border:1px dashed #354362;box-shadow:none}
+.slide-tile:disabled{opacity:1;cursor:default}
+#whackBoard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:390px;margin:12px auto}
+.whack-hole{min-width:0;aspect-ratio:1/1;font-size:clamp(1.5rem,9vw,3rem);padding:4px;background:#111a30;border:1px solid var(--line);border-radius:16px}
+.whack-hole:disabled{opacity:.75}
+.game-stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.game-stats span{background:#0b1225;border:1px solid var(--line);border-radius:99px;padding:8px 13px}
+@media(max-width:420px){#slidePuzzle{gap:4px}.slide-tile{border-radius:8px}.game-card{padding:11px}}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -292,7 +310,30 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
  </div>
 </section>
 
-<section class="extra-tool" id="emojiGames"><h2>🎮 ألعاب الإيموجي</h2><div class="game-card"><h3>🎬 خمن الفيلم</h3><p id="guessPuzzle" class="puzzle-emoji">👦 🏠 🎄 😱</p><div class="action-row"><input id="guessAnswer" placeholder="اسم الفيلم"><button id="guessCheck" type="button" class="primary">تحقّق</button><button id="guessNext" type="button">لغز آخر</button></div><p id="guessFeedback" aria-live="polite"></p></div><div class="game-card"><h3>🧠 لعبة الذاكرة</h3><div id="memoryBoard" class="memory-board"></div><p id="memoryStatus" aria-live="polite"></p><button id="memoryRestart" type="button">🔄 لعبة جديدة</button></div><div class="game-card"><h3>✨ أي إيموجي يمثّلك؟</h3><p>اختر ما يشبهك أكثر:</p><div class="action-row"><button data-personality="😎" type="button">واثق 😎</button><button data-personality="😂" type="button">مرح 😂</button><button data-personality="🤔" type="button">مفكر 🤔</button><button data-personality="🥰" type="button">حنون 🥰</button></div><p id="personalityResult" aria-live="polite"></p></div></section><section class="extra-tool" id="emojiMaker"><h2>🎨 اصنع إيموجيك الخاص</h2><p class="muted small">غيّر اللون والعيون والفم والإضافات، ثم نزّل التصميم PNG.</p><div class="emoji-maker-layout"><div class="emoji-canvas-wrap"><canvas id="emojiCanvas" width="512" height="512"></canvas></div><div class="emoji-controls"><label for="emojiFaceColor">لون الوجه</label><input id="emojiFaceColor" type="color" value="#ffd54f"><label for="emojiEyeStyle">العيون</label><select id="emojiEyeStyle"><option value="normal">عادية</option><option value="happy">سعيدة</option><option value="heart">قلوب</option><option value="cool">نظارات</option><option value="wink">غمزة</option></select><label for="emojiMouthStyle">الفم</label><select id="emojiMouthStyle"><option value="smile">ابتسامة</option><option value="laugh">ضحك</option><option value="sad">حزين</option><option value="open">مفتوح</option><option value="straight">مستقيم</option></select><label for="emojiAccessory">إضافة</label><select id="emojiAccessory"><option value="none">بدون</option><option value="👑">👑 تاج</option><option value="🎩">🎩 قبعة</option><option value="😇">😇 هالة</option><option value="🌸">🌸 زهرة</option><option value="✨">✨ لمعان</option><option value="🎀">🎀 فيونكة</option><option value="👓">👓 نظارات</option></select><label for="emojiRotation">تدوير الإضافة</label><input id="emojiRotation" type="range" min="-180" max="180" value="0"><div class="action-row" id="emojiExtraButtons"><button type="button" data-extra="⭐">⭐</button><button type="button" data-extra="💖">💖</button><button type="button" data-extra="🔥">🔥</button><button type="button" data-extra="🌈">🌈</button><button type="button" data-extra="🐱">🐱</button><button type="button" data-extra="🦋">🦋</button></div><div class="action-row"><button type="button" class="primary" id="emojiDownload">⬇️ تنزيل PNG</button><button type="button" id="emojiReset">إعادة ضبط</button></div><p id="emojiMakerStatus" aria-live="polite"></p></div></div></section><section class="extra-tool" id="invisibleNameTool">
+<section class="extra-tool" id="emojiGames"><h2>🎮 ألعاب الإيموجي</h2><div class="game-card"><h3>🎬 خمن الفيلم</h3><p id="guessPuzzle" class="puzzle-emoji">👦 🏠 🎄 😱</p><div class="action-row"><input id="guessAnswer" placeholder="اسم الفيلم"><button id="guessCheck" type="button" class="primary">تحقّق</button><button id="guessNext" type="button">لغز آخر</button></div><p id="guessFeedback" aria-live="polite"></p></div><div class="game-card"><h3>🧠 لعبة الذاكرة</h3><div id="memoryBoard" class="memory-board"></div><p id="memoryStatus" aria-live="polite"></p><button id="memoryRestart" type="button">🔄 لعبة جديدة</button></div><div class="game-card"><h3>✨ أي إيموجي يمثّلك؟</h3><p>اختر ما يشبهك أكثر:</p><div class="action-row"><button data-personality="😎" type="button">واثق 😎</button><button data-personality="😂" type="button">مرح 😂</button><button data-personality="🤔" type="button">مفكر 🤔</button><button data-personality="🥰" type="button">حنون 🥰</button></div><p id="personalityResult" aria-live="polite"></p></div>
+<div class="game-card" id="moodWheelGame">
+<h3>🔮 عجلة المزاج اليومية</h3>
+<p class="muted small">أدر العجلة واكتشف إيموجي اليوم ورسالة مرحة. النتيجة عشوائية للترفيه وليست تنبؤًا حقيقيًا.</p>
+<canvas id="moodWheel" width="600" height="600" aria-label="عجلة الإيموجيات"></canvas>
+<button id="moodWheelSpin" class="primary" type="button">🎡 أدر العجلة</button>
+<div id="moodWheelResult" aria-live="polite">اضغط على الزر لاختيار إيموجي اليوم ✨</div>
+</div>
+<div class="game-card" id="emojiSlideGame">
+<h3>🧩 لغز ترتيب الإيموجيات</h3>
+<p class="muted small">حرّك القطع المجاورة للمربع الفارغ لترتيب رحلة الفضاء من 1 إلى 8. اضغط «خلط» لبدء لغز جديد.</p>
+<div id="slidePuzzle" aria-label="لغز انزلاق الإيموجيات"></div>
+<div class="action-row"><button id="slideShuffle" class="primary" type="button">🔀 خلط القطع</button><button id="slideReset" type="button">↩️ ترتيب من جديد</button></div>
+<p id="slideStatus" aria-live="polite" class="muted small">رتّب القطع من 1 إلى 8.</p>
+</div>
+<div class="game-card" id="emojiWhackGame">
+<h3>⚡ تحدي سرعة الإيموجي — 30 ثانية</h3>
+<p class="muted small">اضغط على الوجوه الضاحكة 😂 واجمع النقاط، وتجنب القنابل 💣! كل جولة مدتها 30 ثانية.</p>
+<div class="game-stats"><span>⏱️ الوقت: <strong id="whackTime">30</strong></span><span>⭐ النقاط: <strong id="whackScore">0</strong></span><span>💣 الأخطاء: <strong id="whackMiss">0</strong></span></div>
+<div id="whackBoard"></div>
+<div class="action-row"><button id="whackStart" class="primary" type="button">🚀 ابدأ التحدي</button></div>
+<p id="whackStatus" aria-live="polite" class="muted small">جاهز؟ ابدأ عندما تكون مستعدًا!</p>
+</div>
+</section><section class="extra-tool" id="emojiMaker"><h2>🎨 اصنع إيموجيك الخاص</h2><p class="muted small">غيّر اللون والعيون والفم والإضافات، ثم نزّل التصميم PNG.</p><div class="emoji-maker-layout"><div class="emoji-canvas-wrap"><canvas id="emojiCanvas" width="512" height="512"></canvas></div><div class="emoji-controls"><label for="emojiFaceColor">لون الوجه</label><input id="emojiFaceColor" type="color" value="#ffd54f"><label for="emojiEyeStyle">العيون</label><select id="emojiEyeStyle"><option value="normal">عادية</option><option value="happy">سعيدة</option><option value="heart">قلوب</option><option value="cool">نظارات</option><option value="wink">غمزة</option></select><label for="emojiMouthStyle">الفم</label><select id="emojiMouthStyle"><option value="smile">ابتسامة</option><option value="laugh">ضحك</option><option value="sad">حزين</option><option value="open">مفتوح</option><option value="straight">مستقيم</option></select><label for="emojiAccessory">إضافة</label><select id="emojiAccessory"><option value="none">بدون</option><option value="👑">👑 تاج</option><option value="🎩">🎩 قبعة</option><option value="😇">😇 هالة</option><option value="🌸">🌸 زهرة</option><option value="✨">✨ لمعان</option><option value="🎀">🎀 فيونكة</option><option value="👓">👓 نظارات</option></select><label for="emojiRotation">تدوير الإضافة</label><input id="emojiRotation" type="range" min="-180" max="180" value="0"><div class="action-row" id="emojiExtraButtons"><button type="button" data-extra="⭐">⭐</button><button type="button" data-extra="💖">💖</button><button type="button" data-extra="🔥">🔥</button><button type="button" data-extra="🌈">🌈</button><button type="button" data-extra="🐱">🐱</button><button type="button" data-extra="🦋">🦋</button></div><div class="action-row"><button type="button" class="primary" id="emojiDownload">⬇️ تنزيل PNG</button><button type="button" id="emojiReset">إعادة ضبط</button></div><p id="emojiMakerStatus" aria-live="polite"></p></div></div></section><section class="extra-tool" id="invisibleNameTool">
 <h2>🥷 نسخ الاسم المخفي لببجي وفري فاير</h2>
 <p class="muted">جرّب نسخ رمز غير مرئي والصقه في خانة الاسم داخل اللعبة. دعم الرموز يختلف حسب اللعبة والتحديث؛ لا يوجد رمز مضمون القبول في كل الألعاب.</p>
 <div class="invisible-options">
@@ -1428,6 +1469,52 @@ render();
    finally{button.disabled=false;}
  });
  window.addEventListener('pagehide',()=>{if(lookStream)lookStream.getTracks().forEach(t=>t.stop());});
+
+
+ // Offline mini games: no network, account, or external assets required.
+ const moodItems=[
+  {e:'🚀',name:'الانطلاق',msg:'اليوم فرصة لتبدأ خطوة صغيرة نحو هدف كبير.'},
+  {e:'😂',name:'الضحك',msg:'أرسل ضحكة لشخص تحبه؛ المزاج الحلو معدٍ!'},
+  {e:'💖',name:'المحبة',msg:'كلمة لطيفة منك قد تصنع يوم شخص آخر.'},
+  {e:'🧠',name:'التركيز',msg:'قسّم مهمتك إلى خطوات صغيرة وستنجز أكثر.'},
+  {e:'🌈',name:'الأمل',msg:'حتى بعد يوم صعب، هناك فرصة لبداية أجمل.'},
+  {e:'😴',name:'الراحة',msg:'خذ استراحة قصيرة واشرب ماءً؛ راحتك مهمة.'},
+  {e:'🔥',name:'الحماس',msg:'استعمل طاقتك اليوم في شيء تحبّه.'},
+  {e:'🍀',name:'الحظ',msg:'جرّب شيئًا جديدًا؛ أحيانًا تبدأ المفاجآت بخطوة.'}
+ ];
+ const wheelCanvas=document.getElementById('moodWheel'),wheelCtx=wheelCanvas?.getContext('2d');
+ let wheelRotation=0,wheelBusy=false;
+ function drawMoodWheel(rotation=0){
+  if(!wheelCtx)return;const cx=300,cy=300,r=275,n=moodItems.length;
+  wheelCtx.clearRect(0,0,600,600);
+  moodItems.forEach((it,i)=>{const a=rotation+i*2*Math.PI/n-Math.PI/2,b=a+2*Math.PI/n;wheelCtx.beginPath();wheelCtx.moveTo(cx,cy);wheelCtx.arc(cx,cy,r,a,b);wheelCtx.closePath();wheelCtx.fillStyle=['#6d5bd0','#b64f9a','#227e91','#9b6b26','#377b57','#8b5266','#4c68a8','#7c5d9b'][i];wheelCtx.fill();wheelCtx.strokeStyle='#fff8';wheelCtx.lineWidth=3;wheelCtx.stroke();wheelCtx.save();wheelCtx.translate(cx,cy);wheelCtx.rotate(a+Math.PI/n);wheelCtx.textAlign='right';wheelCtx.textBaseline='middle';wheelCtx.font='bold 54px sans-serif';wheelCtx.fillStyle='#fff';wheelCtx.fillText(it.e,r-24,0);wheelCtx.restore();});
+  wheelCtx.beginPath();wheelCtx.moveTo(300,8);wheelCtx.lineTo(278,52);wheelCtx.lineTo(322,52);wheelCtx.closePath();wheelCtx.fillStyle='#fff';wheelCtx.fill();
+  wheelCtx.beginPath();wheelCtx.arc(300,300,36,0,Math.PI*2);wheelCtx.fillStyle='#0b1020';wheelCtx.fill();wheelCtx.strokeStyle='#fff';wheelCtx.lineWidth=4;wheelCtx.stroke();wheelCtx.fillStyle='#fff';wheelCtx.font='bold 25px sans-serif';wheelCtx.textAlign='center';wheelCtx.textBaseline='middle';wheelCtx.fillText('✨',300,300);
+ }
+ drawMoodWheel();
+ document.getElementById('moodWheelSpin')?.addEventListener('click',()=>{
+  if(wheelBusy)return;wheelBusy=true;const btn=document.getElementById('moodWheelSpin'),result=document.getElementById('moodWheelResult');btn.disabled=true;result.textContent='العجلة تدور… 🎡';
+  const start=wheelRotation,extra=(5+Math.random()*4)*Math.PI*2+Math.random()*Math.PI*2,duration=2800,begin=performance.now();
+  function frame(now){const t=Math.min(1,(now-begin)/duration),ease=1-Math.pow(1-t,4);wheelRotation=start+extra*ease;drawMoodWheel(wheelRotation);if(t<1){requestAnimationFrame(frame);return;}
+   wheelRotation=wheelRotation%(Math.PI*2);drawMoodWheel(wheelRotation);
+   const n=moodItems.length,angle=((Math.PI*1.5-wheelRotation)%(Math.PI*2)+Math.PI*2)%(Math.PI*2),idx=Math.floor(angle/(Math.PI*2/n))%n,it=moodItems[idx];
+   result.innerHTML='<div style="font-size:2.8rem">'+it.e+'</div><strong>إيموجي اليوم: '+it.name+'</strong><br>'+it.msg;btn.disabled=false;wheelBusy=false;
+  }requestAnimationFrame(frame);
+ });
+ const slideEmojis=['🚀','🌙','⭐','🪐','👽','☄️','🌌','🛸',''];
+ const slideBoard=document.getElementById('slidePuzzle');let slideTiles=[...Array(8).keys()].map(x=>x+1).concat(0),slideMoves=0;
+ function slideSolved(){return slideTiles.every((v,i)=>v===(i===8?0:i+1));}
+ function renderSlide(){if(!slideBoard)return;slideBoard.innerHTML='';slideTiles.forEach((v,i)=>{const b=document.createElement('button');b.type='button';b.className='slide-tile'+(v===0?' empty':'');b.textContent=v?slideEmojis[v-1]+'\n'+v:'';b.setAttribute('aria-label',v?'القطعة '+v:'المربع الفارغ');b.disabled=!v||!slideNeighbors(i).length;b.addEventListener('click',()=>moveSlide(i));slideBoard.appendChild(b);});const st=document.getElementById('slideStatus');if(st)st.textContent=slideSolved()?'🎉 أحسنت! رتّبت اللغز بنجاح في '+slideMoves+' حركة.': 'عدد الحركات: '+slideMoves+' — حرّك قطعة بجانب الفراغ.';}
+ function slideNeighbors(i){const r=Math.floor(i/3),c=i%3;return [[r-1,c],[r+1,c],[r,c-1],[r,c+1]].filter(([rr,cc])=>rr>=0&&rr<3&&cc>=0&&cc<3).map(([rr,cc])=>rr*3+cc);}
+ function moveSlide(i){const empty=slideTiles.indexOf(0);if(!slideNeighbors(empty).includes(i))return;[slideTiles[i],slideTiles[empty]]=[slideTiles[empty],slideTiles[i]];slideMoves++;renderSlide();}
+ function shuffleSlide(){slideTiles=[...Array(8).keys()].map(x=>x+1).concat(0);let previous=-1;for(let k=0;k<100;k++){const e=slideTiles.indexOf(0),opts=slideNeighbors(e).filter(x=>x!==previous),next=opts[Math.floor(Math.random()*opts.length)];[slideTiles[e],slideTiles[next]]=[slideTiles[next],slideTiles[e]];previous=e;}slideMoves=0;renderSlide();}
+ document.getElementById('slideShuffle')?.addEventListener('click',shuffleSlide);document.getElementById('slideReset')?.addEventListener('click',()=>{slideTiles=[...Array(8).keys()].map(x=>x+1).concat(0);slideMoves=0;renderSlide();});renderSlide();
+ const whackBoard=document.getElementById('whackBoard');let whackTimer=null,whackSpawner=null,whackScore=0,whackMiss=0,whackSeconds=30,whackActive=false,whackCurrent=[];
+ function renderWhack(){if(!whackBoard)return;whackBoard.innerHTML='';whackCurrent=Array.from({length:9},()=>Math.random()<.2?'💣':(Math.random()<.65?'😂':''));whackCurrent.forEach((em,i)=>{const b=document.createElement('button');b.type='button';b.className='whack-hole';b.textContent=em;b.setAttribute('aria-label',em==='💣'?'قنبلة':em==='😂'?'اضغط للربح':'فارغ');b.disabled=!whackActive||!em;b.addEventListener('click',()=>{if(!whackActive||!whackCurrent[i])return;if(whackCurrent[i]==='💣'){whackMiss++;}else{whackScore++;}whackCurrent[i]='';updateWhackStats();b.textContent='';b.disabled=true;});whackBoard.appendChild(b);});}
+ function updateWhackStats(){document.getElementById('whackTime').textContent=whackSeconds;document.getElementById('whackScore').textContent=whackScore;document.getElementById('whackMiss').textContent=whackMiss;}
+ function stopWhack(){whackActive=false;clearInterval(whackTimer);clearInterval(whackSpawner);whackTimer=whackSpawner=null;renderWhack();document.getElementById('whackStatus').textContent='انتهى الوقت! نتيجتك '+whackScore+' نقطة، والأخطاء '+whackMiss+'. اضغط ابدأ لتحدٍ جديد.';document.getElementById('whackStart').disabled=false;}
+ function startWhack(){clearInterval(whackTimer);clearInterval(whackSpawner);whackScore=0;whackMiss=0;whackSeconds=30;whackActive=true;updateWhackStats();renderWhack();document.getElementById('whackStart').disabled=true;document.getElementById('whackStatus').textContent='انطلق! اضغط 😂 وتجنب 💣';whackTimer=setInterval(()=>{whackSeconds--;updateWhackStats();if(whackSeconds<=0)stopWhack();},1000);whackSpawner=setInterval(renderWhack,850);}
+ document.getElementById('whackStart')?.addEventListener('click',startWhack);renderWhack();
 
  makeGreeting();makePalette();
  let deferredInstallPrompt=null;
