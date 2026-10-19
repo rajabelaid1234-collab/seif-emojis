@@ -228,6 +228,15 @@ button{touch-action:manipulation;min-height:42px}
 @media(max-width:650px){.extra-tool{padding:13px}.invisible-options{grid-template-columns:1fr}}
 
 
+
+body.seif-offline-app .offline-tool-controls{position:sticky;top:0;z-index:20;background:#0d1020;padding:10px 0 12px;margin:0 0 12px}
+body.seif-offline-app #offlineToolSearch{display:block;width:100%;min-height:48px;border:1px solid #465779;border-radius:13px;background:#080d1b;color:#fff;padding:12px 14px;font-size:16px}
+body.seif-offline-app .offline-filter-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:9px}
+body.seif-offline-app .offline-filter-btn{min-height:44px;border:1px solid #465779;border-radius:12px;background:#192442;color:#fff;font-size:.9rem;padding:8px 5px}
+body.seif-offline-app .offline-filter-btn.active{background:#5eead4;color:#08181d;border-color:#5eead4;font-weight:800}
+body.seif-offline-app .offline-hub-card[hidden],body.seif-offline-app .offline-tool-list>*[hidden]{display:none!important}
+@media(max-width:380px){body.seif-offline-app .offline-filter-row{grid-template-columns:1fr}body.seif-offline-app .offline-filter-btn{min-height:42px}}
+
 /* Offline APK: separate local tools from internet-dependent tools */
 #offlineOnlineHub{display:none}
 body.seif-offline-app #offlineOnlineHub{display:block}
@@ -288,6 +297,14 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 <section id="offlineOnlineHub" class="panel" aria-label="تصنيف أدوات التطبيق">
  <h2 style="font-size:1.45rem">📱 اختر نوع الأدوات</h2>
  <p class="muted small">قسّمنا التطبيق إلى أدوات تعمل من داخل النسخة المحمّلة، وأدوات تحتاج اتصالًا بالإنترنت. أدواتك المحلية لا تحتاج حسابًا أو اتصالًا.</p>
+ <div class="offline-tool-controls">
+  <input id="offlineToolSearch" type="search" placeholder="🔎 ابحث عن أداة..." aria-label="ابحث عن أداة" autocomplete="off">
+  <div class="offline-filter-row" role="group" aria-label="تصفية الأدوات">
+   <button type="button" class="offline-filter-btn active" data-offline-filter="all">الكل</button>
+   <button type="button" class="offline-filter-btn" data-offline-filter="offline">📴 دون إنترنت</button>
+   <button type="button" class="offline-filter-btn" data-offline-filter="online">🌐 مع الإنترنت</button>
+  </div>
+ </div>
  <div class="offline-hub-grid">
   <div class="offline-hub-card">
    <h3>📴 تعمل دون إنترنت</h3>
@@ -296,7 +313,6 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
     <button type="button" data-offline-open="emojiGames">🎮 ألعاب الإيموجي</button>
     <button type="button" data-offline-open="emojiMaker">🎨 اصنع إيموجيك الخاص</button>
     <button type="button" data-offline-open="invisibleNameTool">🥷 الاسم المخفي للألعاب</button>
-    <button type="button" data-offline-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بالكاميرا</button>
     <button type="button" data-offline-tab="fancy">🔤 زخرفة النصوص</button>
     <button type="button" data-offline-tab="randomDecor">🎲 زخارف عشوائية</button>
     <button type="button" data-offline-tab="library">🥰 مكتبة الإيموجيات والرموز</button>
@@ -647,7 +663,29 @@ if(seifOfflineApp){
  }));
 }
 
-const isOfflineAndroidApp=location.hostname==='appassets.androidplatform.net';
+const offlineSearch=$('offlineToolSearch');
+ const offlineFilterButtons=[...document.querySelectorAll('[data-offline-filter]')];
+ let offlineFilter='all';
+ function filterOfflineTools(){
+   const query=(offlineSearch?.value||'').trim().toLocaleLowerCase();
+   document.querySelectorAll('#offlineOnlineHub .offline-hub-card').forEach((card,index)=>{
+     const isOffline=index===0;
+     const categoryMatches=offlineFilter==='all'||(offlineFilter==='offline'&&isOffline)||(offlineFilter==='online'&&!isOffline);
+     let anyVisible=false;
+     card.querySelectorAll('.offline-tool-list > *').forEach(item=>{
+       const matches=categoryMatches&&(!query||item.textContent.toLocaleLowerCase().includes(query));
+       item.hidden=!matches;
+       if(matches)anyVisible=true;
+     });
+     card.hidden=!categoryMatches||(query&&!anyVisible);
+   });
+   offlineFilterButtons.forEach(btn=>{const active=btn.dataset.offlineFilter===offlineFilter;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));});
+ }
+ offlineSearch?.addEventListener('input',filterOfflineTools);
+ offlineFilterButtons.forEach(btn=>btn.addEventListener('click',()=>{offlineFilter=btn.dataset.offlineFilter;filterOfflineTools();}));
+ if(seifOfflineApp)filterOfflineTools();
+
+ const isOfflineAndroidApp=location.hostname==='appassets.androidplatform.net';
 if(isOfflineAndroidApp){
  document.getElementById('keyboardInstall')?.remove();
  document.getElementById('installAppBtn')?.closest('div')?.remove();
