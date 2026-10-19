@@ -73,7 +73,7 @@ class MainActivity : Activity() {
                 if (latestVersion.isNotBlank() && latestVersion != current && latestVersion.matches(Regex("[0-9]+(\\.[0-9]+)*"))) {
                     AlertDialog.Builder(this)
                         .setTitle("✨ تحديث جديد متوفر")
-                        .setMessage("الإصدار المثبّت: $current\\nالإصدار الجديد: $latestVersion\\nهل تريد فتح صفحة تنزيل التحديث؟")
+                        .setMessage("الإصدار المثبّت: $current\nالإصدار الجديد: $latestVersion\nهل تريد فتح صفحة تنزيل التحديث؟")
                         .setPositiveButton("تنزيل التحديث") { _, _ ->
                             val target = releaseUrl ?: "https://github.com/rajabelaid1234-collab/seif-emojis/releases/latest"
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(target)))
