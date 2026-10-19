@@ -317,62 +317,47 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 @media(max-width:380px){.seif-game-grid{gap:5px}.seif-game-card{padding:7px 4px}.seif-game-card button{padding:7px 1px}}
 @media(min-width:700px){.seif-game-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
+
+/* Home screen: clear two-category layout, mobile first */
+.home-categories{margin:18px 0 22px}
+.home-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}
+.home-category-card{display:flex;flex-direction:column;align-items:flex-start;text-align:right;gap:9px;min-width:0;padding:clamp(15px,3vw,24px);border-radius:20px;border:1px solid #4b5579;background:linear-gradient(145deg,#202846,#11182c);color:var(--text);cursor:pointer;min-height:180px;transition:transform .15s,border-color .15s}
+.home-category-card:active{transform:scale(.985)}
+.home-category-card:hover,.home-category-card:focus-visible{border-color:#55e4c5;outline:none}
+.home-category-icon{font-size:2.5rem;line-height:1.2}
+.home-category-card strong{font-size:1.2rem;color:#b9f7ee}
+.home-category-card small{font-size:.88rem;line-height:1.7;color:var(--muted)}
+.home-category-cta{margin-top:auto;font-weight:700;color:#c8b9ff}
+.home-category-subnav{display:flex;gap:8px;flex-wrap:wrap}
+.home-category-subnav button{flex:1 1 130px}
+body.home-filter-games #emojiMaker,body.home-filter-games #invisibleNameTool,body.home-filter-games #emojiLookalikeTool,body.home-filter-games #keyboardInstall,body.home-filter-games #emojiSoundLab,body.home-filter-games #nameLab,body.home-filter-games #emojiPixelArt,body.home-filter-games #emojiMotion,body.home-filter-games #emojiWordArt,body.home-filter-games #fancy,body.home-filter-games #randomDecor,body.home-filter-games #flip,body.home-filter-games #zalgo,body.home-filter-games #stack,body.home-filter-games #big,body.home-filter-games #library,body.home-filter-games #art,body.home-filter-games #kaomojiLab,body.home-filter-games #bigArtGallery,body.home-filter-games #imageAscii,body.home-filter-games #greetingCards,body.home-filter-games #colorEmojiPalette,body.home-filter-games #quickKaoPanel{display:none!important}
+body.home-filter-emoji #emojiGames,body.home-filter-emoji #seifGamesHub{display:none!important}
+body.home-filter-online #emojiGames,body.home-filter-online #emojiMaker,body.home-filter-online #seifGamesHub,body.home-filter-online #nameLab,body.home-filter-online #emojiPixelArt,body.home-filter-online #emojiMotion,body.home-filter-online #emojiWordArt,body.home-filter-online #fancy,body.home-filter-online #randomDecor,body.home-filter-online #flip,body.home-filter-online #zalgo,body.home-filter-online #stack,body.home-filter-online #big,body.home-filter-online #library,body.home-filter-online #art,body.home-filter-online #kaomojiLab,body.home-filter-online #bigArtGallery,body.home-filter-online #imageAscii,body.home-filter-online #greetingCards,body.home-filter-online #colorEmojiPalette{display:none!important}
+body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoundLab{display:none!important}
+@media(max-width:560px){.home-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.home-category-card{padding:13px;min-height:175px;border-radius:16px}.home-category-icon{font-size:2rem}.home-category-card strong{font-size:1rem}.home-category-card small{font-size:.78rem}.home-category-cta{font-size:.8rem}}
+
 </style>
 </head>
 <body><main class="wrap">
 <header><div class="language-switch" aria-label="Website language"><label for="siteLanguage">🌐 Language / اللغة</label><select id="siteLanguage" aria-label="Choose website language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10" alt="أيقونة SEIF EMOJIS" style="width:104px;height:104px;object-fit:cover;border-radius:26px;border:2px solid #48e2c2;box-shadow:0 8px 28px #0007;margin:0 auto 12px;display:block" onerror="this.style.display='none'"><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
 
-<section id="offlineOnlineHub" class="panel" aria-label="تصنيف أدوات التطبيق">
- <h2 style="font-size:1.45rem">📱 اختر نوع الأدوات</h2>
- <p class="muted small">قسّمنا التطبيق إلى أدوات تعمل من داخل النسخة المحمّلة، وأدوات تحتاج اتصالًا بالإنترنت. أدواتك المحلية لا تحتاج حسابًا أو اتصالًا.</p>
- <div class="offline-tool-controls">
-  <input id="offlineToolSearch" type="search" placeholder="🔎 ابحث عن أداة..." aria-label="ابحث عن أداة" autocomplete="off">
-  <div class="offline-filter-row" role="group" aria-label="تصفية الأدوات">
-   <button type="button" class="offline-filter-btn active" data-offline-filter="all">الكل</button>
-   <button type="button" class="offline-filter-btn" data-offline-filter="offline">📴 دون إنترنت</button>
-   <button type="button" class="offline-filter-btn" data-offline-filter="online">🌐 مع الإنترنت</button>
-  </div>
+<section id="homeCategories" class="panel home-categories" aria-label="الأقسام الرئيسية">
+ <h2>أهلاً بك في SEIF EMOJIS ✨</h2>
+ <p class="muted small">اختر القسم الذي تريد استخدامه. جعلنا الواجهة أبسط للهاتف، والأدوات مرتبة حسب نوعها.</p>
+ <div class="home-category-grid">
+  <button type="button" class="home-category-card" data-home-category="games">
+   <span class="home-category-icon">🎮</span><strong>الألعاب</strong><small>ألعاب الإيموجي، الألغاز، الذاكرة، السرعة والتحديات</small><span class="home-category-cta">استكشف الألعاب ←</span>
+  </button>
+  <button type="button" class="home-category-card" data-home-category="emoji">
+   <span class="home-category-icon">😊</span><strong>الإيموجي والزخرفة</strong><small>مكتبة الإيموجيات، زخرفة الأسماء، الرموز، الفنون النصية وأدوات الكيبورد</small><span class="home-category-cta">استكشف الأدوات ←</span>
+  </button>
  </div>
- <div class="offline-hub-grid">
-  <div class="offline-hub-card">
-   <h3>📴 تعمل دون إنترنت</h3>
-   <p class="muted small">تعمل بعد تثبيت التطبيق وفتح هذه الصفحة المحلية، حتى مع إيقاف بيانات الهاتف.</p>
-   <div class="offline-tool-list">
-    <button type="button" data-offline-open="emojiGames">🎮 ألعاب الإيموجي</button>
-    <button type="button" data-offline-open="emojiMaker">🎨 اصنع إيموجيك الخاص</button>
-    <button type="button" data-offline-open="invisibleNameTool">🥷 الاسم المخفي للألعاب</button>
-    <button type="button" data-offline-tab="fancy">🔤 زخرفة النصوص</button>
-    <button type="button" data-offline-tab="randomDecor">🎲 زخارف عشوائية</button>
-    <button type="button" data-offline-tab="library">🥰 مكتبة الإيموجيات والرموز</button>
-    <button type="button" data-offline-tab="kaomojiLab">🎭 وجوه كاوموجي</button>
-    <button type="button" data-offline-tab="art">🎨 فنون نصية وفواصل</button>
-    <button type="button" data-offline-tab="flip">🙃 قلب النص</button>
-    <button type="button" data-offline-tab="zalgo">〰️ زخرفة Zalgo</button>
-    <button type="button" data-offline-tab="stack">📚 النص المتراص</button>
-    <button type="button" data-offline-tab="big">🅰️ النص الكبير</button>
-    <button type="button" data-offline-tab="emojiPixelArt">🧩 رسم بالإيموجيات</button>
-    <button type="button" data-offline-tab="emojiMotion">🎬 أنيميشن الاسم</button>
-    <button type="button" data-offline-tab="emojiWordArt">🔤 حروف بالإيموجيات</button>
-    <button type="button" data-offline-tab="imageAscii">🖼️ تحويل الصورة إلى فن نصي</button>
-    <button type="button" data-offline-tab="greetingCards">🎴 بطاقات التهاني</button>
-    <button type="button" data-offline-tab="colorEmojiPalette">🎨 إيموجيات حسب اللون</button>
-    <button type="button" data-offline-tab="nameLab">🎼 أدوات زخرفة الأسماء</button>
-   </div>
-  </div>
-  <div class="offline-hub-card">
-   <h3>🌐 تحتاج إلى الإنترنت</h3>
-   <p class="muted small">هذه الأدوات تعتمد على مواقع أو ملفات صوتية خارجية، وقد لا تعمل دون اتصال.</p>
-   <div class="offline-tool-list">
-    <button type="button" data-offline-tab="emojiSoundLab">🔊 أصوات الإيموجيات (ملفات صوت خارجية)</button>
-    <button type="button" data-online-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بالذكاء الاصطناعي (يتطلب الإنترنت)</button><a class="toolcard" href="https://www.messletters.com/en/" target="_blank" rel="noopener">🔤 Messletters — زخرفة عبر الإنترنت</a>
-    <a class="toolcard" href="https://www.zalgogenerator.com/" target="_blank" rel="noopener">👹 Zalgo Generator — أداة خارجية</a>
-    <a class="toolcard" href="https://www.stylemytext.com/" target="_blank" rel="noopener">💖 StyleMyText — أداة خارجية</a>
-    <a class="toolcard" href="https://www.flipyourtext.com/" target="_blank" rel="noopener">🔄 FlipYourText — أداة خارجية</a>
-    <a class="toolcard" href="https://rajabelaid1234-collab.github.io/seif-emojis/" target="_blank" rel="noopener">🌍 فتح نسخة الموقع المتصلة</a>
-   </div>
-   <p class="offline-hub-note">ملاحظة: تحميل التطبيق لا يعني أن كل رابط خارجي أصبح متاحًا بلا إنترنت. أما مولّدات النصوص الموجودة داخل التطبيق فتعمل محليًا.</p>
-  </div>
+ <div class="home-category-subnav">
+  <button type="button" data-home-filter="all">عرض الكل</button>
+  <button type="button" data-home-filter="offline">📴 أدوات دون إنترنت</button>
+  <button type="button" data-home-filter="online">🌐 أدوات تحتاج الإنترنت</button>
  </div>
+ <p id="homeCategoryStatus" class="muted small" aria-live="polite">اختر الألعاب أو الإيموجي للتركيز على القسم المطلوب، أو اعرض الكل.</p>
 </section>
 
 <section class="extra-tool" id="emojiGames"><h2>🎮 ألعاب الإيموجي</h2><div class="game-card"><h3>🎬 خمن الفيلم</h3><p id="guessPuzzle" class="puzzle-emoji">👦 🏠 🎄 😱</p><div class="action-row"><input id="guessAnswer" placeholder="اسم الفيلم"><button id="guessCheck" type="button" class="primary">تحقّق</button><button id="guessNext" type="button">لغز آخر</button></div><p id="guessFeedback" aria-live="polite"></p></div><div class="game-card"><h3>🧠 لعبة الذاكرة</h3><div id="memoryBoard" class="memory-board"></div><p id="memoryStatus" aria-live="polite"></p><button id="memoryRestart" type="button">🔄 لعبة جديدة</button></div><div class="game-card"><h3>✨ أي إيموجي يمثّلك؟</h3><p>اختر ما يشبهك أكثر:</p><div class="action-row"><button data-personality="😎" type="button">واثق 😎</button><button data-personality="😂" type="button">مرح 😂</button><button data-personality="🤔" type="button">مفكر 🤔</button><button data-personality="🥰" type="button">حنون 🥰</button></div><p id="personalityResult" aria-live="polite"></p></div>
@@ -691,6 +676,26 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 <script>
 (function(){
 const $=id=>document.getElementById(id);
+ // Simple homepage category navigation.
+ document.querySelectorAll('[data-home-category]').forEach(btn=>btn.addEventListener('click',()=>{
+   document.body.classList.remove('home-filter-games','home-filter-emoji','home-filter-online','home-filter-offline');
+   const cat=btn.dataset.homeCategory;
+   document.body.classList.add(cat==='games'?'home-filter-games':'home-filter-emoji');
+   const status=document.getElementById('homeCategoryStatus');
+   if(status)status.textContent=cat==='games'?'🎮 يعرض الآن قسم الألعاب فقط. اضغط «عرض الكل» للعودة.':'😊 يعرض الآن قسم الإيموجي والزخرفة فقط. اضغط «عرض الكل» للعودة.';
+   const target=document.getElementById(cat==='games'?'emojiGames':'emojiMaker');
+   if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+ }));
+ document.querySelectorAll('[data-home-filter]').forEach(btn=>btn.addEventListener('click',()=>{
+   document.body.classList.remove('home-filter-games','home-filter-emoji','home-filter-online','home-filter-offline');
+   const mode=btn.dataset.homeFilter;
+   if(mode==='online')document.body.classList.add('home-filter-online');
+   if(mode==='offline')document.body.classList.add('home-filter-offline');
+   const status=document.getElementById('homeCategoryStatus');
+   if(status)status.textContent=mode==='all'?'تم عرض جميع الأقسام.':mode==='online'?'🌐 عرض الأدوات التي تحتاج اتصالًا أو تستخدم خدمات خارجية.':'📴 عرض الأدوات الأساسية المحلية؛ قد تعتمد بعض العناصر على متصفح الجهاز.';
+   document.getElementById('homeCategories')?.scrollIntoView({behavior:'smooth',block:'start'});
+ }));
+ 
 const seifOfflineApp=location.hostname==='appassets.androidplatform.net';
 if(seifOfflineApp){
  document.body.classList.add('seif-offline-app');
