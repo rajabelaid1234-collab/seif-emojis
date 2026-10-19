@@ -289,6 +289,34 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 .wyr-choice{font-size:1.1rem!important;min-height:100px!important}
 @media(max-width:420px){#oddEmojiBoard{grid-template-columns:repeat(7,minmax(0,1fr))}.maze-controls{grid-template-columns:repeat(3,48px)}}
 
+
+/* Mobile-first game hub: compact 3-column cards */
+#seifGamesHub{margin:22px auto;max-width:1100px;padding:12px;border:1px solid #3a4568;border-radius:20px;background:linear-gradient(145deg,#151c33,#0d1223)}
+#seifGamesHub h2{color:#b9f7ee;margin:4px 0 8px}
+.seif-game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.seif-game-card{min-width:0;border:1px solid #354263;border-radius:13px;background:#0c1326;padding:10px;text-align:center}
+.seif-game-card .game-icon{font-size:clamp(1.35rem,4vw,2.1rem);display:block;margin-bottom:5px}
+.seif-game-card strong{font-size:clamp(.72rem,2.6vw,.95rem);display:block;line-height:1.25}
+.seif-game-card small{font-size:clamp(.62rem,2.2vw,.76rem);color:#b5c4de;display:block;margin-top:4px}
+.seif-game-card button{margin-top:8px;width:100%;padding:8px 3px;font-size:clamp(.68rem,2.4vw,.84rem)}
+.seif-game-panel{margin-top:12px;padding:12px;border-radius:14px;background:#080e1d;border:1px solid #303b5c}
+.seif-game-panel[hidden]{display:none}
+.seif-game-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.seif-game-controls button{flex:1 1 100px}
+#snakeBoard{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;width:min(100%,330px);aspect-ratio:1;margin:10px auto}
+.snake-cell{background:#1b2540;border-radius:3px;min-width:0;aspect-ratio:1}
+.snake-cell.snake{background:#34d399}.snake-cell.food{background:#f87171}
+#oddBoard{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;max-width:420px;margin:12px auto}
+.odd-item{font-size:clamp(1.2rem,5vw,2rem);padding:8px 0;border-radius:9px;background:#1b2540;border:1px solid #34415f}
+#whackBoard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:400px;margin:10px auto}
+.whack-item{font-size:1.8rem;min-height:62px;border-radius:12px;background:#1b2540;border:1px solid #354263}
+#slideBoard{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;max-width:300px;margin:12px auto}
+.slide-piece{aspect-ratio:1;font-size:1.6rem;border-radius:10px;background:#263452;color:white}
+.slide-piece.empty{background:#080e1d;border:1px dashed #263452}
+.game-big-result{font-size:1.35rem;text-align:center;padding:10px;color:#b9f7ee}
+@media(max-width:380px){.seif-game-grid{gap:5px}.seif-game-card{padding:7px 4px}.seif-game-card button{padding:7px 1px}}
+@media(min-width:700px){.seif-game-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -398,7 +426,26 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 <canvas id="jumpCanvas" width="560" height="315" aria-label="لعبة قفز الإيموجي"></canvas>
 <div class="action-row"><button type="button" id="jumpStart" class="primary">🚀 ابدأ / تابع</button><button type="button" id="jumpBtn">⬆️ اقفز!</button><button type="button" id="jumpReset">إعادة من البداية</button></div><p id="jumpStatus" aria-live="polite" class="muted small">اضغط ابدأ ثم اقفز فوق 🌵.</p>
 </div>
-</section><section class="extra-tool" id="emojiMaker"><h2>🎨 اصنع إيموجيك الخاص</h2><p class="muted small">غيّر اللون والعيون والفم والإضافات، ثم نزّل التصميم PNG.</p><div class="emoji-maker-layout"><div class="emoji-canvas-wrap"><canvas id="emojiCanvas" width="512" height="512"></canvas></div><div class="emoji-controls"><label for="emojiFaceColor">لون الوجه</label><input id="emojiFaceColor" type="color" value="#ffd54f"><label for="emojiEyeStyle">العيون</label><select id="emojiEyeStyle"><option value="normal">عادية</option><option value="happy">سعيدة</option><option value="heart">قلوب</option><option value="cool">نظارات</option><option value="wink">غمزة</option></select><label for="emojiMouthStyle">الفم</label><select id="emojiMouthStyle"><option value="smile">ابتسامة</option><option value="laugh">ضحك</option><option value="sad">حزين</option><option value="open">مفتوح</option><option value="straight">مستقيم</option></select><label for="emojiAccessory">إضافة</label><select id="emojiAccessory"><option value="none">بدون</option><option value="👑">👑 تاج</option><option value="🎩">🎩 قبعة</option><option value="😇">😇 هالة</option><option value="🌸">🌸 زهرة</option><option value="✨">✨ لمعان</option><option value="🎀">🎀 فيونكة</option><option value="👓">👓 نظارات</option></select><label for="emojiRotation">تدوير الإضافة</label><input id="emojiRotation" type="range" min="-180" max="180" value="0"><div class="action-row" id="emojiExtraButtons"><button type="button" data-extra="⭐">⭐</button><button type="button" data-extra="💖">💖</button><button type="button" data-extra="🔥">🔥</button><button type="button" data-extra="🌈">🌈</button><button type="button" data-extra="🐱">🐱</button><button type="button" data-extra="🦋">🦋</button></div><div class="action-row"><button type="button" class="primary" id="emojiDownload">⬇️ تنزيل PNG</button><button type="button" id="emojiReset">إعادة ضبط</button></div><p id="emojiMakerStatus" aria-live="polite"></p></div></div></section><section class="extra-tool" id="invisibleNameTool">
+</section><section class="extra-tool" id="emojiMaker"><h2>🎨 اصنع إيموجيك الخاص</h2><p class="muted small">غيّر اللون والعيون والفم والإضافات، ثم نزّل التصميم PNG.</p><div class="emoji-maker-layout"><div class="emoji-canvas-wrap"><canvas id="emojiCanvas" width="512" height="512"></canvas></div><div class="emoji-controls"><label for="emojiFaceColor">لون الوجه</label><input id="emojiFaceColor" type="color" value="#ffd54f"><label for="emojiEyeStyle">العيون</label><select id="emojiEyeStyle"><option value="normal">عادية</option><option value="happy">سعيدة</option><option value="heart">قلوب</option><option value="cool">نظارات</option><option value="wink">غمزة</option></select><label for="emojiMouthStyle">الفم</label><select id="emojiMouthStyle"><option value="smile">ابتسامة</option><option value="laugh">ضحك</option><option value="sad">حزين</option><option value="open">مفتوح</option><option value="straight">مستقيم</option></select><label for="emojiAccessory">إضافة</label><select id="emojiAccessory"><option value="none">بدون</option><option value="👑">👑 تاج</option><option value="🎩">🎩 قبعة</option><option value="😇">😇 هالة</option><option value="🌸">🌸 زهرة</option><option value="✨">✨ لمعان</option><option value="🎀">🎀 فيونكة</option><option value="👓">👓 نظارات</option></select><label for="emojiRotation">تدوير الإضافة</label><input id="emojiRotation" type="range" min="-180" max="180" value="0"><div class="action-row" id="emojiExtraButtons"><button type="button" data-extra="⭐">⭐</button><button type="button" data-extra="💖">💖</button><button type="button" data-extra="🔥">🔥</button><button type="button" data-extra="🌈">🌈</button><button type="button" data-extra="🐱">🐱</button><button type="button" data-extra="🦋">🦋</button></div><div class="action-row"><button type="button" class="primary" id="emojiDownload">⬇️ تنزيل PNG</button><button type="button" id="emojiReset">إعادة ضبط</button></div><p id="emojiMakerStatus" aria-live="polite"></p></div></div></section>
+<section id="seifGamesHub" class="extra-tool">
+<h2>🎮 ألعاب SEIF EMOJIS — تعمل دون إنترنت</h2>
+<p class="muted">اختر لعبة من البطاقات. الواجهة مصممة للمس على الهاتف، والنتائج تُحسب على جهازك.</p>
+<div class="seif-game-grid">
+ <article class="seif-game-card"><span class="game-icon">🐍</span><strong>الثعبان بالإيموجي</strong><small>اجمع الفاكهة وتجنب الاصطدام</small><button type="button" data-game="snake">العب الآن</button></article>
+ <article class="seif-game-card"><span class="game-icon">🧮</span><strong>معادلات الإيموجي</strong><small>اكتشف قيمة كل رمز</small><button type="button" data-game="math">العب الآن</button></article>
+ <article class="seif-game-card"><span class="game-icon">🕵️</span><strong>الإيموجي الدخيل</strong><small>اختبر سرعة ملاحظتك</small><button type="button" data-game="odd">العب الآن</button></article>
+ <article class="seif-game-card"><span class="game-icon">🎡</span><strong>عجلة المزاج</strong><small>إيموجي ورسالة اليوم</small><button type="button" data-game="wheel">لفّ العجلة</button></article>
+ <article class="seif-game-card"><span class="game-icon">⚡</span><strong>تحدي السرعة</strong><small>اضغط الوجوه وتجنب القنبلة</small><button type="button" data-game="whack">ابدأ التحدي</button></article>
+ <article class="seif-game-card"><span class="game-icon">🧩</span><strong>تركيب الإيموجي</strong><small>رتّب القطع الثلاثية</small><button type="button" data-game="slide">ابدأ التركيب</button></article>
+ <article class="seif-game-card"><span class="game-icon">🎭</span><strong>أي إيموجي يشبه تعبيرك؟</strong><small>تحليل الوجه بالكاميرا</small><button type="button" data-game="look">افتح الأداة</button></article>
+</div>
+<div id="seifGamePanel" class="seif-game-panel" hidden>
+ <div class="action-row" style="justify-content:space-between"><strong id="seifGameTitle">اللعبة</strong><button type="button" id="seifGameClose">إغلاق ✕</button></div>
+ <div id="seifGameBody"></div>
+</div>
+</section>
+
+<section class="extra-tool" id="invisibleNameTool">
 <h2>🥷 نسخ الاسم المخفي لببجي وفري فاير</h2>
 <p class="muted">جرّب نسخ رمز غير مرئي والصقه في خانة الاسم داخل اللعبة. دعم الرموز يختلف حسب اللعبة والتحديث؛ لا يوجد رمز مضمون القبول في كل الألعاب.</p>
 <div class="invisible-options">
@@ -1641,6 +1688,31 @@ render();
   function startJump(){jumpRunning=true;jumpLast=0;jumpFrame=0;jumpObs=[];$('jumpStatus').textContent='انطلق! المس الشاشة أو زر اقفز.';jumpRAF=requestAnimationFrame(jumpTick);}
   function jumpTick(ts){if(!jumpRunning)return;if(!jumpLast)jumpLast=ts;const dt=Math.min(32,ts-jumpLast);jumpLast=ts;jumpFrame+=dt;jumpV-=0.8*(dt/16.67);jumpY=Math.max(0,jumpY+jumpV*(dt/16.67));if(jumpY===0)jumpV=0;if(jumpFrame>Math.max(600,1450-jumpLevel*100)){jumpObs.push({x:cv.width,emoji:Math.random()<.75?'🌵':'🧱',hit:false});jumpFrame=0;}const speed=4+jumpLevel*.8;jumpObs.forEach(o=>o.x-=speed*(dt/16.67));jumpObs=jumpObs.filter(o=>o.x>-50);for(const o of jumpObs){if(!o.hit&&o.x<95&&o.x>42&&jumpY<35){jumpRunning=false;$('jumpStatus').textContent='💥 انتهت الجولة! نقاطك '+jumpScore+'. اضغط ابدأ للمحاولة مجددًا.';jumpDraw();return;}if(!o.hit&&o.x<40){o.hit=true;jumpScore++;$('jumpScore').textContent=jumpScore;if(jumpScore>0&&jumpScore%5===0){jumpLevel++;$('jumpLevel').textContent=jumpLevel;$('jumpStatus').textContent='🚀 وصلت إلى المرحلة '+jumpLevel+'!';}}}jumpDraw();jumpRAF=requestAnimationFrame(jumpTick);}
   $('jumpStart')?.addEventListener('click',()=>{if(!jumpRunning)startJump();});$('jumpBtn')?.addEventListener('click',jump);cv?.addEventListener('pointerdown',jump);$('jumpReset')?.addEventListener('click',jumpReset);jumpDraw();
+ })();
+
+
+ // Lightweight local games; no remote services, no timers outside active games.
+ (function(){
+ const panel=document.getElementById('seifGamePanel'),body=document.getElementById('seifGameBody'),title=document.getElementById('seifGameTitle');
+ if(!panel||!body)return;let gameTimer=null,snakeTimer=null,score=0,whackSeconds=30,snakeState=null,slideState=[];
+ const stopTimers=()=>{if(gameTimer)clearInterval(gameTimer);if(snakeTimer)clearInterval(snakeTimer);gameTimer=null;snakeTimer=null;};
+ const open=(name,label)=>{stopTimers();title.textContent=label;body.innerHTML='';panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'nearest'});};
+ const button=(label,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',fn);return b;};
+ const note=(text)=>{const p=document.createElement('p');p.className='game-big-result';p.textContent=text;body.appendChild(p);return p;};
+ document.getElementById('seifGameClose')?.addEventListener('click',()=>{stopTimers();panel.hidden=true;});
+ document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{
+ const type=b.dataset.game;
+ if(type==='look'){document.getElementById('emojiLookalikeTool')?.scrollIntoView({behavior:'smooth',block:'start'});return;}
+ if(type==='snake'){open(type,'🐍 الثعبان بالإيموجي');snakeState={snake:[26,25,24],food:50,dir:1,over:false,points:0};const board=document.createElement('div');board.id='snakeBoard';body.appendChild(board);const status=note('النقاط: 0 — استخدم أزرار الاتجاهات');const controls=document.createElement('div');controls.className='seif-game-controls';[['⬆️',-12],['⬅️',-1],['⬇️',12],['➡️',1]].forEach(([t,d])=>controls.appendChild(button(t,()=>{if((d===1&&snakeState.dir!==-1)||(d===-1&&snakeState.dir!==1)||(d===12&&snakeState.dir!==-12)||(d===-12&&snakeState.dir!==12))snakeState.dir=d;})));body.appendChild(controls);
+ const draw=()=>{board.innerHTML='';for(let i=0;i<144;i++){const c=document.createElement('div');c.className='snake-cell';if(snakeState.snake.includes(i))c.classList.add('snake');if(i===snakeState.food)c.classList.add('food');board.appendChild(c);}status.textContent='النقاط: '+snakeState.points+(snakeState.over?' — انتهت اللعبة! اضغط الثعبان لبدء جديد.':'');};
+ board.addEventListener('click',()=>{if(snakeState.over){snakeState={snake:[26,25,24],food:50,dir:1,over:false,points:0};draw();}});
+ snakeTimer=setInterval(()=>{if(snakeState.over)return;let head=snakeState.snake[0]+snakeState.dir;if(head<0||head>=144||(snakeState.dir===1&&head%12===0)||(snakeState.dir===-1&&head%12===11)||snakeState.snake.includes(head)){snakeState.over=true;draw();return;}snakeState.snake.unshift(head);if(head===snakeState.food){snakeState.points++;do{snakeState.food=Math.floor(Math.random()*144);}while(snakeState.snake.includes(snakeState.food));}else snakeState.snake.pop();draw();},300);draw();return;}
+ if(type==='math'){open(type,'🧮 معادلات الإيموجي');const vals=[['🍎 + 🍎 = 10','🍎 = 5'],['🍎 + 🍌 = 8','🍌 = 3'],['🍇 × 🍇 = 9','🍇 = 3'],['🍓 + 🍇 = 7','🍓 = 4']];let idx=0;const q=note('');const choices=document.createElement('div');choices.className='seif-game-controls';body.appendChild(choices);const next=()=>{q.textContent=vals[idx][0];choices.innerHTML='';['3','4','5','6','7'].forEach(n=>choices.appendChild(button(n,()=>{const ans=vals[idx][1].split('= ')[1];q.textContent=(n===ans?'صحيح! 🎉 ':'ليس تمامًا 🙂 ')+vals[idx][1];choices.innerHTML='';choices.appendChild(button('اللغز التالي ➜',()=>{idx=(idx+1)%vals.length;next();}));})));};next();return;}
+ if(type==='odd'){open(type,'🕵️ ابحث عن الإيموجي الدخيل');let round=0;const start=()=>{body.innerHTML='';const base=['😴','🐱','🍎','😀','🌸'][round%5],odd=['🥱','😺','🍐','😃','🌼'][round%5];const target=Math.floor(Math.random()*25);const board=document.createElement('div');board.id='oddBoard';const result=note('المستوى '+(round+1)+' — اضغط المختلف');body.appendChild(board);for(let i=0;i<25;i++){const x=button(i===target?odd:base,()=>{result.textContent=i===target?'أحسنت! عينك قوية 🎯':'ليس هذا هو الدخيل، حاول مرة أخرى';if(i===target){round++;setTimeout(start,650);}});x.className='odd-item';board.appendChild(x);}};start();return;}
+ if(type==='wheel'){open(type,'🎡 عجلة المزاج');const results=[['🚀','طاقة وحماس! ابدأ شيئًا جديدًا اليوم.'],['😎','خذ الأمور بثقة وهدوء.'],['😂','اصنع لحظة ضحك مع شخص تحبه.'],['🌱','خطوة صغيرة اليوم تصنع فرقًا.'],['🦋','جرّب تغييرًا لطيفًا في روتينك.'],['💖','شارك كلمة جميلة مع أحدهم.'],['🧠','تعلم معلومة جديدة اليوم.']];const display=note('🎡');body.appendChild(button('لفّ العجلة',()=>{const r=results[Math.floor(Math.random()*results.length)];display.textContent=r[0]+' — '+r[1];}));return;}
+ if(type==='whack'){open(type,'⚡ تحدي السرعة — 30 ثانية');score=0;whackSeconds=30;const status=note('النقاط: 0 | الوقت: 30');const board=document.createElement('div');board.id='whackBoard';body.appendChild(board);const tick=()=>{if(whackSeconds<=0){stopTimers();status.textContent='انتهى الوقت! نتيجتك: '+score+' نقطة 🏆';board.querySelectorAll('button').forEach(x=>x.disabled=true);return;}status.textContent='النقاط: '+score+' | الوقت: '+whackSeconds+' ث';whackSeconds--;board.innerHTML='';for(let i=0;i<9;i++){const emoji=['😂','👻','😎','💖','🐸','💣'][Math.floor(Math.random()*6)];board.appendChild(button(emoji,()=>{if(emoji==='💣')score=Math.max(0,score-2);else score++;status.textContent='النقاط: '+score+' | الوقت: '+whackSeconds+' ث';}));}};tick();gameTimer=setInterval(tick,1000);return;}
+ if(type==='slide'){open(type,'🧩 ترتيب الإيموجيات');slideState=['🐱','🍎','🌸','🐶','🍇','⭐','🦋','💖',''];const board=document.createElement('div');board.id='slideBoard';body.appendChild(board);const status=note('رتّب الإيموجيات حسب الصفوف.');const solved=['🐱','🍎','🌸','🐶','🍇','⭐','🦋','💖',''];const draw=()=>{board.innerHTML='';slideState.forEach((v,i)=>{const x=button(v||' ',()=>{const e=slideState.indexOf('');if([i-3,i+3,i-1,i+1].includes(e)&&!(i%3===0&&e===i-1)&&!(i%3===2&&e===i+1)){[slideState[i],slideState[e]]=[slideState[e],slideState[i]];draw();if(slideState.every((v,j)=>v===solved[j]))status.textContent='ممتاز! أكملت اللغز 🎉';}});x.className='slide-piece'+(v?'':' empty');board.appendChild(x);});};for(let i=0;i<25;i++){const a=Math.floor(Math.random()*8),b=(a+1+Math.floor(Math.random()*7))%8;[slideState[a],slideState[b]]=[slideState[b],slideState[a]];}draw();return;}
+ }));
  })();
 
  makeGreeting();makePalette();
