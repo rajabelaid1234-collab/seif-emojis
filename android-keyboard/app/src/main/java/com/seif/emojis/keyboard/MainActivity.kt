@@ -45,7 +45,7 @@ class MainActivity : Activity() {
             gravity = Gravity.CENTER
         })
         content.addView(TextView(this).apply {
-            text = "إيموجيات وزخرفة وألعاب — صُمّم للهاتف"
+            text = "ألعاب وأدوات إيموجي — واجهة سهلة للهاتف"
             textSize = 14f
             setTextColor(Color.LTGRAY)
             gravity = Gravity.CENTER
@@ -104,7 +104,6 @@ class MainActivity : Activity() {
             addView(content)
             setBackgroundColor(bg)
         })
-        checkForUpdate(manual = false)
     }
 
     private fun showKeyboardSetup() {
