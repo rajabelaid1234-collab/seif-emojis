@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.os.Build
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
@@ -63,6 +64,21 @@ class MainActivity : Activity() {
         }, weighted())
         tiles.addView(tile("⌨️\nلوحة SEIF") { showKeyboardSetup() }, weighted())
         content.addView(tiles)
+
+        content.addView(actionButton("😊 تشغيل زر إيموجي عائم", Color.rgb(105, 76, 205)) {
+            if (Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
+                AlertDialog.Builder(this)
+                    .setTitle("إذن الزر العائم")
+                    .setMessage("يلزم السماح لـ SEIF EMOJIS بالظهور فوق التطبيقات حتى يبقى زر 😊 ظاهرًا. هذا الإذن اختياري؛ لوحة المفاتيح تعمل بدونه.")
+                    .setPositiveButton("فتح الإعدادات") { _, _ ->
+                        startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")))
+                    }
+                    .setNegativeButton("إلغاء", null).show()
+            } else {
+                startService(Intent(this, FloatingBubbleService::class.java))
+                android.widget.Toast.makeText(this, "زر SEIF العائم يعمل. اضغط وجهًا لنسخه ثم الصقه، أو استخدم لوحة SEIF للإدراج المباشر.", android.widget.Toast.LENGTH_LONG).show()
+            }
+        }, match(dp(12)))
 
         content.addView(infoCard(
             "📴 النسخة المحلية",
