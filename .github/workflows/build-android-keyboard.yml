@@ -54,7 +54,7 @@ jobs:
           s = p.read_text()
           import os, re
           n = int(os.environ['GITHUB_RUN_NUMBER'])
-          s = re.sub(r'versionCode \\d+', f'versionCode {n}', s)
+          s = re.sub(r'versionCode \d+', f'versionCode {n}', s)
           s = re.sub(r"versionName '[^']+'", f"versionName '1.0.{n}'", s)
           p.write_text(s)
           PY
