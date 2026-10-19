@@ -1497,7 +1497,7 @@ render();
   const start=wheelRotation,extra=(5+Math.random()*4)*Math.PI*2+Math.random()*Math.PI*2,duration=2800,begin=performance.now();
   function frame(now){const t=Math.min(1,(now-begin)/duration),ease=1-Math.pow(1-t,4);wheelRotation=start+extra*ease;drawMoodWheel(wheelRotation);if(t<1){requestAnimationFrame(frame);return;}
    wheelRotation=wheelRotation%(Math.PI*2);drawMoodWheel(wheelRotation);
-   const n=moodItems.length,angle=((Math.PI*1.5-wheelRotation)%(Math.PI*2)+Math.PI*2)%(Math.PI*2),idx=Math.floor(angle/(Math.PI*2/n))%n,it=moodItems[idx];
+   const n=moodItems.length,angle=((-wheelRotation)%(Math.PI*2)+Math.PI*2)%(Math.PI*2),idx=Math.floor(angle/(Math.PI*2/n))%n,it=moodItems[idx];
    result.innerHTML='<div style="font-size:2.8rem">'+it.e+'</div><strong>إيموجي اليوم: '+it.name+'</strong><br>'+it.msg;btn.disabled=false;wheelBusy=false;
   }requestAnimationFrame(frame);
  });
