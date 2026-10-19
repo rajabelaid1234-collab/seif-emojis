@@ -224,10 +224,73 @@ button{touch-action:manipulation;min-height:42px}
 .look-score{font-size:2.6rem;font-weight:900;color:#5eead4}
 @media(max-width:650px){.extra-tool{padding:13px}.invisible-options{grid-template-columns:1fr}}
 
+
+/* Offline APK: separate local tools from internet-dependent tools */
+#offlineOnlineHub{display:none}
+body.seif-offline-app #offlineOnlineHub{display:block}
+body.seif-offline-app #installAppBtn,body.seif-offline-app #installAppNotice,
+body.seif-offline-app #keyboardInstall{display:none!important}
+body.seif-offline-app .offline-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+body.seif-offline-app .offline-hub-card{padding:15px;border-radius:16px;border:1px solid #465779;background:linear-gradient(145deg,#192442,#0e1629);min-width:0}
+body.seif-offline-app .offline-hub-card h3{margin:0 0 8px;color:#b9f7ee}
+body.seif-offline-app .offline-tool-list{display:grid;gap:8px;margin-top:12px}
+body.seif-offline-app .offline-tool-list button{width:100%;text-align:right;min-height:46px}
+body.seif-offline-app .offline-hub-note{padding:10px 12px;border-radius:12px;background:#0b1020;color:#c6d4ee;font-size:.9rem;line-height:1.7;margin-top:10px}
+body.seif-offline-app #kaoLinks{display:none!important}
+body.seif-offline-app .tabs{scroll-margin-top:8px}
+body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يحتاج إلى الإنترنت لأن ملفات الصوت مستضافة خارجيًا.";display:block;padding:12px;border-radius:12px;background:#352b19;color:#ffe4a3;margin-bottom:12px}
+@media(max-width:600px){body.seif-offline-app #offlineOnlineHub{padding:12px}body.seif-offline-app .offline-hub-card{padding:12px}}
+
 </style>
 </head>
 <body><main class="wrap">
 <header><div class="language-switch" aria-label="Website language"><label for="siteLanguage">🌐 Language / اللغة</label><select id="siteLanguage" aria-label="Choose website language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10" alt="أيقونة SEIF EMOJIS" style="width:104px;height:104px;object-fit:cover;border-radius:26px;border:2px solid #48e2c2;box-shadow:0 8px 28px #0007;margin:0 auto 12px;display:block" onerror="this.style.display='none'"><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
+
+<section id="offlineOnlineHub" class="panel" aria-label="تصنيف أدوات التطبيق">
+ <h2 style="font-size:1.45rem">📱 اختر نوع الأدوات</h2>
+ <p class="muted small">قسّمنا التطبيق إلى أدوات تعمل من داخل النسخة المحمّلة، وأدوات تحتاج اتصالًا بالإنترنت. أدواتك المحلية لا تحتاج حسابًا أو اتصالًا.</p>
+ <div class="offline-hub-grid">
+  <div class="offline-hub-card">
+   <h3>📴 تعمل دون إنترنت</h3>
+   <p class="muted small">تعمل بعد تثبيت التطبيق وفتح هذه الصفحة المحلية، حتى مع إيقاف بيانات الهاتف.</p>
+   <div class="offline-tool-list">
+    <button type="button" data-offline-open="emojiGames">🎮 ألعاب الإيموجي</button>
+    <button type="button" data-offline-open="emojiMaker">🎨 اصنع إيموجيك الخاص</button>
+    <button type="button" data-offline-open="invisibleNameTool">🥷 الاسم المخفي للألعاب</button>
+    <button type="button" data-offline-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بالكاميرا</button>
+    <button type="button" data-offline-tab="fancy">🔤 زخرفة النصوص</button>
+    <button type="button" data-offline-tab="randomDecor">🎲 زخارف عشوائية</button>
+    <button type="button" data-offline-tab="library">🥰 مكتبة الإيموجيات والرموز</button>
+    <button type="button" data-offline-tab="kaomojiLab">🎭 وجوه كاوموجي</button>
+    <button type="button" data-offline-tab="art">🎨 فنون نصية وفواصل</button>
+    <button type="button" data-offline-tab="flip">🙃 قلب النص</button>
+    <button type="button" data-offline-tab="zalgo">〰️ زخرفة Zalgo</button>
+    <button type="button" data-offline-tab="stack">📚 النص المتراص</button>
+    <button type="button" data-offline-tab="big">🅰️ النص الكبير</button>
+    <button type="button" data-offline-tab="emojiPixelArt">🧩 رسم بالإيموجيات</button>
+    <button type="button" data-offline-tab="emojiMotion">🎬 أنيميشن الاسم</button>
+    <button type="button" data-offline-tab="emojiWordArt">🔤 حروف بالإيموجيات</button>
+    <button type="button" data-offline-tab="imageAscii">🖼️ تحويل الصورة إلى فن نصي</button>
+    <button type="button" data-offline-tab="greetingCards">🎴 بطاقات التهاني</button>
+    <button type="button" data-offline-tab="colorEmojiPalette">🎨 إيموجيات حسب اللون</button>
+    <button type="button" data-offline-tab="nameLab">🎼 أدوات زخرفة الأسماء</button>
+   </div>
+  </div>
+  <div class="offline-hub-card">
+   <h3>🌐 تحتاج إلى الإنترنت</h3>
+   <p class="muted small">هذه الأدوات تعتمد على مواقع أو ملفات صوتية خارجية، وقد لا تعمل دون اتصال.</p>
+   <div class="offline-tool-list">
+    <button type="button" data-offline-tab="emojiSoundLab">🔊 أصوات الإيموجيات (ملفات صوت خارجية)</button>
+    <a class="toolcard" href="https://www.messletters.com/en/" target="_blank" rel="noopener">🔤 Messletters — زخرفة عبر الإنترنت</a>
+    <a class="toolcard" href="https://www.zalgogenerator.com/" target="_blank" rel="noopener">👹 Zalgo Generator — أداة خارجية</a>
+    <a class="toolcard" href="https://www.stylemytext.com/" target="_blank" rel="noopener">💖 StyleMyText — أداة خارجية</a>
+    <a class="toolcard" href="https://www.flipyourtext.com/" target="_blank" rel="noopener">🔄 FlipYourText — أداة خارجية</a>
+    <a class="toolcard" href="https://rajabelaid1234-collab.github.io/seif-emojis/" target="_blank" rel="noopener">🌍 فتح نسخة الموقع المتصلة</a>
+   </div>
+   <p class="offline-hub-note">ملاحظة: تحميل التطبيق لا يعني أن كل رابط خارجي أصبح متاحًا بلا إنترنت. أما مولّدات النصوص الموجودة داخل التطبيق فتعمل محليًا.</p>
+  </div>
+ </div>
+</section>
 
 <section class="extra-tool" id="emojiGames"><h2>🎮 ألعاب الإيموجي</h2><div class="game-card"><h3>🎬 خمن الفيلم</h3><p id="guessPuzzle" class="puzzle-emoji">👦 🏠 🎄 😱</p><div class="action-row"><input id="guessAnswer" placeholder="اسم الفيلم"><button id="guessCheck" type="button" class="primary">تحقّق</button><button id="guessNext" type="button">لغز آخر</button></div><p id="guessFeedback" aria-live="polite"></p></div><div class="game-card"><h3>🧠 لعبة الذاكرة</h3><div id="memoryBoard" class="memory-board"></div><p id="memoryStatus" aria-live="polite"></p><button id="memoryRestart" type="button">🔄 لعبة جديدة</button></div><div class="game-card"><h3>✨ أي إيموجي يمثّلك؟</h3><p>اختر ما يشبهك أكثر:</p><div class="action-row"><button data-personality="😎" type="button">واثق 😎</button><button data-personality="😂" type="button">مرح 😂</button><button data-personality="🤔" type="button">مفكر 🤔</button><button data-personality="🥰" type="button">حنون 🥰</button></div><p id="personalityResult" aria-live="polite"></p></div></section><section class="extra-tool" id="emojiMaker"><h2>🎨 اصنع إيموجيك الخاص</h2><p class="muted small">غيّر اللون والعيون والفم والإضافات، ثم نزّل التصميم PNG.</p><div class="emoji-maker-layout"><div class="emoji-canvas-wrap"><canvas id="emojiCanvas" width="512" height="512"></canvas></div><div class="emoji-controls"><label for="emojiFaceColor">لون الوجه</label><input id="emojiFaceColor" type="color" value="#ffd54f"><label for="emojiEyeStyle">العيون</label><select id="emojiEyeStyle"><option value="normal">عادية</option><option value="happy">سعيدة</option><option value="heart">قلوب</option><option value="cool">نظارات</option><option value="wink">غمزة</option></select><label for="emojiMouthStyle">الفم</label><select id="emojiMouthStyle"><option value="smile">ابتسامة</option><option value="laugh">ضحك</option><option value="sad">حزين</option><option value="open">مفتوح</option><option value="straight">مستقيم</option></select><label for="emojiAccessory">إضافة</label><select id="emojiAccessory"><option value="none">بدون</option><option value="👑">👑 تاج</option><option value="🎩">🎩 قبعة</option><option value="😇">😇 هالة</option><option value="🌸">🌸 زهرة</option><option value="✨">✨ لمعان</option><option value="🎀">🎀 فيونكة</option><option value="👓">👓 نظارات</option></select><label for="emojiRotation">تدوير الإضافة</label><input id="emojiRotation" type="range" min="-180" max="180" value="0"><div class="action-row" id="emojiExtraButtons"><button type="button" data-extra="⭐">⭐</button><button type="button" data-extra="💖">💖</button><button type="button" data-extra="🔥">🔥</button><button type="button" data-extra="🌈">🌈</button><button type="button" data-extra="🐱">🐱</button><button type="button" data-extra="🦋">🦋</button></div><div class="action-row"><button type="button" class="primary" id="emojiDownload">⬇️ تنزيل PNG</button><button type="button" id="emojiReset">إعادة ضبط</button></div><p id="emojiMakerStatus" aria-live="polite"></p></div></div></section><section class="extra-tool" id="invisibleNameTool">
 <h2>🥷 نسخ الاسم المخفي لببجي وفري فاير</h2>
@@ -475,6 +538,25 @@ button{touch-action:manipulation;min-height:42px}
 <script>
 (function(){
 const $=id=>document.getElementById(id);
+const seifOfflineApp=location.hostname==='appassets.androidplatform.net';
+if(seifOfflineApp){
+ document.body.classList.add('seif-offline-app');
+ document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]').forEach(el=>el.href='./site-icon.png');
+ const brandImage=document.querySelector('header img[alt="أيقونة SEIF EMOJIS"]');
+ if(brandImage)brandImage.src='./site-icon.png';
+ const installWrap=$('installAppBtn')?.parentElement;
+ if(installWrap)installWrap.remove();
+ $('keyboardInstall')?.remove();
+ document.querySelectorAll('[data-offline-open]').forEach(btn=>btn.addEventListener('click',()=>{
+   const target=$(btn.dataset.offlineOpen);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}
+ }));
+ document.querySelectorAll('[data-offline-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+   const tab=document.querySelector('[data-tab="'+btn.dataset.offlineTab+'"]');
+   if(tab){tab.click();document.querySelector('.tabs')?.scrollIntoView({behavior:'smooth',block:'start'});}
+   else{const target=$(btn.dataset.offlineTab);if(target)target.scrollIntoView({behavior:'smooth',block:'start'});}
+ }));
+}
+
 const isOfflineAndroidApp=location.hostname==='appassets.androidplatform.net';
 if(isOfflineAndroidApp){
  document.getElementById('keyboardInstall')?.remove();
