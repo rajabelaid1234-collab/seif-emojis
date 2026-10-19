@@ -19,6 +19,13 @@ import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewClientCompat
 
 class WebActivity : Activity() {
+    companion object {
+        const val EXTRA_MODE = "seif_mode"
+        const val MODE_OFFLINE = "offline"
+        const val MODE_ONLINE = "online"
+        private const val OFFLINE_URL = "https://appassets.androidplatform.net/assets/offline.html"
+        private const val ONLINE_URL = "https://rajabelaid1234-collab.github.io/seif-emojis/"
+    }
     private lateinit var webView: WebView
     private lateinit var assetLoader: WebViewAssetLoader
     private var uploadCallback: ValueCallback<Array<Uri>>? = null
@@ -85,7 +92,10 @@ class WebActivity : Activity() {
         root.addView(progress)
         root.addView(webView, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
         setContentView(root)
-        if (savedInstanceState == null) webView.loadUrl("https://appassets.androidplatform.net/assets/index.html")
+        if (savedInstanceState == null) {
+            val mode = intent.getStringExtra(EXTRA_MODE) ?: MODE_OFFLINE
+            webView.loadUrl(if (mode == MODE_ONLINE) ONLINE_URL else OFFLINE_URL)
+        }
         else webView.restoreState(savedInstanceState)
     }
 
