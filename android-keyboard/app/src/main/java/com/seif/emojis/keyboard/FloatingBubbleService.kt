@@ -100,27 +100,62 @@ class FloatingBubbleService : Service() {
 
     private fun toggleMenu() {
         if (expanded) { removeMenu(); return }
-        val box=LinearLayout(this).apply { orientation=LinearLayout.VERTICAL; setPadding(7,7,7,7); setBackgroundColor(Color.rgb(18,24,43)) }
-        val header=LinearLayout(this).apply { gravity=Gravity.CENTER_VERTICAL }
-        header.addView(TextView(this).apply { text="SEIF EMOJIS"; setTextColor(Color.rgb(72,226,194)); setPadding(6,4,6,4) }, LinearLayout.LayoutParams(0,-2,1f))
-        header.addView(Button(this).apply { text="إخفاء ✕"; setOnClickListener { stopSelf() } })
+        val box = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(7, 7, 7, 7)
+            setBackgroundColor(Color.rgb(18, 24, 43))
+        }
+        val header = LinearLayout(this).apply { gravity = Gravity.CENTER_VERTICAL }
+        header.addView(TextView(this).apply {
+            text = "✨ SEIF EMOJIS"
+            textSize = 14f
+            setTextColor(Color.rgb(72, 226, 194))
+            setPadding(6, 4, 6, 4)
+        }, LinearLayout.LayoutParams(0, -2, 1f))
+        header.addView(Button(this).apply { text = "✕"; contentDescription = "إخفاء القائمة"; setOnClickListener { removeMenu() } })
         box.addView(header)
-        listOf("(＾▽＾)","(♡˙︶˙♡)","(≧▽≦)","ʕ•ᴥ•ʔ","(╥﹏╥)","❤️").forEach { face ->
-            box.addView(Button(this).apply {
-                text=face; textSize=18f; isAllCaps=false
+        box.addView(TextView(this).apply {
+            text = "اضغط للنسخ، أو استخدم لوحة SEIF للإدراج المباشر"
+            textSize = 11f
+            setTextColor(Color.LTGRAY)
+            setPadding(5, 2, 5, 6)
+        })
+        val choices = listOf(
+            "⊂（♡⌂♡）⊃", "⊂(◉‿◉)つ", "ლ(・ヮ・ლ)", "(っಠ‿ಠ)っ",
+            "ʕっ•ᴥ•ʔっ", "(づ｡◕‿‿◕｡)づ", "(≧▽≦)", "(＾▽＾)",
+            "(ಥ﹏ಥ)", "(¬‿¬)", "¯\\_(ツ)_/¯", "(╯°□°）╯︵ ┻━┻",
+            "✨", "💖", "🔥", "👻", "😎", "🥷",
+            "⚡", "🌸", "🖤", "💫", "🎮", "🫶"
+        )
+        val grid = android.widget.GridLayout(this).apply { columnCount = 4 }
+        choices.forEach { face ->
+            grid.addView(Button(this).apply {
+                text = face
+                textSize = 16f
+                isAllCaps = false
+                setPadding(2, 4, 2, 4)
                 setOnClickListener {
-                    val cb=getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    cb.setPrimaryClip(ClipData.newPlainText("SEIF EMOJIS",face))
+                    val cb = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    cb.setPrimaryClip(ClipData.newPlainText("SEIF EMOJIS", face))
                     swordEffect()
-                    Toast.makeText(this@FloatingBubbleService,"تم النسخ؛ الصقه في خانة الكتابة",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@FloatingBubbleService, "تم النسخ — الصقه في خانة الكتابة", Toast.LENGTH_SHORT).show()
                     removeMenu()
                 }
+            }, android.widget.GridLayout.LayoutParams().apply {
+                width = 0
+                height = WindowManager.LayoutParams.WRAP_CONTENT
+                columnSpec = android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f)
+                setMargins(2, 2, 2, 2)
             })
         }
-        val p=newParams().apply { x=params?.x ?: 20; y=(params?.y ?: 240)+60 }
-        menu=box
-        try { wm.addView(box,p); expanded=true } catch (_:Exception) { menu=null }
+        val scroll = android.widget.ScrollView(this).apply { addView(grid) }
+        box.addView(scroll, LinearLayout.LayoutParams(dp(280), dp(230)))
+        val p = newParams().apply { x = params?.x ?: 20; y = (params?.y ?: 240) + 60 }
+        menu = box
+        try { wm.addView(box, p); expanded = true } catch (_: Exception) { menu = null }
     }
+
+    private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
     private fun removeMenu() { menu?.let { try { wm.removeView(it) } catch (_:Exception) {} }; menu=null; expanded=false }
     override fun onDestroy() { removeMenu(); bubble?.let { try { wm.removeView(it) } catch (_:Exception) {} }; bubble=null; super.onDestroy() }
     override fun onBind(intent: Intent?): IBinder? = null
