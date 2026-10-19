@@ -6,7 +6,10 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="SEIF EMOJIS">\n<meta name="description" content="SEIF EMOJIS: زخرفة النصوص، وجوه كاوموجي وإيموجيات ورموز وفنون نصية. مجاني وسهل النسخ إلى واتساب وبقية التطبيقات.">\n<meta property="og:title" content="SEIF EMOJIS — زخرفة وإيموجيات">\n<meta property="og:description" content="وجوه ورموز وزخرفة نصوص مجانًا، بنقرة واحدة.">
+<meta name="apple-mobile-web-app-title" content="SEIF EMOJIS">
+<meta name="description" content="SEIF EMOJIS: زخرفة النصوص، وجوه كاوموجي وإيموجيات ورموز وفنون نصية. مجاني وسهل النسخ إلى واتساب وبقية التطبيقات.">
+<meta property="og:title" content="SEIF EMOJIS — زخرفة وإيموجيات">
+<meta property="og:description" content="وجوه ورموز وزخرفة نصوص مجانًا، بنقرة واحدة.">
 <link rel="icon" type="image/jpeg" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10">
 <link rel="apple-touch-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -259,6 +262,24 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 .game-stats span{background:#0b1225;border:1px solid var(--line);border-radius:99px;padding:8px 13px}
 @media(max-width:420px){#slidePuzzle{gap:4px}.slide-tile{border-radius:8px}.game-card{padding:11px}}
 
+
+/* Mobile-first game controls */
+#emojiGames .game-card{overflow:hidden}
+#emojiGames button,#emojiGames input{min-height:44px;font-size:1rem;touch-action:manipulation}
+#emojiGames .game-action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#emojiGames .game-action-grid button{white-space:normal;line-height:1.35;padding:10px 7px}
+#mazeBoard{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;width:min(100%,390px);margin:12px auto;touch-action:manipulation}
+.maze-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#1a2541;font-size:clamp(1rem,5vw,1.65rem);min-width:0}
+.maze-cell.wall{background:#52607e}.maze-cell.goal{background:#195b4f}
+.maze-controls{display:grid;grid-template-columns:repeat(3,54px);justify-content:center;gap:6px;margin:10px auto}
+.maze-controls button{min-height:48px!important;font-size:1.4rem!important}
+#oddEmojiBoard{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;margin:12px 0}
+.odd-cell{padding:0!important;aspect-ratio:1;min-width:0!important;font-size:clamp(1rem,5.5vw,2rem)!important;border-radius:8px}
+#jumpCanvas{display:block;width:100%;max-width:560px;height:auto;aspect-ratio:16/9;background:linear-gradient(#13244a,#101626);border-radius:14px;border:1px solid #394363;touch-action:manipulation}
+#mathQuestion{font-size:1.35rem;font-weight:800;text-align:center;padding:10px}
+.wyr-choice{font-size:1.1rem!important;min-height:100px!important}
+@media(max-width:420px){#oddEmojiBoard{grid-template-columns:repeat(7,minmax(0,1fr))}.maze-controls{grid-template-columns:repeat(3,48px)}}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -332,6 +353,34 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 <div id="whackBoard"></div>
 <div class="action-row"><button id="whackStart" class="primary" type="button">🚀 ابدأ التحدي</button></div>
 <p id="whackStatus" aria-live="polite" class="muted small">جاهز؟ ابدأ عندما تكون مستعدًا!</p>
+</div>
+
+<div class="game-card" id="emojiMazeGame">
+<h3>🧱 متاهة الإيموجي السريعة</h3>
+<p class="muted small">حرّك 🐣 بالأسهم أو الأزرار حتى تصل إلى 🏆. كل مستوى أصعب من السابق، واللعبة تعمل دون إنترنت.</p>
+<p id="mazeLevel" class="muted small">المستوى 1</p><div id="mazeBoard" role="grid" aria-label="متاهة الإيموجي"></div>
+<div class="maze-controls" aria-label="التحكم بالمتاهة"><span></span><button type="button" data-maze-move="0,-1">⬆️</button><span></span><button type="button" data-maze-move="-1,0">⬅️</button><button type="button" data-maze-move="1,0">⬇️</button><button type="button" data-maze-move="0,1">➡️</button></div>
+<p id="mazeStatus" aria-live="polite" class="muted small">ابدأ رحلتك نحو الكأس!</p><button type="button" id="mazeRestart">🔄 إعادة المستوى</button>
+</div>
+<div class="game-card" id="wouldRatherGame">
+<h3>⚖️ أيهما تختار؟</h3><p class="muted small">اختر واحدًا من الخيارات. تُحفظ اختياراتك على هذا الجهاز فقط؛ النسب ليست تصويتًا عالميًا من بقية الزوار.</p>
+<div id="wyrQuestion" class="puzzle-emoji">🍕 أم 🍦؟</div><div class="game-action-grid"><button type="button" class="wyr-choice" id="wyrA">🍕 بيتزا للأبد</button><button type="button" class="wyr-choice" id="wyrB">🍦 آيس كريم للأبد</button></div>
+<p id="wyrResults" aria-live="polite" class="muted small"></p><div class="action-row"><button type="button" id="wyrNext" class="primary">سؤال آخر ➡️</button><button type="button" id="wyrReset">مسح إحصائياتي المحلية</button></div>
+</div>
+<div class="game-card" id="oddEmojiGame">
+<h3>👀 اكتشف الإيموجي الدخيل</h3><p class="muted small">اضغط الإيموجي المختلف بأسرع ما يمكن. كلما تقدمت زاد عدد الرموز وصار الفرق أصعب.</p>
+<p class="muted small">المستوى: <strong id="oddLevel">1</strong> — الوقت: <strong id="oddTime">0.0</strong> ث</p>
+<div id="oddEmojiBoard" aria-label="لوحة البحث عن الإيموجي المختلف"></div><p id="oddStatus" aria-live="polite" class="muted small">اضغط على المختلف لبدء التحدي.</p><button type="button" id="oddNew" class="primary">🎯 جولة جديدة</button>
+</div>
+<div class="game-card" id="emojiMathGame">
+<h3>🧮 معادلات الإيموجي</h3><p class="muted small">اكتشف قيمة الإيموجي ثم اختر الإجابة. الألغاز تتدرج من السهل إلى الأصعب.</p>
+<p id="mathQuestion"></p><div id="mathAnswers" class="game-action-grid"></div><p id="mathStatus" aria-live="polite" class="muted small"></p><button type="button" id="mathNext" class="primary">لغز جديد ➕</button>
+</div>
+<div class="game-card" id="emojiJumpGame">
+<h3>🦘 قفز الإيموجي — مراحل متعددة</h3><p class="muted small">المس الشاشة أو اضغط «اقفز» لتتجاوز العقبات. اجمع 5 نقاط لفتح المرحلة التالية. اللعبة تعمل دون إنترنت.</p>
+<p class="muted small">المرحلة <strong id="jumpLevel">1</strong> · النقاط <strong id="jumpScore">0</strong></p>
+<canvas id="jumpCanvas" width="560" height="315" aria-label="لعبة قفز الإيموجي"></canvas>
+<div class="action-row"><button type="button" id="jumpStart" class="primary">🚀 ابدأ / تابع</button><button type="button" id="jumpBtn">⬆️ اقفز!</button><button type="button" id="jumpReset">إعادة من البداية</button></div><p id="jumpStatus" aria-live="polite" class="muted small">اضغط ابدأ ثم اقفز فوق 🌵.</p>
 </div>
 </section><section class="extra-tool" id="emojiMaker"><h2>🎨 اصنع إيموجيك الخاص</h2><p class="muted small">غيّر اللون والعيون والفم والإضافات، ثم نزّل التصميم PNG.</p><div class="emoji-maker-layout"><div class="emoji-canvas-wrap"><canvas id="emojiCanvas" width="512" height="512"></canvas></div><div class="emoji-controls"><label for="emojiFaceColor">لون الوجه</label><input id="emojiFaceColor" type="color" value="#ffd54f"><label for="emojiEyeStyle">العيون</label><select id="emojiEyeStyle"><option value="normal">عادية</option><option value="happy">سعيدة</option><option value="heart">قلوب</option><option value="cool">نظارات</option><option value="wink">غمزة</option></select><label for="emojiMouthStyle">الفم</label><select id="emojiMouthStyle"><option value="smile">ابتسامة</option><option value="laugh">ضحك</option><option value="sad">حزين</option><option value="open">مفتوح</option><option value="straight">مستقيم</option></select><label for="emojiAccessory">إضافة</label><select id="emojiAccessory"><option value="none">بدون</option><option value="👑">👑 تاج</option><option value="🎩">🎩 قبعة</option><option value="😇">😇 هالة</option><option value="🌸">🌸 زهرة</option><option value="✨">✨ لمعان</option><option value="🎀">🎀 فيونكة</option><option value="👓">👓 نظارات</option></select><label for="emojiRotation">تدوير الإضافة</label><input id="emojiRotation" type="range" min="-180" max="180" value="0"><div class="action-row" id="emojiExtraButtons"><button type="button" data-extra="⭐">⭐</button><button type="button" data-extra="💖">💖</button><button type="button" data-extra="🔥">🔥</button><button type="button" data-extra="🌈">🌈</button><button type="button" data-extra="🐱">🐱</button><button type="button" data-extra="🦋">🦋</button></div><div class="action-row"><button type="button" class="primary" id="emojiDownload">⬇️ تنزيل PNG</button><button type="button" id="emojiReset">إعادة ضبط</button></div><p id="emojiMakerStatus" aria-live="polite"></p></div></div></section><section class="extra-tool" id="invisibleNameTool">
 <h2>🥷 نسخ الاسم المخفي لببجي وفري فاير</h2>
@@ -1517,6 +1566,45 @@ render();
  document.getElementById('whackStart')?.addEventListener('click',startWhack);renderWhack();
 
  document.querySelectorAll('[data-online-open]').forEach(el=>el.addEventListener('click',()=>{const target=document.getElementById(el.dataset.onlineOpen);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.style.outline='2px solid #48e2c2';setTimeout(()=>target.style.outline='',1600);}}));
+
+ // Offline games: maze, local Would You Rather, odd emoji, emoji math, multi-level jump.
+ (function(){
+  const $=id=>document.getElementById(id);
+  // Maze with connected corridors; level generator preserves a guaranteed path.
+  const mazeBoard=$('mazeBoard');let mazeLevel=1,mazePlayer={r:0,c:0},mazeGrid=[];
+  function makeMaze(level){
+    const n=7,grid=Array.from({length:n},(_,r)=>Array.from({length:n},(_,c)=>(r===0&&c===0)||(r===n-1&&c===n-1)?0:(Math.random()<Math.min(.28,.12+level*.025)?1:0)));
+    // Carve a guaranteed winding route from start to finish.
+    let r=0,c=0;while(r<n-1||c<n-1){if(r===n-1)c++;else if(c===n-1)r++;else if(Math.random()<.5)r++;else c++;grid[r][c]=0;}
+    grid[0][0]=0;grid[n-1][n-1]=0;return grid;
+  }
+  function drawMaze(){if(!mazeBoard)return;mazeBoard.innerHTML='';mazeGrid.forEach((row,r)=>row.forEach((v,c)=>{const cell=document.createElement('div');cell.className='maze-cell'+(v?' wall':'')+((r===6&&c===6)?' goal':'');cell.textContent=mazePlayer.r===r&&mazePlayer.c===c?'🐣':(r===6&&c===6?'🏆':v?'🧱':'');cell.setAttribute('role','gridcell');mazeBoard.appendChild(cell);}));$('mazeLevel').textContent='المستوى '+mazeLevel;$('mazeStatus').textContent='وصل إلى 🏆 — المستوى '+mazeLevel+'.';}
+  function newMaze(){mazeGrid=makeMaze(mazeLevel);mazePlayer={r:0,c:0};drawMaze();}
+  function moveMaze(dr,dc){const r=mazePlayer.r+dr,c=mazePlayer.c+dc;if(r<0||c<0||r>6||c>6||mazeGrid[r][c])return;mazePlayer={r,c};drawMaze();if(r===6&&c===6){$('mazeStatus').textContent='🎉 ممتاز! فتحت المستوى التالي.';mazeLevel++;setTimeout(newMaze,650);}}
+  document.querySelectorAll('[data-maze-move]').forEach(b=>b.addEventListener('click',()=>moveMaze(...b.dataset.mazeMove.split(',').map(Number))));$('mazeRestart')?.addEventListener('click',newMaze);document.addEventListener('keydown',e=>{if(!document.getElementById('emojiMazeGame')||!document.getElementById('emojiMazeGame').offsetParent)return;const m={'ArrowUp':[0,-1],'ArrowDown':[0,1],'ArrowLeft':[-1,0],'ArrowRight':[1,0]};if(m[e.key]){e.preventDefault();moveMaze(...m[e.key]);}});newMaze();
+  // Would You Rather: intentionally device-local until a real shared backend is configured.
+  const wyrItems=[['🍕 بيتزا للأبد','🍦 آيس كريم للأبد'],['🚀 السفر للمستقبل','🦖 العودة للماضي'],['🐶 فهم لغة الحيوانات','🦜 التحدث بكل اللغات'],['🏝️ جزيرة خاصة','🏰 قلعة فخمة'],['⚡ سرعة خارقة','🫥 الاختفاء متى شئت'],['🌙 النوم 3 ساعات فقط','🍔 أكل ما تحب بلا تعب'],['🎮 ألعاب بلا نهاية','🎬 أفلام ومسلسلات بلا نهاية'],['💰 مال كثير ووقت قليل','🕰️ وقت كثير ومال كافٍ'],['🦸 قوة خارقة','🧠 ذكاء خارق'],['🌊 العيش قرب البحر','🌲 العيش وسط الغابة'],['🐱 قطة تتكلم','🐉 تنين أليف'],['✈️ سفر مجاني دائمًا','🍽️ طعام مجاني دائمًا'],['🎤 صوت غنائي رائع','🎨 موهبة رسم مذهلة'],['📱 بلا هاتف أسبوعًا','🍫 بلا حلويات شهرًا'],['🪐 زيارة الفضاء','🌌 الغوص لأعمق مكان'],['🧊 شتاء دائم','☀️ صيف دائم'],['🧙 سحر حقيقي','🤖 روبوت يساعدك بكل شيء'],['🏆 الفوز بكل لعبة','🎯 النجاح بكل اختبار'],['🕵️ معرفة الحقيقة دائمًا','🎭 إخفاء مشاعرك دائمًا'],['🐢 عمر طويل هادئ','⚡ حياة قصيرة مليئة بالمغامرات']];
+  let wyrIndex=0;const wyrKey='seif-wyr-v1';function wyrStats(){try{return JSON.parse(localStorage.getItem(wyrKey)||'{}')}catch(e){return {}}}
+  function showWyr(){if(!$('wyrA'))return;const q=wyrItems[wyrIndex%wyrItems.length];$('wyrA').textContent=q[0];$('wyrB').textContent=q[1];$('wyrQuestion').textContent='أيهما تختار؟';const st=wyrStats()[wyrIndex]||[0,0],sum=st[0]+st[1];$('wyrResults').textContent=sum?'اختياراتك المحفوظة على هذا الجهاز: '+Math.round(st[0]/sum*100)+'% للخيار الأول و'+Math.round(st[1]/sum*100)+'% للثاني.':'لم تختر بعد هذا السؤال.';}
+  function voteWyr(which){const all=wyrStats(),st=all[wyrIndex]||[0,0];st[which]++;all[wyrIndex]=st;try{localStorage.setItem(wyrKey,JSON.stringify(all))}catch(e){}showWyr();}
+  $('wyrA')?.addEventListener('click',()=>voteWyr(0));$('wyrB')?.addEventListener('click',()=>voteWyr(1));$('wyrNext')?.addEventListener('click',()=>{wyrIndex=(wyrIndex+1)%wyrItems.length;showWyr()});$('wyrReset')?.addEventListener('click',()=>{localStorage.removeItem(wyrKey);showWyr()});showWyr();
+  // Odd one out; progressively more cells.
+  const oddPairs=[['😴','🥱'],['😀','😃'],['🐶','🐺'],['🍎','🍒'],['🌕','🌖'],['🐸','🐢'],['🚗','🚕'],['💙','🩵'],['🍋','🍌'],['🐼','🐻'],['🌵','🌲'],['⚽','🏀'],['🦋','🐝'],['🍉','🍈'],['👀','👁️'],['🧡','❤️']];
+  let oddLevel=1,oddStarted=0,oddTimer=null,oddTarget=-1,oddBusy=false;
+  function newOdd(){clearInterval(oddTimer);oddBusy=false;const pair=oddPairs[Math.floor(Math.random()*oddPairs.length)],n=Math.min(56,16+oddLevel*4);oddTarget=Math.floor(Math.random()*n);$('oddEmojiBoard').innerHTML='';for(let i=0;i<n;i++){const b=document.createElement('button');b.type='button';b.className='odd-cell';b.textContent=i===oddTarget?pair[1]:pair[0];b.addEventListener('click',()=>{if(oddBusy)return;if(i===oddTarget){oddBusy=true;const t=(performance.now()-oddStarted)/1000;$('oddStatus').textContent='🎉 صحيح! '+t.toFixed(2)+' ثانية. المستوى التالي مفتوح.';oddLevel++;$('oddLevel').textContent=oddLevel;setTimeout(newOdd,850);}else{$('oddStatus').textContent='مو هذا! ركّز جيدًا 👀';b.disabled=true;}});$('oddEmojiBoard').appendChild(b);}oddStarted=performance.now();$('oddLevel').textContent=oddLevel;$('oddStatus').textContent='ابحث عن المختلف!';oddTimer=setInterval(()=>$('oddTime').textContent=((performance.now()-oddStarted)/1000).toFixed(1),100);}
+  $('oddNew')?.addEventListener('click',newOdd);newOdd();
+  // Math puzzles use explicit arithmetic with unambiguous values.
+  let mathLevel=1,mathAnswer=0;function newMath(){const a=2+Math.floor(Math.random()*(4+mathLevel)),b=1+Math.floor(Math.random()*(3+mathLevel)),c=1+Math.floor(Math.random()*(3+mathLevel));mathAnswer=a+b;const q=$('mathQuestion');q.textContent='🍎 + 🍎 = '+(a*2)+'  |  🍎 + 🍌 = '+(a+b)+'  |  🍌 + 🍌 = '+(b*2)+'  — اختر قيمة 🍌';mathAnswer=b;const choices=[b,b+1,Math.max(0,b-1),b+2].sort(()=>Math.random()-.5);$('mathAnswers').innerHTML='';choices.forEach(v=>{const btn=document.createElement('button');btn.type='button';btn.textContent=String(v);btn.addEventListener('click',()=>{if(v===mathAnswer){$('mathStatus').textContent='✅ إجابة صحيحة! المستوى '+(mathLevel+1)+' فتح.';mathLevel++;setTimeout(newMath,650)}else $('mathStatus').textContent='جرّب ثانية! تذكّر: 🍎 + 🍌 = '+(a+b)+'.'});$('mathAnswers').appendChild(btn);});$('mathStatus').textContent='المستوى '+mathLevel+' — احسب قيمة 🍌.';} $('mathNext')?.addEventListener('click',newMath);newMath();
+  // Emoji jump game: tap to jump, collision ends a run; every 5 points increases level.
+  const cv=$('jumpCanvas'),ctx=cv?.getContext('2d');let jumpRunning=false,jumpY=0,jumpV=0,jumpObs=[],jumpScore=0,jumpLevel=1,jumpLast=0,jumpFrame=0,jumpRAF=0;
+  function jumpDraw(){if(!ctx)return;ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle='#21324f';ctx.fillRect(0,255,cv.width,60);ctx.fillStyle='#7183a9';ctx.fillRect(0,255,cv.width,3);ctx.font='42px sans-serif';ctx.fillText('🐥',48,235-jumpY);ctx.font='38px sans-serif';jumpObs.forEach(o=>ctx.fillText(o.emoji,o.x,248));ctx.fillStyle='#b8fff0';ctx.font='16px sans-serif';ctx.fillText('LEVEL '+jumpLevel,12,25);}
+  function jumpReset(){jumpRunning=false;cancelAnimationFrame(jumpRAF);jumpY=0;jumpV=0;jumpObs=[];jumpScore=0;jumpLevel=1;$('jumpLevel').textContent=jumpLevel;$('jumpScore').textContent=jumpScore;$('jumpStatus').textContent='اضغط ابدأ ثم اقفز فوق 🌵.';jumpDraw();}
+  function jump(){if(!jumpRunning){if(jumpScore===0)startJump();return;}if(jumpY===0)jumpV=13;}
+  function startJump(){jumpRunning=true;jumpLast=0;jumpFrame=0;jumpObs=[];$('jumpStatus').textContent='انطلق! المس الشاشة أو زر اقفز.';jumpRAF=requestAnimationFrame(jumpTick);}
+  function jumpTick(ts){if(!jumpRunning)return;if(!jumpLast)jumpLast=ts;const dt=Math.min(32,ts-jumpLast);jumpLast=ts;jumpFrame+=dt;jumpV-=0.8*(dt/16.67);jumpY=Math.max(0,jumpY+jumpV*(dt/16.67));if(jumpY===0)jumpV=0;if(jumpFrame>Math.max(600,1450-jumpLevel*100)){jumpObs.push({x:cv.width,emoji:Math.random()<.75?'🌵':'🧱',hit:false});jumpFrame=0;}const speed=4+jumpLevel*.8;jumpObs.forEach(o=>o.x-=speed*(dt/16.67));jumpObs=jumpObs.filter(o=>o.x>-50);for(const o of jumpObs){if(!o.hit&&o.x<95&&o.x>42&&jumpY<35){jumpRunning=false;$('jumpStatus').textContent='💥 انتهت الجولة! نقاطك '+jumpScore+'. اضغط ابدأ للمحاولة مجددًا.';jumpDraw();return;}if(!o.hit&&o.x<40){o.hit=true;jumpScore++;$('jumpScore').textContent=jumpScore;if(jumpScore>0&&jumpScore%5===0){jumpLevel++;$('jumpLevel').textContent=jumpLevel;$('jumpStatus').textContent='🚀 وصلت إلى المرحلة '+jumpLevel+'!';}}}jumpDraw();jumpRAF=requestAnimationFrame(jumpTick);}
+  $('jumpStart')?.addEventListener('click',()=>{if(!jumpRunning)startJump();});$('jumpBtn')?.addEventListener('click',jump);cv?.addEventListener('pointerdown',jump);$('jumpReset')?.addEventListener('click',jumpReset);jumpDraw();
+ })();
+
  makeGreeting();makePalette();
  let deferredInstallPrompt=null;
  const installBtn=document.getElementById('installAppBtn');
