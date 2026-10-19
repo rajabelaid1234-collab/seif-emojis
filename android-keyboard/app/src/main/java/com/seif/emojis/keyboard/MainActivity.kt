@@ -75,7 +75,7 @@ class MainActivity : Activity() {
                         .setTitle("✨ تحديث جديد متوفر")
                         .setMessage("الإصدار المثبّت: $current\nالإصدار الجديد: $latestVersion\nهل تريد فتح صفحة تنزيل التحديث؟")
                         .setPositiveButton("تنزيل التحديث") { _, _ ->
-                            val target = releaseUrl ?: "https://github.com/rajabelaid1234-collab/seif-emojis/releases/latest"
+                            val target = "https://github.com/rajabelaid1234-collab/seif-emojis/releases/latest/download/app-debug.apk"
                             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(target)))
                         }
                         .setNegativeButton("لاحقًا", null)
