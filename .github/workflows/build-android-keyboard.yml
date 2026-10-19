@@ -46,7 +46,10 @@ jobs:
           s = s.replace('</body>', '<script>document.getElementById("installAppBtn")?.closest("div")?.remove();document.getElementById("keyboardInstall")?.remove();</script></body>')
           p.write_text(s)
           PY
-          curl -fLsS --retry 3 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/build/face-api.min.js' -o android-keyboard/app/src/main/assets/face-api.min.js
+          if ! curl -fLsS --retry 3 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/build/face-api.min.js' -o android-keyboard/app/src/main/assets/face-api.min.js; then
+            curl -fLsS --retry 3 'https://unpkg.com/face-api.js@0.22.2/build/face-api.min.js' -o android-keyboard/app/src/main/assets/face-api.min.js
+          fi
+          test -s android-keyboard/app/src/main/assets/face-api.min.js
           for file in tiny_face_detector_model-weights_manifest.json tiny_face_detector_model-shard1 face_expression_model-weights_manifest.json face_expression_model-shard1; do
             echo "Downloading bundled model file: $file"
             if ! curl -fLsS --retry 3 "https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights/$file" -o "android-keyboard/app/src/main/assets/models/$file"; then
