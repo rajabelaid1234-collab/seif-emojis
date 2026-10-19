@@ -43,8 +43,8 @@ jobs:
           s = p.read_text()
           s = s.replace('<title>SEIF EMOJIS | مولّد النصوص والرموز</title>', '<title>SEIF EMOJIS — نسخة الهاتف دون إنترنت</title>')
           s = s.replace('</head>', '<style>#installAppBtn, #installAppNotice, #keyboardInstall{display:none!important} body:before{content:"📴 نسخة الهاتف — الأدوات المحلية تعمل دون إنترنت";display:block;text-align:center;background:#17352f;color:#b8fff0;padding:10px;font-weight:bold}</style></head>')
-          s = s.replace('<button type="button" data-online-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بالذكاء الاصطناعي (يتطلب الإنترنت)</button>', '<div class="toolcard">🎭 تحليل تعبير الوجه بالذكاء الاصطناعي يعمل محليًا بعد تثبيت التطبيق</div>')
-          s = s.replace('</body>', '<script>document.getElementById("installAppBtn")?.closest("div")?.remove();document.getElementById("keyboardInstall")?.remove();document.querySelectorAll("[data-offline-open=emojiLookalikeTool]").forEach(el=>el.remove());</script></body>')
+          s = s.replace('<button type="button" data-online-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بالذكاء الاصطناعي (يتطلب الإنترنت)</button>', '<button type="button" data-offline-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه دون إنترنت</button>')
+          s = s.replace('</body>', '<script>document.getElementById("installAppBtn")?.closest("div")?.remove();document.getElementById("keyboardInstall")?.remove();</script></body>')
           p.write_text(s)
           PY
           curl -fLsS --retry 3 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/build/face-api.min.js' -o android-keyboard/app/src/main/assets/face-api.min.js
@@ -65,11 +65,6 @@ jobs:
           s = re.sub(r"versionName '[^']+'", f"versionName '1.0.{n}'", s)
           p.write_text(s)
           PY
-      - name: Download complete Unicode emoji list for the keyboard
-        run: |
-          mkdir -p android-keyboard/app/src/main/assets
-          curl -fLsS --retry 3 'https://unicode.org/Public/emoji/latest/emoji-test.txt' -o android-keyboard/app/src/main/assets/emoji-test.txt
-          test -s android-keyboard/app/src/main/assets/emoji-test.txt
       - name: Build APK
         working-directory: android-keyboard
         run: gradle assembleDebug
