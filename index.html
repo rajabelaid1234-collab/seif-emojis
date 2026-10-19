@@ -488,6 +488,7 @@ if(isOfflineAndroidApp){
  document.head.appendChild(offlineStyle);
 }
 if(location.hostname==='appassets.androidplatform.net'){
+ const apkBtn=document.getElementById('androidDownloadButton');if(apkBtn){apkBtn.hidden=true;const card=apkBtn.closest('.toolcard');if(card){const title=card.querySelector('h3');if(title)title.textContent='🤖 لوحة مفاتيح SEIF';const para=card.querySelector('p');if(para)para.textContent='لوحة الإيموجيات مدمجة في هذا التطبيق ولا تحتاج إلى تنزيل ملف APK من داخله.';}}
  document.querySelectorAll('link[rel="icon"],link[rel="apple-touch-icon"]').forEach(el=>el.href='./site-icon.png');
  const brandImage=document.querySelector('header img[alt="أيقونة SEIF EMOJIS"]');
  if(brandImage)brandImage.src='./site-icon.png';
