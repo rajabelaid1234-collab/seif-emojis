@@ -59,6 +59,11 @@ jobs:
           s = re.sub(r"versionName '[^']+'", f"versionName '1.0.{n}'", s)
           p.write_text(s)
           PY
+      - name: Download complete Unicode emoji list for the keyboard
+        run: |
+          mkdir -p android-keyboard/app/src/main/assets
+          curl -fLsS --retry 3 'https://unicode.org/Public/emoji/latest/emoji-test.txt' -o android-keyboard/app/src/main/assets/emoji-test.txt
+          test -s android-keyboard/app/src/main/assets/emoji-test.txt
       - name: Build APK
         working-directory: android-keyboard
         run: gradle assembleDebug
