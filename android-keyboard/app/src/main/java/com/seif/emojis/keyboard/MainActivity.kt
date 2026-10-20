@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Build
@@ -94,10 +95,10 @@ class MainActivity : Activity() {
     }
     private fun tile(label: String, color: Int, action: () -> Unit): Button = Button(this).apply {
         text = label; textSize = 14f; isAllCaps = false; gravity = Gravity.CENTER; setTextColor(Color.WHITE)
-        setBackgroundColor(color); minHeight = dp(145); setPadding(dp(4), dp(10), dp(4), dp(10)); setOnClickListener { action() }
+        background = GradientDrawable().apply { setColor(color); cornerRadius = dp(20).toFloat(); setStroke(dp(1), Color.rgb(72, 86, 124)) }; minHeight = dp(138); setPadding(dp(5), dp(12), dp(5), dp(12)); setOnClickListener { action() }
     }
     private fun actionButton(label: String, color: Int, action: () -> Unit): Button = Button(this).apply {
-        text = label; textSize = 15f; isAllCaps = false; setTextColor(Color.WHITE); setBackgroundColor(color); minHeight = dp(50); setOnClickListener { action() }
+        text = label; textSize = 15f; isAllCaps = false; setTextColor(Color.WHITE); background = GradientDrawable().apply { setColor(color); cornerRadius = dp(16).toFloat() }; minHeight = dp(50); setOnClickListener { action() }
     }
     private fun weighted() = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { setMargins(dp(4), 0, dp(4), dp(12)) }
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
