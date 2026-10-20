@@ -279,7 +279,7 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 #emojiGames .game-action-grid button{white-space:normal;line-height:1.35;padding:10px 7px}
 #mazeBoard{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;width:min(100%,390px);margin:12px auto;touch-action:manipulation}
 .maze-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#1a2541;font-size:clamp(1rem,5vw,1.65rem);min-width:0}
-.maze-cell.wall{background:#52607e}.maze-cell.goal{background:#195b4f}
+.maze-cell.wall{background:#52607e}.maze-cell.goal{background:#195b4f}.maze-cell.maze-hint-path{outline:2px solid #5eead4;outline-offset:-3px;color:#5eead4}
 .maze-controls{display:grid;grid-template-columns:repeat(3,minmax(54px,68px));grid-template-rows:repeat(2,54px);justify-content:center;gap:7px;margin:14px auto;direction:ltr;touch-action:manipulation}
 .maze-controls button{min-height:52px!important;min-width:52px!important;font-size:1.45rem!important;touch-action:manipulation}.maze-controls button:active{transform:scale(.94);filter:brightness(1.25)}
 #oddEmojiBoard{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;margin:12px 0}
@@ -362,6 +362,8 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
     <button type="button" data-offline-open="kaomojiLab">😊 الوجوه النصية</button>
     <button type="button" data-offline-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بنموذج مضمّن</button>
     <button type="button" data-offline-open="library">🥰 مكتبة الإيموجيات والرموز</button>
+    <button type="button" data-offline-open="arabicSlangTool">🌍 قاموس اللهجات العربية</button>
+    <button type="button" data-offline-open="dailyQuotesTool">💡 حكمة اليوم</button>
     <button type="button" data-offline-open="fancy">✨ زخرفة النصوص والأسماء</button>
    </div>
   </article>
@@ -468,7 +470,7 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 <p class="muted small">حرّك 🐣 بالأسهم أو الأزرار حتى تصل إلى 🏆. كل مستوى أصعب من السابق، واللعبة تعمل دون إنترنت.</p>
 <p id="mazeLevel" class="muted small">المستوى 1</p><div id="mazeBoard" role="grid" aria-label="متاهة الإيموجي"></div>
 <div class="maze-controls" aria-label="التحكم بالمتاهة"><span></span><button type="button" data-maze-move="-1,0" aria-label="تحرك للأعلى">⬆️</button><span></span><button type="button" data-maze-move="0,-1" aria-label="تحرك لليسار">⬅️</button><button type="button" data-maze-move="1,0" aria-label="تحرك للأسفل">⬇️</button><button type="button" data-maze-move="0,1" aria-label="تحرك لليمين">➡️</button></div>
-<p id="mazeStatus" aria-live="polite" class="muted small">ابدأ رحلتك نحو الكأس!</p><button type="button" id="mazeRestart">🔄 إعادة المستوى</button>
+<p id="mazeStatus" aria-live="polite" class="muted small">ابدأ رحلتك نحو الكأس!</p><div class="action-row"><button type="button" id="mazeHint">🧭 أظهر الطريق</button><button type="button" id="mazeRestart">🔄 متاهة جديدة</button></div>
 </div>
 <div class="game-card" id="wouldRatherGame">
 <h3>⚖️ أيهما تختار؟</h3><p class="muted small">اختر واحدًا من الخيارات. تُحفظ اختياراتك على هذا الجهاز فقط؛ النسب ليست تصويتًا عالميًا من بقية الزوار.</p>
@@ -1792,10 +1794,12 @@ render();
     let r=0,c=0;while(r<n-1||c<n-1){if(r===n-1)c++;else if(c===n-1)r++;else if(Math.random()<.5)r++;else c++;grid[r][c]=0;}
     grid[0][0]=0;grid[n-1][n-1]=0;return grid;
   }
-  function drawMaze(){if(!mazeBoard)return;mazeBoard.innerHTML='';mazeGrid.forEach((row,r)=>row.forEach((v,c)=>{const cell=document.createElement('div');cell.className='maze-cell'+(v?' wall':'')+((r===6&&c===6)?' goal':'');cell.textContent=mazePlayer.r===r&&mazePlayer.c===c?'🐣':(r===6&&c===6?'🏆':v?'🧱':'');cell.setAttribute('role','gridcell');mazeBoard.appendChild(cell);}));$('mazeLevel').textContent='المستوى '+mazeLevel;if(mazePlayer.r!==6||mazePlayer.c!==6)$('mazeStatus').textContent='تحرّك نحو 🏆 وتجنّب الجدران 🧱.';}
-  function newMaze(){mazeGrid=makeMaze(mazeLevel);mazePlayer={r:0,c:0};drawMaze();}
+  let mazeHintPath=[];
+  function findMazePath(){const q=[[0,0]],prev=Array.from({length:7},()=>Array(7).fill(null));prev[0][0]=[-1,-1];while(q.length){const [r,c]=q.shift();if(r===6&&c===6)break;for(const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]){const nr=r+dr,nc=c+dc;if(nr<0||nc<0||nr>6||nc>6||mazeGrid[nr][nc]||prev[nr][nc])continue;prev[nr][nc]=[r,c];q.push([nr,nc]);}}if(!prev[6][6])return [];const path=[];let p=[6,6];while(p[0]!==0||p[1]!==0){path.push(p);p=prev[p[0]][p[1]];}path.push([0,0]);return path.reverse();}
+  function drawMaze(){if(!mazeBoard)return;mazeBoard.innerHTML='';mazeGrid.forEach((row,r)=>row.forEach((v,c)=>{const cell=document.createElement('div');const onPath=mazeHintPath.some(p=>p[0]===r&&p[1]===c);cell.className='maze-cell'+(v?' wall':'')+((r===6&&c===6)?' goal':'')+(onPath?' maze-hint-path':'');cell.textContent=mazePlayer.r===r&&mazePlayer.c===c?'🐣':(r===6&&c===6?'🏆':v?'🧱':onPath?'·':'');cell.setAttribute('role','gridcell');mazeBoard.appendChild(cell);}));$('mazeLevel').textContent='المستوى '+mazeLevel;if(mazePlayer.r!==6||mazePlayer.c!==6)$('mazeStatus').textContent='استخدم الأسهم للتحرك. عند الجدار اختر اتجاهًا آخر.';}
+  function newMaze(){mazeGrid=makeMaze(mazeLevel);mazePlayer={r:0,c:0};mazeHintPath=[];drawMaze();}
   function moveMaze(dr,dc){const r=mazePlayer.r+dr,c=mazePlayer.c+dc;if(r<0||c<0||r>6||c>6){$('mazeStatus').textContent='وصلت إلى حافة المتاهة؛ جرّب اتجاهًا آخر.';return;}if(mazeGrid[r][c]){$('mazeStatus').textContent='🧱 يوجد جدار هنا؛ اختر سهمًا آخر.';return;}mazePlayer={r,c};drawMaze();if(r===6&&c===6){$('mazeStatus').textContent='🎉 ممتاز! فتحت المستوى التالي.';mazeLevel++;setTimeout(newMaze,650);}}
-  document.querySelectorAll('[data-maze-move]').forEach(b=>b.addEventListener('click',()=>moveMaze(...b.dataset.mazeMove.split(',').map(Number))));$('mazeRestart')?.addEventListener('click',newMaze);document.addEventListener('keydown',e=>{if(!document.getElementById('emojiMazeGame')||!document.getElementById('emojiMazeGame').offsetParent)return;const m={'ArrowUp':[-1,0],'ArrowDown':[1,0],'ArrowLeft':[0,-1],'ArrowRight':[0,1]};if(m[e.key]){e.preventDefault();moveMaze(...m[e.key]);}});newMaze();
+  document.querySelectorAll('[data-maze-move]').forEach(b=>b.addEventListener('click',()=>moveMaze(...b.dataset.mazeMove.split(',').map(Number))));$('mazeRestart')?.addEventListener('click',newMaze);$('mazeHint')?.addEventListener('click',()=>{mazeHintPath=findMazePath();drawMaze();$('mazeStatus').textContent=mazeHintPath.length?'🧭 الطريق المضيء يقودك إلى 🏆.':'تعذّر إيجاد طريق؛ أنشئ متاهة جديدة.';});let mazeTouch=null;mazeBoard?.addEventListener('touchstart',e=>{const t=e.changedTouches[0];mazeTouch=[t.clientX,t.clientY];},{passive:true});mazeBoard?.addEventListener('touchend',e=>{if(!mazeTouch)return;const t=e.changedTouches[0],dx=t.clientX-mazeTouch[0],dy=t.clientY-mazeTouch[1];mazeTouch=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;if(Math.abs(dx)>Math.abs(dy))moveMaze(0,dx<0?-1:1);else moveMaze(dy<0?-1:1,0);},{passive:true});document.addEventListener('keydown',e=>{if(!document.getElementById('emojiMazeGame')||!document.getElementById('emojiMazeGame').offsetParent)return;const m={'ArrowUp':[-1,0],'ArrowDown':[1,0],'ArrowLeft':[0,-1],'ArrowRight':[0,1]};if(m[e.key]){e.preventDefault();moveMaze(...m[e.key]);}});newMaze();
   // Would You Rather: intentionally device-local until a real shared backend is configured.
   const wyrItems=[['🍕 بيتزا للأبد','🍦 آيس كريم للأبد'],['🚀 السفر للمستقبل','🦖 العودة للماضي'],['🐶 فهم لغة الحيوانات','🦜 التحدث بكل اللغات'],['🏝️ جزيرة خاصة','🏰 قلعة فخمة'],['⚡ سرعة خارقة','🫥 الاختفاء متى شئت'],['🌙 النوم 3 ساعات فقط','🍔 أكل ما تحب بلا تعب'],['🎮 ألعاب بلا نهاية','🎬 أفلام ومسلسلات بلا نهاية'],['💰 مال كثير ووقت قليل','🕰️ وقت كثير ومال كافٍ'],['🦸 قوة خارقة','🧠 ذكاء خارق'],['🌊 العيش قرب البحر','🌲 العيش وسط الغابة'],['🐱 قطة تتكلم','🐉 تنين أليف'],['✈️ سفر مجاني دائمًا','🍽️ طعام مجاني دائمًا'],['🎤 صوت غنائي رائع','🎨 موهبة رسم مذهلة'],['📱 بلا هاتف أسبوعًا','🍫 بلا حلويات شهرًا'],['🪐 زيارة الفضاء','🌌 الغوص لأعمق مكان'],['🧊 شتاء دائم','☀️ صيف دائم'],['🧙 سحر حقيقي','🤖 روبوت يساعدك بكل شيء'],['🏆 الفوز بكل لعبة','🎯 النجاح بكل اختبار'],['🕵️ معرفة الحقيقة دائمًا','🎭 إخفاء مشاعرك دائمًا'],['🐢 عمر طويل هادئ','⚡ حياة قصيرة مليئة بالمغامرات']];
   let wyrIndex=0;const wyrKey='seif-wyr-v1';function wyrStats(){try{return JSON.parse(localStorage.getItem(wyrKey)||'{}')}catch(e){return {}}}
