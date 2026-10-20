@@ -1686,7 +1686,7 @@ render();
  document.getElementById('copyInvisibleCombo')?.addEventListener('click',()=>copyTextSafe('ㅤㅤㅤ',document.getElementById('invisibleNotice')));
  // Real facial-expression inference; never substitute a random result if model loading fails.
  const lookFile=document.getElementById('lookFile'),lookPreview=document.getElementById('lookPreview'),lookVideo=document.getElementById('lookVideo'),lookStatus=document.getElementById('lookStatus'),lookResult=document.getElementById('lookResult');
- let lookStream=null,lookModelReady=null,lookSource=null;
+ let lookStream=null,lookModelReady=null,lookSource=null,lookMimicActive=false;
  const lookEmojiMap={happy:{emoji:'😄',label:'سعيد / مبتسم'},sad:{emoji:'😢',label:'حزين'},angry:{emoji:'😠',label:'غاضب'},fearful:{emoji:'😨',label:'خائف أو متوتر'},disgusted:{emoji:'🤢',label:'اشمئزاز'},surprised:{emoji:'😲',label:'متفاجئ'},neutral:{emoji:'😐',label:'هادئ / محايد'}};
  async function loadLookModel(){
    if(lookModelReady)return lookModelReady;
@@ -1703,7 +1703,7 @@ render();
    try{lookStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});lookVideo.srcObject=lookStream;lookVideo.hidden=false;lookPreview.hidden=true;lookSource=lookVideo;lookStatus.textContent='الكاميرا تعمل. ضع وجهك داخل الإطار واضغط «حلّل تعبير وجهي».';lookResult.hidden=true;}
    catch(err){lookStatus.textContent=(err&&err.name==='NotAllowedError')?'تم رفض إذن الكاميرا. افتح إعدادات أندرويد واسمح لـ SEIF EMOJIS باستخدام الكاميرا، ثم أعد المحاولة.':(err&&err.name==='NotFoundError')?'لم يتم العثور على كاميرا في هذا الجهاز. اختر صورة من المعرض بدلًا منها.':'تعذّر تشغيل الكاميرا. اسمح بإذن الكاميرا وأغلق أي تطبيق آخر يستخدمها، أو اختر صورة من المعرض.';}
  });
- document.getElementById('lookStopCamera')?.addEventListener('click',()=>{if(lookStream)lookStream.getTracks().forEach(t=>t.stop());lookStream=null;lookVideo.srcObject=null;lookVideo.hidden=true;if(lookSource===lookVideo)lookSource=null;lookStatus.textContent='تم إيقاف الكاميرا.';});
+ document.getElementById('lookStopCamera')?.addEventListener('click',()=>{lookMimicActive=false;if(lookStream)lookStream.getTracks().forEach(t=>t.stop());lookStream=null;lookVideo.srcObject=null;lookVideo.hidden=true;if(lookSource===lookVideo)lookSource=null;const mimicButton=document.getElementById('lookMimic');if(mimicButton)mimicButton.textContent='🎭 قلّد تعبير وجهي مباشرة';lookStatus.textContent='تم إيقاف الكاميرا والتقليد.';});
  lookFile?.addEventListener('change',()=>{const file=lookFile.files&&lookFile.files[0];if(!file)return;if(!file.type.startsWith('image/')){lookStatus.textContent='اختر ملف صورة صالحًا.';return;}const url=URL.createObjectURL(file);lookPreview.onload=()=>{if(lookSource===lookVideo&&lookStream)lookStream.getTracks().forEach(t=>t.stop());lookStream=null;lookVideo.srcObject=null;lookVideo.hidden=true;lookPreview.hidden=false;lookSource=lookPreview;lookStatus.textContent='تم تجهيز الصورة. اضغط «حلّل تعبير وجهي».';lookResult.hidden=true;URL.revokeObjectURL(url);};lookPreview.onerror=()=>{lookStatus.textContent='تعذّر فتح الصورة؛ جرّب صورة أخرى.';URL.revokeObjectURL(url);};lookPreview.src=url;});
  document.getElementById('lookAnalyze')?.addEventListener('click',async()=>{
    if(!lookSource){lookStatus.textContent='شغّل الكاميرا أو اختر صورة أولًا.';return;}
@@ -1718,6 +1718,24 @@ render();
    }catch(err){lookStatus.textContent='تعذّر تحميل نموذج الذكاء الاصطناعي. تأكد من الإنترنت ثم حاول مرة أخرى. لم نعرض نتيجة عشوائية.';}
    finally{button.disabled=false;}
  });
+ document.getElementById('lookMimic')?.addEventListener('click',async()=>{
+   const button=document.getElementById('lookMimic');
+   if(lookMimicActive){lookMimicActive=false;button.textContent='🎭 قلّد تعبير وجهي مباشرة';lookStatus.textContent='تم إيقاف تقليد التعبير.';return;}
+   if(!lookStream||lookVideo.hidden){lookStatus.textContent='اضغط «تشغيل الكاميرا» أولًا، ثم ابدأ التقليد المباشر.';return;}
+   lookMimicActive=true;button.textContent='⏹️ إيقاف التقليد';lookResult.hidden=false;lookStatus.textContent='التقليد المباشر يعمل. غيّر تعبير وجهك أمام الكاميرا.';
+   try{
+    await loadLookModel();
+    while(lookMimicActive&&lookStream&&lookVideo.readyState>=2){
+     const detection=await faceapi.detectSingleFace(lookVideo,new faceapi.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.25})).withFaceExpressions();
+     if(detection){
+      const entries=Object.entries(detection.expressions).sort((a,b)=>b[1]-a[1]),[key,score]=entries[0],chosen=lookEmojiMap[key]||lookEmojiMap.neutral;
+      if(score>=.25){lookResult.innerHTML='<div style="font-size:4.5rem;line-height:1.2">'+chosen.emoji+'</div><strong>'+chosen.label+'</strong><div class="look-score">'+Math.round(score*100)+'%</div><div class="muted small">تقليد مباشر لتعبير وجهك</div>';}
+     }else{lookResult.innerHTML='<div style="font-size:2rem">👀</div><strong>أظهر وجهك أمام الكاميرا</strong>';}
+     await new Promise(resolve=>setTimeout(resolve,450));
+    }
+   }catch(err){lookStatus.textContent='تعذّر تشغيل التقليد المباشر. جرّب تحليل صورة أو أعد فتح الكاميرا.';}
+   finally{lookMimicActive=false;button.textContent='🎭 قلّد تعبير وجهي مباشرة';}
+  });
  window.addEventListener('pagehide',()=>{if(lookStream)lookStream.getTracks().forEach(t=>t.stop());});
 
 
