@@ -348,6 +348,7 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 
 .seif-game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.seif-game-card{min-width:0;padding:12px 8px;border-radius:15px}.seif-game-card strong{display:block;overflow-wrap:anywhere}.seif-game-card small{display:block;line-height:1.35}.seif-game-card button{width:100%;padding:9px 4px;white-space:normal}@media(max-width:430px){.seif-game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.seif-game-card{padding:10px 7px}.seif-game-card .game-icon{font-size:1.8rem}}
 
+body.seif-offline-app.offline-focused .offline-single-game .creative-card:not(.offline-active-card){display:none!important}
 /* Creative offline tools — mobile-first */
 #creativeTools .creative-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 #creativeTools .creative-card{min-width:0;border:1px solid #384568;border-radius:16px;padding:14px;background:#121a30}
@@ -922,7 +923,7 @@ if(seifOfflineApp){
    let root=target;const main=document.querySelector('main.wrap');
    while(root.parentElement&&root.parentElement!==main)root=root.parentElement;
    root.classList.add('offline-active-root');
-   const gameCard=target.closest('.game-card');
+   const gameCard=target.closest('.game-card, .creative-card');
    if(gameCard){gameCard.classList.add('offline-active-card');root.classList.add('offline-single-game');}
    document.body.classList.add('offline-focused');
    const section=target.closest('.section');
@@ -2207,9 +2208,18 @@ $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream
  function haversine(a,b,c,d){const r=6371000,p=Math.PI/180,x=(c-a)*p,y=(d-b)*p,z=Math.sin(x/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin(y/2)**2;return 2*r*Math.asin(Math.sqrt(z));}
  // 7) Voice recorder with offline Web Audio effects.
  let voiceStream=null,voiceRecorder=null,voiceChunks=[],voiceContext=null,voiceSource=null,voiceNodes=[];
- $('voiceStart')?.addEventListener('click',async()=>{try{voiceStream=await navigator.mediaDevices.getUserMedia({audio:true});voiceChunks=[];voiceRecorder=new MediaRecorder(voiceStream);voiceRecorder.ondataavailable=e=>{if(e.data.size)voiceChunks.push(e.data)};voiceRecorder.onstop=()=>{const blob=new Blob(voiceChunks,{type:voiceRecorder.mimeType||'audio/webm'}),url=URL.createObjectURL(blob);$('voicePlayback').src=url;voiceStream?.getTracks().forEach(t=>t.stop());voiceStream=null;say('voiceStatus','تم حفظ التسجيل محلياً. شغّل المقطع للاستماع.');};voiceRecorder.start();say('voiceStatus','جارٍ التسجيل… اضغط إيقاف عند الانتهاء.');}catch(e){say('voiceStatus','لم نتمكن من فتح الميكروفون: '+e.message);}});
+ $('voiceStart')?.addEventListener('click',async()=>{try{
+   if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined')throw new Error('هذا المتصفح لا يدعم التسجيل الصوتي المطلوب.');
+   voiceStream=await navigator.mediaDevices.getUserMedia({audio:true});voiceChunks=[];voiceContext=new (window.AudioContext||window.webkitAudioContext)();
+   await voiceContext.resume();voiceSource=voiceContext.createMediaStreamSource(voiceStream);const dest=voiceContext.createMediaStreamDestination(),effect=$('voiceEffect').value;
+   if(effect==='deep'){const filter=voiceContext.createBiquadFilter();filter.type='lowpass';filter.frequency.value=520;filter.Q.value=0.7;voiceSource.connect(filter);filter.connect(dest);voiceNodes.push(filter);}
+   else if(effect==='echo'){const delay=voiceContext.createDelay(1.2),feedback=voiceContext.createGain(),wet=voiceContext.createGain();delay.delayTime.value=.24;feedback.gain.value=.32;wet.gain.value=.65;voiceSource.connect(dest);voiceSource.connect(delay);delay.connect(wet);wet.connect(dest);delay.connect(feedback);feedback.connect(delay);voiceNodes.push(delay,feedback,wet);}
+   else if(effect==='robot'){const gain=voiceContext.createGain(),osc=voiceContext.createOscillator();osc.type='sine';osc.frequency.value=35;gain.gain.value=.7;voiceSource.connect(gain);osc.connect(gain.gain);gain.connect(dest);osc.start();voiceNodes.push(gain,osc);}
+   else voiceSource.connect(dest);
+   voiceRecorder=new MediaRecorder(dest.stream);voiceRecorder.ondataavailable=e=>{if(e.data.size)voiceChunks.push(e.data)};voiceRecorder.onstop=()=>{const blob=new Blob(voiceChunks,{type:voiceRecorder.mimeType||'audio/webm'}),url=URL.createObjectURL(blob);$('voicePlayback').src=url;voiceStream?.getTracks().forEach(t=>t.stop());voiceStream=null;voiceNodes.forEach(n=>{try{n.stop?.();n.disconnect?.()}catch(e){}});voiceNodes=[];voiceSource?.disconnect();voiceSource=null;voiceContext?.close();voiceContext=null;say('voiceStatus','تم حفظ التسجيل بالمؤثر المختار محلياً. شغّل المقطع للاستماع.');};voiceRecorder.start();say('voiceStatus','جارٍ التسجيل بالمؤثر المختار… اضغط إيقاف عند الانتهاء.');
+  }catch(e){voiceStream?.getTracks().forEach(t=>t.stop());voiceStream=null;try{voiceContext?.close()}catch(err){}voiceContext=null;say('voiceStatus','تعذّر بدء التسجيل: '+e.message);}});
  $('voiceStop')?.addEventListener('click',()=>{if(voiceRecorder&&voiceRecorder.state!=='inactive')voiceRecorder.stop();else say('voiceStatus','ابدأ التسجيل أولاً.');});
- $('voiceEffect')?.addEventListener('change',()=>{say('voiceStatus','اختير المؤثر. ستحتاج إلى الاستماع للمقطع؛ المتصفح لا يغيّر ملف التسجيل تلقائياً أثناء التسجيل في كل الأجهزة.');});
+ $('voiceEffect')?.addEventListener('change',()=>{say('voiceStatus','سيُطبّق المؤثر المختار على التسجيل التالي.');});
  // 8) Emoji snake with buttons and swipe.
  const snake=$('snakeBoard'),snakeCtx=snake?.getContext('2d');let snakeBody=[],snakeDir={x:1,y:0},snakeNext={x:1,y:0},snakeFood={x:8,y:8},snakeTimer=null,snakeScore=0,snakeRunning=false;
  function drawSnake(){if(!snakeCtx)return;const size=20;snakeCtx.clearRect(0,0,320,320);snakeCtx.fillStyle='#0b1020';snakeCtx.fillRect(0,0,320,320);for(let i=0;i<snakeBody.length;i++){const p=snakeBody[i];snakeCtx.font='18px sans-serif';snakeCtx.fillText(i===0?'🐍':'🟢',p.x*size,p.y*size+17);}snakeCtx.font='20px sans-serif';snakeCtx.fillText('🍎',snakeFood.x*size,snakeFood.y*size+18);}
