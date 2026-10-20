@@ -1669,9 +1669,9 @@ render();
    lookStatus.textContent='جارٍ تحميل نموذج تحليل تعبيرات الوجه… قد يستغرق ذلك أول مرة.';
    lookModelReady=(async()=>{
      const offlineApp=location.hostname==='appassets.androidplatform.net';
-     if(!window.faceapi){await new Promise((resolve,reject)=>{const sc=document.createElement('script');sc.src=offlineApp?'./face-api.min.js':'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js';sc.onload=resolve;sc.onerror=()=>reject(new Error('تعذّر تحميل مكتبة تحليل الوجه.'));document.head.appendChild(sc);});}
+     if(!window.faceapi){await new Promise((resolve,reject)=>{const sc=document.createElement('script');sc.src=offlineApp?'./face-api.min.js':'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/build/face-api.min.js';sc.onload=resolve;sc.onerror=()=>reject(new Error('تعذّر تحميل مكتبة تحليل الوجه.'));document.head.appendChild(sc);});}
      const base=offlineApp?'./models':'https://justadudewhohacks.github.io/face-api.js/models';
-     await Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(base),faceapi.nets.faceLandmark68TinyNet.loadFromUri(base),faceapi.nets.faceExpressionNet.loadFromUri(base)]);
+     await Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(base),faceapi.nets.faceExpressionNet.loadFromUri(base)]);
    })().catch(err=>{lookModelReady=null;throw err;});
    return lookModelReady;
  }
