@@ -23,6 +23,7 @@ import androidx.webkit.WebViewClientCompat
 class WebActivity : Activity() {
     companion object {
         const val EXTRA_MODE = "seif_mode"
+        const val EXTRA_SECTION = "seif_section"
         const val MODE_OFFLINE = "offline"
         const val MODE_ONLINE = "online"
         private const val OFFLINE_URL = "https://appassets.androidplatform.net/assets/offline.html"
@@ -104,7 +105,7 @@ class WebActivity : Activity() {
         root.addView(webView, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
         setContentView(root)
         if (savedInstanceState == null) {
-            webView.loadUrl(if (mode == MODE_ONLINE) ONLINE_URL else OFFLINE_URL)
+            webView.loadUrl(if (mode == MODE_ONLINE) ONLINE_URL else OFFLINE_URL + "#" + (intent.getStringExtra(EXTRA_SECTION) ?: "home"))
         }
         else webView.restoreState(savedInstanceState)
     }
