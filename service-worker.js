@@ -1,4 +1,4 @@
-const CACHE_NAME = 'seif-emojis-site-v5';
+const CACHE_NAME = 'seif-emojis-site-v6';
 const APP_SHELL = [
   './',
   './index.html',
