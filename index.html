@@ -244,7 +244,7 @@ body.seif-offline-app #installAppBtn,body.seif-offline-app #installAppNotice,
 body.seif-offline-app #keyboardInstall{display:none!important}
 body.seif-offline-app .offline-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
 body.seif-offline-app .offline-hub-card{padding:15px;border-radius:16px;border:1px solid #465779;background:linear-gradient(145deg,#192442,#0e1629);min-width:0}
-body.seif-offline-app .offline-hub-card h3{margin:0 0 8px;color:#b9f7ee}
+body.seif-offline-app .offline-filter-row button{min-width:0;padding:8px 4px;font-size:.9rem}body.seif-offline-app .offline-tool-list button:disabled{opacity:.58;line-height:1.4;white-space:normal}body.seif-offline-app .offline-hub-card h3{margin:0 0 8px;color:#b9f7ee}
 body.seif-offline-app .offline-tool-list{display:grid;gap:8px;margin-top:12px}
 body.seif-offline-app .offline-tool-list button{width:100%;text-align:right;min-height:46px}
 body.seif-offline-app .offline-hub-note{padding:10px 12px;border-radius:12px;background:#0b1020;color:#c6d4ee;font-size:.9rem;line-height:1.7;margin-top:10px}
@@ -341,6 +341,44 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 </head>
 <body><main class="wrap">
 <header><div class="language-switch" aria-label="Website language"><label for="siteLanguage">🌐 Language / اللغة</label><select id="siteLanguage" aria-label="Choose website language"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgg0E8QbJBCvTLNEzX5fR3GCwk5DVA7d0EuidDE-5qbw&amp;s=10" alt="أيقونة SEIF EMOJIS" style="width:104px;height:104px;object-fit:cover;border-radius:26px;border:2px solid #48e2c2;box-shadow:0 8px 28px #0007;margin:0 auto 12px;display:block" onerror="this.style.display='none'"><h1 class="logo">✨ SEIF EMOJIS ✨</h1><p class="sub">مولّد النصوص المزخرفة والإيموجيات والرموز والفنون النصية<br><span class="pill">نسخ بنقرة واحدة • أدوات مجانية • يعمل في المتصفح</span></p></header>
+<section id="offlineOnlineHub" class="panel" aria-label="تصنيف الأدوات حسب الاتصال">
+ <h2>📦 اختر ما يناسب اتصالك</h2>
+ <p class="muted small">في النسخة المنزّلة، الأدوات المحلية تعمل دون إنترنت. الأدوات الخارجية تحتاج اتصالًا؛ افتح «أونلاين» من شاشة التطبيق الرئيسية لاستخدام الموقع الكامل.</p>
+ <label for="offlineToolSearch">🔎 ابحث في الأدوات</label>
+ <input id="offlineToolSearch" type="search" placeholder="مثال: لعبة، زخرفة، اسم مخفي…" style="width:100%;box-sizing:border-box;margin:8px 0;padding:12px;border-radius:12px">
+ <div class="offline-filter-row" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:10px 0">
+  <button type="button" class="offline-filter-btn active" data-offline-filter="all">الكل</button>
+  <button type="button" class="offline-filter-btn" data-offline-filter="offline">📴 دون إنترنت</button>
+  <button type="button" class="offline-filter-btn" data-offline-filter="online">🌐 أونلاين</button>
+ </div>
+ <div class="offline-hub-grid">
+  <article class="offline-hub-card">
+   <h3>📴 يعمل دون إنترنت</h3>
+   <p class="muted small">ألعاب، زخرفة، رموز، ونسخ الاسم المخفي — بعد تثبيت التطبيق.</p>
+   <div class="offline-tool-list">
+    <button type="button" data-offline-open="seifGamesHub">🎮 ألعاب الإيموجي</button>
+    <button type="button" data-offline-open="invisibleNameTool">🥷 الاسم المخفي للألعاب</button>
+    <button type="button" data-offline-open="emojiMaker">🎨 اصنع إيموجيك</button>
+    <button type="button" data-offline-open="kaomojiLab">😊 الوجوه النصية</button>
+    <button type="button" data-offline-open="library">🥰 مكتبة الإيموجيات والرموز</button>
+    <button type="button" data-offline-open="fancy">✨ زخرفة النصوص والأسماء</button>
+   </div>
+  </article>
+  <article class="offline-hub-card">
+   <h3>🌐 يحتاج إلى الإنترنت</h3>
+   <p class="muted small">هذه الأدوات لا تعمل في وضع الطيران أو وضع النسخة المحلية المحظور عنها الاتصال.</p>
+   <div class="offline-tool-list">
+    <button type="button" disabled>🎭 تحميل نموذج تحليل الوجه — غير متاح دون إنترنت إذا لم يكن مضمّنًا</button>
+    <button type="button" disabled>🔊 مكتبات الصوت الخارجية</button>
+    <button type="button" disabled>🌍 المواقع الخارجية ومولدات الطرف الثالث</button>
+    <button type="button" disabled>📲 تنزيل أحدث نسخة من التطبيق</button>
+   </div>
+   <p class="offline-hub-note">للوصول لهذه الميزات: ارجع إلى الشاشة الرئيسية للتطبيق واختر «الموقع أونلاين + التنزيل».</p>
+  </article>
+ </div>
+ <p id="offlineCategoryStatus" class="muted small" aria-live="polite"></p>
+</section>
+
 
 <section id="homeCategories" class="panel home-categories" aria-label="الأقسام الرئيسية">
  <h2>أهلاً بك في SEIF EMOJIS ✨</h2>
