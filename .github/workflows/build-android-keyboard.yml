@@ -35,18 +35,7 @@ jobs:
       - name: Bundle the website for offline use
         run: |
           mkdir -p android-keyboard/app/src/main/assets/models
-          cp index.html android-keyboard/app/src/main/assets/index.html
-          cp index.html android-keyboard/app/src/main/assets/offline.html
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('android-keyboard/app/src/main/assets/offline.html')
-          s = p.read_text()
-          s = s.replace('<title>SEIF EMOJIS | مولّد النصوص والرموز</title>', '<title>SEIF EMOJIS — نسخة الهاتف دون إنترنت</title>')
-          s = s.replace('</head>', '<style>#installAppBtn, #installAppNotice, #keyboardInstall{display:none!important} body:before{content:"📴 نسخة الهاتف — الأدوات المحلية تعمل دون إنترنت";display:block;text-align:center;background:#17352f;color:#b8fff0;padding:10px;font-weight:bold}</style></head>')
-          s = s.replace('<button type="button" data-online-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه بالذكاء الاصطناعي (يتطلب الإنترنت)</button>', '<button type="button" data-offline-open="emojiLookalikeTool">🎭 تحليل تعبير الوجه دون إنترنت</button>')
-          s = s.replace('</body>', '<script>document.getElementById("installAppBtn")?.closest("div")?.remove();document.getElementById("keyboardInstall")?.remove();</script></body>')
-          p.write_text(s)
-          PY
+          test -s android-keyboard/app/src/main/assets/offline.html
           curl -fLsS --retry 3 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js' -o android-keyboard/app/src/main/assets/face-api.min.js
           for file in tiny_face_detector_model-weights_manifest.json tiny_face_detector_model-shard1 face_expression_model-weights_manifest.json face_expression_model-shard1; do
             curl -fLsS --retry 3 "https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights/$file" -o "android-keyboard/app/src/main/assets/models/$file"
