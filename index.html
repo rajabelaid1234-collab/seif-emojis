@@ -246,7 +246,16 @@ body.seif-offline-app .offline-hub-grid{display:grid;grid-template-columns:repea
 body.seif-offline-app .offline-hub-card{padding:15px;border-radius:16px;border:1px solid #465779;background:linear-gradient(145deg,#192442,#0e1629);min-width:0}
 body.seif-offline-app .offline-filter-row button{min-width:0;padding:8px 4px;font-size:.9rem}body.seif-offline-app .offline-tool-list button:disabled{opacity:.58;line-height:1.4;white-space:normal}body.seif-offline-app .offline-hub-card h3{margin:0 0 8px;color:#b9f7ee}
 body.seif-offline-app .offline-tool-list{display:grid;gap:8px;margin-top:12px}
+body.seif-offline-app:not(.offline-focused) main.wrap>*:not(header):not(#offlineOnlineHub):not(#offlineBackBar){display:none!important}
+body.seif-offline-app #offlineBackBar{display:none}
+body.seif-offline-app.offline-focused #offlineBackBar{display:block}
+body.seif-offline-app.offline-focused #offlineOnlineHub{display:none!important}
+body.seif-offline-app.offline-focused main.wrap>*:not(header):not(#offlineOnlineHub):not(#offlineBackBar):not(.offline-active-root){display:none!important}
+body.seif-offline-app.offline-focused .offline-active-root{display:block!important}
+body.seif-offline-app.offline-focused .offline-single-game .game-card:not(.offline-active-card){display:none!important}
+body.seif-offline-app.offline-focused .offline-single-game>h2,body.seif-offline-app.offline-focused .offline-single-game>p{display:none!important}
 body.seif-offline-app .offline-tool-list button{width:100%;text-align:right;min-height:46px}
+@media(max-width:480px){body.seif-offline-app .offline-hub-grid{grid-template-columns:1fr}body.seif-offline-app .offline-tool-list{grid-template-columns:repeat(2,minmax(0,1fr));display:grid}body.seif-offline-app .offline-tool-list button{font-size:.85rem;padding:8px 5px;text-align:center;line-height:1.35;min-height:58px}}
 body.seif-offline-app .offline-hub-note{padding:10px 12px;border-radius:12px;background:#0b1020;color:#c6d4ee;font-size:.9rem;line-height:1.7;margin-top:10px}
 body.seif-offline-app #kaoLinks{display:none!important}
 body.seif-offline-app .tabs{scroll-margin-top:8px}
@@ -383,7 +392,9 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
  </div>
  <p id="offlineCategoryStatus" class="muted small" aria-live="polite"></p>
 </section>
-
+<div id="offlineBackBar" hidden style="position:sticky;top:4px;z-index:30;margin:8px 0;padding:6px;background:#0d1020;border-radius:14px">
+ <button type="button" id="offlineBackButton" class="primary" style="width:100%;min-height:46px">⬅ رجوع إلى قائمة الأدوات</button>
+</div>
 
 <section id="homeCategories" class="panel home-categories" aria-label="الأقسام الرئيسية">
  <h2>أهلاً بك في SEIF EMOJIS ✨</h2>
@@ -812,11 +823,25 @@ if(seifOfflineApp){
  $('keyboardInstall')?.remove();
  document.querySelectorAll('[data-offline-open]').forEach(btn=>btn.addEventListener('click',()=>{
    const target=$(btn.dataset.offlineOpen);if(!target)return;
+   document.querySelectorAll('.offline-active-root,.offline-active-card').forEach(x=>x.classList.remove('offline-active-root','offline-active-card','offline-single-game'));
+   let root=target;const main=document.querySelector('main.wrap');
+   while(root.parentElement&&root.parentElement!==main)root=root.parentElement;
+   root.classList.add('offline-active-root');
+   const gameCard=target.closest('.game-card');
+   if(gameCard){gameCard.classList.add('offline-active-card');root.classList.add('offline-single-game');}
+   document.body.classList.add('offline-focused');
    const section=target.closest('.section');
    if(section){const tab=document.querySelector('[data-tab="'+section.id+'"]');if(tab)tab.click();else{document.querySelectorAll('.section').forEach(x=>x.classList.toggle('show',x===section));}}
+   $('offlineBackBar').hidden=false;
    target.scrollIntoView({behavior:'smooth',block:'start'});
    target.style.outline='2px solid #48e2c2';setTimeout(()=>target.style.outline='',1400);
  }));
+ $('offlineBackButton')?.addEventListener('click',()=>{
+   document.body.classList.remove('offline-focused');
+   document.querySelectorAll('.offline-active-root,.offline-active-card').forEach(x=>x.classList.remove('offline-active-root','offline-active-card','offline-single-game'));
+   $('offlineBackBar').hidden=true;
+   $('offlineOnlineHub')?.scrollIntoView({behavior:'smooth',block:'start'});
+ });
  if(location.hash==='#games'){setTimeout(()=>$('seifGamesHub')?.scrollIntoView({behavior:'smooth',block:'start'}),250);}
  if(location.hash==='#emoji'){setTimeout(()=>{const tab=document.querySelector('[data-tab="library"]');if(tab)tab.click();$('library')?.scrollIntoView({behavior:'smooth',block:'start'});},250);}
  document.querySelectorAll('[data-offline-tab]').forEach(btn=>btn.addEventListener('click',()=>{
