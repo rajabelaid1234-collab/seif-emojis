@@ -455,14 +455,14 @@ img.emoji{display:inline-block!important;width:1.15em!important;height:1.15em!im
  <p class="muted small">الأدوات التالية مصممة للعمل على الهاتف. لا تُرسل الصور أو التسجيلات إلى خادم؛ قد تحتاج الكاميرا أو الموقع أو الميكروفون إلى إذن من نظام الهاتف.</p>
  <div class="creative-grid">
   <article class="creative-card" id="stegoTool">
-   <h3>🕵️ إخفاء رسالة داخل صورة</h3>
-   <p class="muted small">أخفِ رسالة نصية داخل صورة PNG ثم استخرجها لاحقاً من الملف نفسه. هذه ليست تشفيراً آمناً، ويجب عدم استخدامها للأسرار الحساسة.</p>
+   <h3>🕵️ إخفاء رسالة داخل صورة JPG</h3>
+   <p class="muted small">أضف رسالة إلى ملف JPG ونزّل الصورة بامتداد JPEG. هذه ميزة إخفاء وليست تشفيراً آمناً؛ قد تحذف بعض التطبيقات الرسالة عند إعادة ضغط الصورة.</p>
    <label>اختر صورة للتمويه</label><input id="stegoImage" type="file" accept="image/*">
    <label>الرسالة المراد إخفاؤها</label><textarea id="stegoMessage" rows="2" placeholder="اكتب رسالتك هنا…"></textarea>
-   <div class="tool-actions"><button id="stegoEncode" class="primary" type="button">إخفاء وتنزيل PNG</button></div>
-   <label>أو اختر صورة تحتوي على رسالة</label><input id="stegoDecodeImage" type="file" accept="image/png">
+   <div class="tool-actions"><button id="stegoEncode" class="primary" type="button">إخفاء وتنزيل JPG</button></div>
+   <label>اختر صورة JPG أو PNG تحتوي على رسالة</label><input id="stegoDecodeImage" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png">
    <div class="tool-actions"><button id="stegoDecode" type="button">استخراج الرسالة</button><button id="stegoCopy" type="button">نسخ الرسالة</button></div>
-   <div id="stegoResult" class="tool-result tool-status" aria-live="polite">ملاحظة: إرسال الصورة كصورة عادية عبر بعض التطبيقات قد يضغطها ويتلف البيانات؛ أرسل ملف PNG كـ«مستند» عند الحاجة.</div>
+   <div id="stegoResult" class="tool-result tool-status" aria-live="polite">سيُحفظ الناتج بصيغة JPG. لا ترسل الصورة عبر تطبيق يعيد ضغطها إذا أردت الحفاظ على الرسالة.</div>
   </article>
   <article class="creative-card" id="focusTimerTool">
    <h3>⏱️ مؤقت التركيز</h3>
@@ -2179,23 +2179,43 @@ $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream
 (function(){
  const $=id=>document.getElementById(id);
  const say=(id,msg)=>{const el=$(id);if(el)el.textContent=msg;};
- // 1) Pixel-LSB message hiding in PNG. Header is 32-bit byte length, followed by UTF-8 bytes.
+ // 1) Hide a message in a JPEG COM segment, keeping the output as a .jpg file.
  let stegoLastText='';
  const loadImageFile=file=>new Promise((resolve,reject)=>{if(!file){reject(new Error('اختر ملفاً أولاً.'));return;}const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('تعذّر فتح الصورة.'))};img.src=url;});
+ const STEGO_JPEG_TAG='SEIFMSG1:';
+ const injectJpegMessage=async(blob,message)=>{
+  const imageBytes=new Uint8Array(await blob.arrayBuffer()),msgBytes=new TextEncoder().encode(STEGO_JPEG_TAG+message);
+  if(msgBytes.length>65533)throw new Error('الرسالة طويلة جداً لملف JPG؛ اختصرها.');
+  if(imageBytes[0]!==255||imageBytes[1]!==216)throw new Error('تعذّر إنشاء ملف JPEG صالح.');
+  const segment=new Uint8Array(msgBytes.length+4);segment[0]=255;segment[1]=254;const length=msgBytes.length+2;segment[2]=(length>>8)&255;segment[3]=length&255;segment.set(msgBytes,4);
+  const result=new Uint8Array(imageBytes.length+segment.length);result.set(imageBytes.slice(0,2),0);result.set(segment,2);result.set(imageBytes.slice(2),2+segment.length);return new Blob([result],{type:'image/jpeg'});
+ };
+ const extractJpegMessage=async file=>{
+  const b=new Uint8Array(await file.arrayBuffer());if(b[0]!==255||b[1]!==216)return null;
+  let p=2;while(p+4<=b.length){if(b[p]!==255)break;const marker=b[p+1];if(marker===218||marker===217)break;if(marker===0||marker===255){p++;continue;}const len=(b[p+2]<<8)|b[p+3];if(len<2||p+2+len>b.length)break;
+   if(marker===254){const payload=b.slice(p+4,p+2+len),prefix=new TextEncoder().encode(STEGO_JPEG_TAG);if(payload.length>=prefix.length&&prefix.every((v,i)=>payload[i]===v))return new TextDecoder().decode(payload.slice(prefix.length));}
+   p+=2+len;
+  }return null;
+ };
  $('stegoEncode')?.addEventListener('click',async()=>{
-  try{const file=$('stegoImage').files[0],message=$('stegoMessage').value;if(!message){say('stegoResult','اكتب رسالة أولاً.');return;}
-   const img=await loadImageFile(file),c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);const data=ctx.getImageData(0,0,c.width,c.height),bytes=new TextEncoder().encode(message),max=Math.floor(data.data.length/4*3/8);
-   if(bytes.length>max-4)throw new Error('الرسالة طويلة جداً بالنسبة لحجم الصورة؛ اختر صورة أكبر أو رسالة أقصر.');
-   const payload=new Uint8Array(4+bytes.length);new DataView(payload.buffer).setUint32(0,bytes.length,false);payload.set(bytes,4);
-   let bit=0;for(const byte of payload)for(let shift=7;shift>=0;shift--){const index=Math.floor(bit/3)*4+(bit%3);data.data[index]=(data.data[index]&254)|((byte>>shift)&1);bit++;}
-   ctx.putImageData(data,0,0);c.toBlob(blob=>{if(!blob){say('stegoResult','فشل إنشاء PNG.');return;}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='seif-hidden-message.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);say('stegoResult','تم إنشاء PNG. احتفظ بالملف الأصلي أيضاً؛ الضغط أو تعديل الصورة قد يتلف الرسالة.');},'image/png');
-  }catch(e){say('stegoResult',e.message||'حدث خطأ أثناء الإخفاء.');}
+  const btn=$('stegoEncode');if(btn)btn.disabled=true;
+  try{const file=$('stegoImage').files[0],message=$('stegoMessage').value;if(!file)throw new Error('اختر صورة أولاً.');if(!message.trim())throw new Error('اكتب رسالة أولاً.');
+   const img=await loadImageFile(file),c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);
+   const jpg=await new Promise((resolve,reject)=>c.toBlob(blob=>blob?resolve(blob):reject(new Error('فشل تحويل الصورة إلى JPG.')),'image/jpeg',0.94));
+   const finalBlob=await injectJpegMessage(jpg,message),url=URL.createObjectURL(finalBlob),a=document.createElement('a');a.href=url;a.download='seif-hidden-message.jpg';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
+   say('stegoResult','تم تنزيل صورة JPG مع الرسالة. لا ترسلها عبر تطبيق يعيد ضغط الصور؛ فقد يحذف الرسالة.');
+  }catch(e){say('stegoResult',e.message||'حدث خطأ أثناء إخفاء الرسالة.');}
+  finally{if(btn)btn.disabled=false;}
  });
  $('stegoDecode')?.addEventListener('click',async()=>{
-  try{const img=await loadImageFile($('stegoDecodeImage').files[0]),c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);const d=ctx.getImageData(0,0,c.width,c.height).data;let bit=0,bytes=[],cur=0;const readByte=()=>{let n=0;for(let i=0;i<8;i++){const idx=Math.floor(bit/3)*4+(bit%3);n=(n<<1)|(d[idx]&1);bit++;}return n;};for(let i=0;i<4;i++)cur=(cur<<8)|readByte();if(cur<0||cur>Math.floor(d.length/4*3/8)-4)throw new Error('لم نعثر على رسالة صالحة في هذه الصورة.');for(let i=0;i<cur;i++)bytes.push(readByte());stegoLastText=new TextDecoder().decode(new Uint8Array(bytes));say('stegoResult','الرسالة المستخرجة: '+stegoLastText);
+  try{const file=$('stegoDecodeImage').files[0];if(!file)throw new Error('اختر ملف JPG أو PNG أولاً.');
+   const jpegText=await extractJpegMessage(file);if(jpegText!==null){stegoLastText=jpegText;say('stegoResult','الرسالة المستخرجة: '+stegoLastText);return;}
+   if(file.type==='image/png'||/\.png$/i.test(file.name)){
+    const img=await loadImageFile(file),c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);const d=ctx.getImageData(0,0,c.width,c.height).data;let bit=0,cur=0;const readByte=()=>{let n=0;for(let i=0;i<8;i++){const idx=Math.floor(bit/3)*4+(bit%3);n=(n<<1)|(d[idx]&1);bit++;}return n;};for(let i=0;i<4;i++)cur=(cur<<8)|readByte();if(cur<0||cur>Math.floor(d.length/4*3/8)-4)throw new Error('لم نعثر على رسالة صالحة في هذه الصورة.');const bytes=new Uint8Array(cur);for(let i=0;i<cur;i++)bytes[i]=readByte();stegoLastText=new TextDecoder().decode(bytes);say('stegoResult','الرسالة المستخرجة: '+stegoLastText);return;
+   }
+   throw new Error('لم نعثر على رسالة مخفية. اختر ملف JPG الأصلي الذي نزّلته الأداة.');
   }catch(e){say('stegoResult',e.message||'تعذّر استخراج الرسالة.');}
  });
- $('stegoCopy')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(stegoLastText);say('stegoResult','تم نسخ الرسالة.');}catch(e){say('stegoResult','لا توجد رسالة أو تعذّر النسخ.');}});
  // 2) Pomodoro countdown.
  let focusDuration=1500,focusLeft=1500,focusTimer=null;
  const paintFocus=()=>{const m=Math.floor(focusLeft/60),ss=focusLeft%60;say('focusClock',String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'));};
