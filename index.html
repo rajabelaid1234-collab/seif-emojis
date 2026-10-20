@@ -1733,4 +1733,33 @@ render();
  if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));}
 
 })();
-</script></body></html>
+</script>
+<section class="extra-tool" id="seifTextVideoTool" style="margin:22px auto;max-width:900px">
+<h2>🎬 صانع فيديو الكتابة النارية والذهبية</h2>
+<p class="muted">اكتب نصك، اختر الخلفية والتأثير واللون، ثم سجّل فيديو قصيرًا واحفظه على هاتفك. يعمل محليًا دون رفع النص أو الفيديو.</p>
+<label for="seifVideoText">النص الذي سيظهر في الفيديو</label>
+<textarea id="seifVideoText" rows="2" maxlength="140" placeholder="اكتب اسمك أو عبارتك هنا" style="width:100%;box-sizing:border-box;margin:8px 0;padding:12px;border-radius:12px"></textarea>
+<div class="invisible-options">
+ <div class="invisible-option"><label for="seifVideoBg">الخلفية</label><select id="seifVideoBg" style="width:100%;padding:10px"><option value="#050505">أسود</option><option value="#00a651">أخضر (Green Screen)</option><option value="#101b38">أزرق داكن</option></select></div>
+ <div class="invisible-option"><label for="seifVideoEffect">التأثير</label><select id="seifVideoEffect" style="width:100%;padding:10px"><option value="fire">🔥 ناري</option><option value="gold">✨ ذهبي</option><option value="glow">💠 إشعاعي</option><option value="plain">🎨 لون عادي</option></select></div>
+ <div class="invisible-option"><label for="seifVideoColor">لون الكتابة</label><input id="seifVideoColor" type="color" value="#ffffff" style="width:100%;height:42px"></div>
+ <div class="invisible-option"><label for="seifVideoDuration">مدة الفيديو</label><select id="seifVideoDuration" style="width:100%;padding:10px"><option value="5">5 ثوانٍ</option><option value="10">10 ثوانٍ</option><option value="15">15 ثانية</option></select></div>
+</div>
+<canvas id="seifVideoCanvas" width="720" height="1280" style="width:min(100%,300px);aspect-ratio:9/16;display:block;margin:12px auto;border-radius:14px;background:#050505"></canvas>
+<div class="action-row"><button type="button" class="primary" id="seifVideoPreview">👁️ معاينة الحركة</button><button type="button" class="primary" id="seifVideoRecord">🔴 إنشاء الفيديو وحفظه</button></div>
+<p id="seifVideoStatus" class="muted small" aria-live="polite">سيُحفظ الفيديو بصيغة WebM إذا كان متصفحك يدعم تسجيل Canvas.</p>
+<a id="seifVideoDownload" hidden download="seif-text-video.webm">⬇️ تنزيل الفيديو</a>
+</section>
+<script>
+(function(){
+const $=id=>document.getElementById(id);const canvas=$('seifVideoCanvas');if(!canvas)return;const ctx=canvas.getContext('2d');let raf=0,recording=false;
+function draw(t=0){const bg=$('seifVideoBg').value,fx=$('seifVideoEffect').value,txt=$('seifVideoText').value||'SEIF EMOJIS',color=$('seifVideoColor').value;ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);const pulse=1+Math.sin(t/250)*.035;ctx.save();ctx.translate(canvas.width/2,canvas.height/2);ctx.scale(pulse,pulse);ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 66px system-ui, sans-serif';ctx.lineJoin='round';ctx.shadowBlur=fx==='glow'?38:fx==='gold'?28:fx==='fire'?25:0;ctx.shadowColor=fx==='fire'?'#ff3b00':fx==='gold'?'#ffcf40':color;
+if(fx==='fire'){const g=ctx.createLinearGradient(0,-80,0,80);g.addColorStop(0,'#fff8a0');g.addColorStop(.35,'#ffb000');g.addColorStop(.7,'#ff4a00');g.addColorStop(1,'#b90000');ctx.fillStyle=g;ctx.strokeStyle='#431000';ctx.lineWidth=5;ctx.strokeText(txt,0,0,canvas.width-50);ctx.fillStyle=g;ctx.fillText(txt,0,0,canvas.width-50)}
+else if(fx==='gold'){const g=ctx.createLinearGradient(0,-70,0,70);g.addColorStop(0,'#fff8c4');g.addColorStop(.3,'#f9d65c');g.addColorStop(.65,'#c58b18');g.addColorStop(1,'#fff0a1');ctx.fillStyle=g;ctx.strokeStyle='#5c3a00';ctx.lineWidth=4;ctx.strokeText(txt,0,0,canvas.width-50);ctx.fillText(txt,0,0,canvas.width-50)}
+else{ctx.fillStyle=fx==='glow'?color:color;ctx.strokeStyle=fx==='glow'?'#ffffff':'#111111';ctx.lineWidth=fx==='glow'?2:3;ctx.strokeText(txt,0,0,canvas.width-50);ctx.fillText(txt,0,0,canvas.width-50)}ctx.restore();if(recording)raf=requestAnimationFrame(draw)}
+$('seifVideoPreview').addEventListener('click',()=>{cancelAnimationFrame(raf);recording=false;draw(performance.now());$('seifVideoStatus').textContent='هذه معاينة ثابتة للتصميم. اضغط إنشاء الفيديو لتسجيل الحركة.'});
+$('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream||!window.MediaRecorder){$('seifVideoStatus').textContent='متصفحك لا يدعم تسجيل الفيديو من Canvas. جرّب Chrome حديثًا.';return}const btn=$('seifVideoRecord');btn.disabled=true;recording=true;draw();try{const stream=canvas.captureStream(30);let mime='video/webm;codecs=vp9';if(!MediaRecorder.isTypeSupported(mime))mime='video/webm';const rec=new MediaRecorder(stream,{mimeType:mime});const chunks=[];rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};rec.onstop=()=>{recording=false;cancelAnimationFrame(raf);stream.getTracks().forEach(t=>t.stop());const blob=new Blob(chunks,{type:'video/webm'});const a=$('seifVideoDownload');a.href=URL.createObjectURL(blob);a.hidden=false;a.textContent='⬇️ تنزيل الفيديو الآن';a.click();$('seifVideoStatus').textContent='تم إنشاء الفيديو. إذا لم يبدأ التنزيل تلقائيًا، اضغط رابط التنزيل.';btn.disabled=false};rec.start();$('seifVideoStatus').textContent='جارٍ تسجيل الفيديو… لا تغلق الصفحة.';setTimeout(()=>{if(rec.state!=='inactive')rec.stop()},Number($('seifVideoDuration').value)*1000)}catch(e){recording=false;btn.disabled=false;$('seifVideoStatus').textContent='تعذّر إنشاء الفيديو على هذا المتصفح. جرّب Chrome محدّثًا.'}});
+})();
+</script>
+
+</body></html>
