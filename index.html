@@ -347,6 +347,22 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 @media(max-width:560px){.home-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.home-category-card{padding:13px;min-height:175px;border-radius:16px}.home-category-icon{font-size:2rem}.home-category-card strong{font-size:1rem}.home-category-card small{font-size:.78rem}.home-category-cta{font-size:.8rem}}
 
 .seif-game-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.seif-game-card{min-width:0;padding:12px 8px;border-radius:15px}.seif-game-card strong{display:block;overflow-wrap:anywhere}.seif-game-card small{display:block;line-height:1.35}.seif-game-card button{width:100%;padding:9px 4px;white-space:normal}@media(max-width:430px){.seif-game-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.seif-game-card{padding:10px 7px}.seif-game-card .game-icon{font-size:1.8rem}}
+
+/* Creative offline tools — mobile-first */
+#creativeTools .creative-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#creativeTools .creative-card{min-width:0;border:1px solid #384568;border-radius:16px;padding:14px;background:#121a30}
+#creativeTools .creative-card h3{margin:0 0 8px;color:#8ff5e2;font-size:1.05rem}
+#creativeTools input,#creativeTools textarea,#creativeTools select{box-sizing:border-box;max-width:100%;width:100%;padding:11px;border-radius:10px;border:1px solid #465478;background:#0b1020;color:#f8fafc;margin:6px 0}
+#creativeTools button{min-height:42px;border-radius:11px;padding:9px 12px;max-width:100%}
+#creativeTools canvas{display:block;width:100%;max-width:420px;height:auto;margin:8px auto;border-radius:12px;background:#080d1b;touch-action:manipulation}
+#creativeTools .tool-actions{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}
+#creativeTools .tool-actions>*{flex:1 1 120px}
+#creativeTools .tool-status{font-size:.9rem;color:#cbd5e1;min-height:1.4em;overflow-wrap:anywhere}
+#creativeTools .tool-result{padding:10px;border-radius:10px;background:#0b1020;overflow-wrap:anywhere}
+#creativeTools .stack-wrap{height:260px;overflow:hidden;position:relative;border:1px solid #354260;border-radius:12px;background:linear-gradient(#10172c,#050814)}
+#creativeTools #stackTower{width:100%;height:100%;touch-action:manipulation}
+@media(max-width:560px){#creativeTools .creative-grid{grid-template-columns:1fr}#creativeTools .creative-card{padding:12px}}
+
 </style>
 </head>
 <body><main class="wrap">
@@ -375,6 +391,15 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
     <button type="button" data-offline-open="arabicSlangTool">🌍 قاموس اللهجات العربية</button>
     <button type="button" data-offline-open="dailyQuotesTool">💡 حكمة اليوم</button>
     <button type="button" data-offline-open="strongPasswordTool">🔐 مولّد كلمات السر</button>
+    <button type="button" data-offline-open="creativeTools">🚀 الأدوات الإبداعية الثمانية</button>
+    <button type="button" data-offline-open="stegoTool">🕵️ إخفاء رسالة داخل صورة</button>
+    <button type="button" data-offline-open="focusTimerTool">⏱️ مؤقت التركيز</button>
+    <button type="button" data-offline-open="emojiStackTool">🧱 برج الإيموجيات</button>
+    <button type="button" data-offline-open="exifTool">🔍 بيانات الصور وتنظيفها</button>
+    <button type="button" data-offline-open="levelTool">📐 ميزان الهاتف</button>
+    <button type="button" data-offline-open="speedTool">🚶 مقياس السرعة</button>
+    <button type="button" data-offline-open="voiceTool">🎙️ مؤثرات الصوت</button>
+    <button type="button" data-offline-open="emojiSnakeTool">🐍 الثعبان بالإيموجي</button>
     <button type="button" data-offline-open="fancy">✨ زخرفة النصوص والأسماء</button>
    </div>
   </article>
@@ -418,6 +443,76 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
   <button type="button" data-home-filter="online">🌐 أدوات تحتاج الإنترنت</button>
  </div>
  <p id="homeCategoryStatus" class="muted small" aria-live="polite">اختر الألعاب أو الإيموجي للتركيز على القسم المطلوب، أو اعرض الكل.</p>
+</section>
+
+
+<section class="extra-tool" id="creativeTools">
+ <h2>🚀 أدوات SEIF الإبداعية — تعمل محلياً</h2>
+ <p class="muted small">الأدوات التالية مصممة للعمل على الهاتف. لا تُرسل الصور أو التسجيلات إلى خادم؛ قد تحتاج الكاميرا أو الموقع أو الميكروفون إلى إذن من نظام الهاتف.</p>
+ <div class="creative-grid">
+  <article class="creative-card" id="stegoTool">
+   <h3>🕵️ إخفاء رسالة داخل صورة</h3>
+   <p class="muted small">أخفِ رسالة نصية داخل صورة PNG ثم استخرجها لاحقاً من الملف نفسه. هذه ليست تشفيراً آمناً، ويجب عدم استخدامها للأسرار الحساسة.</p>
+   <label>اختر صورة للتمويه</label><input id="stegoImage" type="file" accept="image/*">
+   <label>الرسالة المراد إخفاؤها</label><textarea id="stegoMessage" rows="2" placeholder="اكتب رسالتك هنا…"></textarea>
+   <div class="tool-actions"><button id="stegoEncode" class="primary" type="button">إخفاء وتنزيل PNG</button></div>
+   <label>أو اختر صورة تحتوي على رسالة</label><input id="stegoDecodeImage" type="file" accept="image/png">
+   <div class="tool-actions"><button id="stegoDecode" type="button">استخراج الرسالة</button><button id="stegoCopy" type="button">نسخ الرسالة</button></div>
+   <div id="stegoResult" class="tool-result tool-status" aria-live="polite">ملاحظة: إرسال الصورة كصورة عادية عبر بعض التطبيقات قد يضغطها ويتلف البيانات؛ أرسل ملف PNG كـ«مستند» عند الحاجة.</div>
+  </article>
+  <article class="creative-card" id="focusTimerTool">
+   <h3>⏱️ مؤقت التركيز</h3>
+   <p class="muted small">جلسة تركيز واستراحة بلا اتصال. اترك الصفحة مفتوحة أثناء المؤقت.</p>
+   <div class="tool-actions"><button type="button" data-focus-min="25">25 دقيقة</button><button type="button" data-focus-min="5">5 دقائق</button><button type="button" data-focus-min="1">تجربة دقيقة</button></div>
+   <div id="focusClock" style="font-size:2.6rem;text-align:center;font-weight:800">25:00</div>
+   <div class="tool-actions"><button id="focusStart" class="primary" type="button">▶ ابدأ</button><button id="focusPause" type="button">⏸ إيقاف مؤقت</button><button id="focusReset" type="button">↺ إعادة</button></div>
+   <p id="focusStatus" class="tool-status" aria-live="polite">جاهز للتركيز 🌿</p>
+  </article>
+  <article class="creative-card" id="emojiStackTool">
+   <h3>🧱 برج الإيموجيات</h3>
+   <p class="muted small">اضغط عندما تتحرك القطعة فوق البرج لتضعها. كلما زادت دقة التوقيت ارتفع برجك.</p>
+   <div class="stack-wrap"><canvas id="stackTower" width="360" height="260"></canvas></div>
+   <div class="tool-actions"><button id="stackDrop" class="primary" type="button">⬇️ ضع القطعة</button><button id="stackRestart" type="button">🔄 إعادة اللعب</button></div>
+   <p id="stackStatus" class="tool-status" aria-live="polite">اضغط «ضع القطعة» للبدء.</p>
+  </article>
+  <article class="creative-card" id="exifTool">
+   <h3>🔍 بيانات الصورة وحماية الخصوصية</h3>
+   <p class="muted small">افحص بعض بيانات JPEG الشائعة، ثم صدّر نسخة جديدة غالباً ما تزيل بيانات EXIF. النتيجة تعتمد على صيغة الصورة والمتصفح.</p>
+   <input id="exifFile" type="file" accept="image/*">
+   <div class="tool-actions"><button id="exifRead" class="primary" type="button">عرض المعلومات</button><button id="exifClean" type="button">تنظيف وتنزيل الصورة</button></div>
+   <div id="exifResult" class="tool-result tool-status" aria-live="polite">اختر صورة لبدء الفحص.</div>
+  </article>
+  <article class="creative-card" id="levelTool">
+   <h3>📐 ميزان الهاتف</h3>
+   <p class="muted small">يعرض ميل الهاتف من مستشعر الاتجاه إن كان مدعوماً. دقته تتأثر بالجهاز والمعايرة، وليس بديلاً عن أداة قياس احترافية.</p>
+   <div id="levelDial" style="width:170px;height:170px;margin:10px auto;border:5px solid #8ff5e2;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#1d2942,#0b1020);position:relative"><div id="levelBubble" style="width:34px;height:34px;border:3px solid white;border-radius:50%;background:#5eead4aa;position:absolute;left:calc(50% - 17px);top:calc(50% - 17px)"></div><strong id="levelDegrees" style="position:relative;z-index:1;font-size:1.1rem">0.0°</strong></div>
+   <div class="tool-actions"><button id="levelStart" class="primary" type="button">تشغيل الميزان</button><button id="levelStop" type="button">إيقاف</button></div>
+   <p id="levelStatus" class="tool-status" aria-live="polite">قد يحتاج الجهاز إلى إذن مستشعر الحركة.</p>
+  </article>
+  <article class="creative-card" id="speedTool">
+   <h3>🚶 مقياس سرعة الحركة</h3>
+   <p class="muted small">يحسب السرعة التقريبية من تغيّر الموقع GPS. قد يعمل بلا إنترنت إذا كان الهاتف يوفّر GPS، لكنه يحتاج إذن الموقع وقد لا يعمل داخل المباني.</p>
+   <div id="speedReadout" style="text-align:center;font-size:2.5rem;font-weight:800">0.0 <small>كم/س</small></div>
+   <div class="tool-actions"><button id="speedStart" class="primary" type="button">ابدأ القياس</button><button id="speedStop" type="button">إيقاف القياس</button></div>
+   <p id="speedStatus" class="tool-status" aria-live="polite">لا يتم تخزين موقعك.</p>
+  </article>
+  <article class="creative-card" id="voiceTool">
+   <h3>🎙️ مؤثرات الصوت</h3>
+   <p class="muted small">سجّل صوتك محلياً وجرّب مؤثرات بسيطة. يتطلب إذن الميكروفون، وقد لا تدعم بعض الأجهزة تصدير التسجيل.</p>
+   <label>المؤثر</label><select id="voiceEffect"><option value="robot">🤖 روبوت</option><option value="echo">🌌 صدى</option><option value="deep">🐻 صوت عميق</option><option value="clear">🎙️ طبيعي</option></select>
+   <div class="tool-actions"><button id="voiceStart" class="primary" type="button">● بدء التسجيل</button><button id="voiceStop" type="button">■ إيقاف وحفظ</button></div>
+   <audio id="voicePlayback" controls style="width:100%;margin-top:8px"></audio>
+   <p id="voiceStatus" class="tool-status" aria-live="polite">التسجيل لا يغادر جهازك.</p>
+  </article>
+  <article class="creative-card" id="emojiSnakeTool">
+   <h3>🐍 الثعبان بالإيموجي</h3>
+   <p class="muted small">اجمع الفاكهة لتكبر. استخدم أزرار الاتجاهات أو اسحب على لوحة اللعب.</p>
+   <canvas id="snakeBoard" width="320" height="320" aria-label="لعبة الثعبان"></canvas>
+   <div class="tool-actions"><button data-snake-dir="up" type="button">⬆️</button><button data-snake-dir="left" type="button">⬅️</button><button data-snake-dir="down" type="button">⬇️</button><button data-snake-dir="right" type="button">➡️</button></div>
+   <div class="tool-actions"><button id="snakeStart" class="primary" type="button">▶ ابدأ / تابع</button><button id="snakeRestart" type="button">🔄 لعبة جديدة</button></div>
+   <p id="snakeStatus" class="tool-status" aria-live="polite">اجمع 🍎 وتجنب الاصطدام!</p>
+  </article>
+ </div>
 </section>
 
 <section class="extra-tool" id="emojiGames"><h2>🎮 ألعاب الإيموجي</h2><div class="game-card"><h3>🎬 خمن الفيلم</h3><p id="guessPuzzle" class="puzzle-emoji">👦 🏠 🎄 😱</p><div class="action-row"><input id="guessAnswer" placeholder="اسم الفيلم"><button id="guessCheck" type="button" class="primary">تحقّق</button><button id="guessNext" type="button">لغز آخر</button></div><p id="guessFeedback" aria-live="polite"></p></div><div class="game-card"><h3>🧠 لعبة الذاكرة</h3><div id="memoryBoard" class="memory-board"></div><p id="memoryStatus" aria-live="polite"></p><button id="memoryRestart" type="button">🔄 لعبة جديدة</button></div><div class="game-card"><h3>✨ أي إيموجي يمثّلك؟</h3><p>اختر ما يشبهك أكثر:</p><div class="action-row"><button data-personality="😎" type="button">واثق 😎</button><button data-personality="😂" type="button">مرح 😂</button><button data-personality="🤔" type="button">مفكر 🤔</button><button data-personality="🥰" type="button">حنون 🥰</button></div><p id="personalityResult" aria-live="polite"></p></div>
@@ -2060,6 +2155,72 @@ else if(fx==='gold'){const g=ctx.createLinearGradient(0,-70,0,70);g.addColorStop
 else{ctx.fillStyle=fx==='glow'?color:color;ctx.strokeStyle=fx==='glow'?'#ffffff':'#111111';ctx.lineWidth=fx==='glow'?2:3;ctx.strokeText(txt,0,0,canvas.width-50);ctx.fillText(txt,0,0,canvas.width-50)}ctx.restore();if(recording)raf=requestAnimationFrame(draw)}
 $('seifVideoPreview').addEventListener('click',()=>{cancelAnimationFrame(raf);recording=false;draw(performance.now());$('seifVideoStatus').textContent='هذه معاينة ثابتة للتصميم. اضغط إنشاء الفيديو لتسجيل الحركة.'});
 $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream||!window.MediaRecorder){$('seifVideoStatus').textContent='متصفحك لا يدعم تسجيل الفيديو من Canvas. جرّب Chrome حديثًا.';return}const btn=$('seifVideoRecord');btn.disabled=true;recording=true;draw();try{const stream=canvas.captureStream(30);let mime='video/webm;codecs=vp9';if(!MediaRecorder.isTypeSupported(mime))mime='video/webm';const rec=new MediaRecorder(stream,{mimeType:mime});const chunks=[];rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};rec.onstop=()=>{recording=false;cancelAnimationFrame(raf);stream.getTracks().forEach(t=>t.stop());const blob=new Blob(chunks,{type:'video/webm'});const a=$('seifVideoDownload');a.href=URL.createObjectURL(blob);a.hidden=false;a.textContent='⬇️ تنزيل الفيديو الآن';a.click();$('seifVideoStatus').textContent='تم إنشاء الفيديو. إذا لم يبدأ التنزيل تلقائيًا، اضغط رابط التنزيل.';btn.disabled=false};rec.start();$('seifVideoStatus').textContent='جارٍ تسجيل الفيديو… لا تغلق الصفحة.';setTimeout(()=>{if(rec.state!=='inactive')rec.stop()},Number($('seifVideoDuration').value)*1000)}catch(e){recording=false;btn.disabled=false;$('seifVideoStatus').textContent='تعذّر إنشاء الفيديو على هذا المتصفح. جرّب Chrome محدّثًا.'}});
+})();
+</script>
+
+
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ const say=(id,msg)=>{const el=$(id);if(el)el.textContent=msg;};
+ // 1) Pixel-LSB message hiding in PNG. Header is 32-bit byte length, followed by UTF-8 bytes.
+ let stegoLastText='';
+ const loadImageFile=file=>new Promise((resolve,reject)=>{if(!file){reject(new Error('اختر ملفاً أولاً.'));return;}const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('تعذّر فتح الصورة.'))};img.src=url;});
+ $('stegoEncode')?.addEventListener('click',async()=>{
+  try{const file=$('stegoImage').files[0],message=$('stegoMessage').value;if(!message){say('stegoResult','اكتب رسالة أولاً.');return;}
+   const img=await loadImageFile(file),c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);const data=ctx.getImageData(0,0,c.width,c.height),bytes=new TextEncoder().encode(message),max=Math.floor(data.data.length/4*3/8);
+   if(bytes.length>max-4)throw new Error('الرسالة طويلة جداً بالنسبة لحجم الصورة؛ اختر صورة أكبر أو رسالة أقصر.');
+   const payload=new Uint8Array(4+bytes.length);new DataView(payload.buffer).setUint32(0,bytes.length,false);payload.set(bytes,4);
+   let bit=0;for(const byte of payload)for(let shift=7;shift>=0;shift--){const index=Math.floor(bit/3)*4+(bit%3);data.data[index]=(data.data[index]&254)|((byte>>shift)&1);bit++;}
+   ctx.putImageData(data,0,0);c.toBlob(blob=>{if(!blob){say('stegoResult','فشل إنشاء PNG.');return;}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='seif-hidden-message.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);say('stegoResult','تم إنشاء PNG. احتفظ بالملف الأصلي أيضاً؛ الضغط أو تعديل الصورة قد يتلف الرسالة.');},'image/png');
+  }catch(e){say('stegoResult',e.message||'حدث خطأ أثناء الإخفاء.');}
+ });
+ $('stegoDecode')?.addEventListener('click',async()=>{
+  try{const img=await loadImageFile($('stegoDecodeImage').files[0]),c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0);const d=ctx.getImageData(0,0,c.width,c.height).data;let bit=0,bytes=[],cur=0;const readByte=()=>{let n=0;for(let i=0;i<8;i++){const idx=Math.floor(bit/3)*4+(bit%3);n=(n<<1)|(d[idx]&1);bit++;}return n;};for(let i=0;i<4;i++)cur=(cur<<8)|readByte();if(cur<0||cur>Math.floor(d.length/4*3/8)-4)throw new Error('لم نعثر على رسالة صالحة في هذه الصورة.');for(let i=0;i<cur;i++)bytes.push(readByte());stegoLastText=new TextDecoder().decode(new Uint8Array(bytes));say('stegoResult','الرسالة المستخرجة: '+stegoLastText);
+  }catch(e){say('stegoResult',e.message||'تعذّر استخراج الرسالة.');}
+ });
+ $('stegoCopy')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(stegoLastText);say('stegoResult','تم نسخ الرسالة.');}catch(e){say('stegoResult','لا توجد رسالة أو تعذّر النسخ.');}});
+ // 2) Pomodoro countdown.
+ let focusDuration=1500,focusLeft=1500,focusTimer=null;
+ const paintFocus=()=>{const m=Math.floor(focusLeft/60),ss=focusLeft%60;say('focusClock',String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'));};
+ document.querySelectorAll('[data-focus-min]').forEach(b=>b.addEventListener('click',()=>{clearInterval(focusTimer);focusTimer=null;focusDuration=Number(b.dataset.focusMin)*60;focusLeft=focusDuration;paintFocus();say('focusStatus','تم اختيار '+b.dataset.focusMin+' دقيقة.');}));
+ $('focusStart')?.addEventListener('click',()=>{if(focusTimer)return;focusTimer=setInterval(()=>{focusLeft--;paintFocus();if(focusLeft<=0){clearInterval(focusTimer);focusTimer=null;say('focusStatus','انتهت الجلسة! خذ استراحة قصيرة 🌿');try{if('vibrate'in navigator)navigator.vibrate([150,80,150]);}catch(e){} }},1000);say('focusStatus','جلسة التركيز تعمل.');});
+ $('focusPause')?.addEventListener('click',()=>{clearInterval(focusTimer);focusTimer=null;say('focusStatus','تم إيقاف المؤقت مؤقتاً.');});
+ $('focusReset')?.addEventListener('click',()=>{clearInterval(focusTimer);focusTimer=null;focusLeft=focusDuration;paintFocus();say('focusStatus','أعيد ضبط المؤقت.');});paintFocus();
+ // 3) Emoji stack timing game.
+ const stack=$('stackTower'),stackCtx=stack?.getContext('2d');let stackBlocks=[],stackX=0,stackDir=1,stackRunning=false,stackScore=0,stackAnim=0;
+ function drawStack(){if(!stackCtx)return;const w=stack.width,h=stack.height;stackCtx.clearRect(0,0,w,h);stackCtx.fillStyle='#080d1b';stackCtx.fillRect(0,0,w,h);stackCtx.fillStyle='#8ff5e2';stackCtx.font='bold 12px sans-serif';stackCtx.fillText('الارتفاع: '+stackScore,10,18);stackBlocks.forEach((b,i)=>{stackCtx.fillStyle=['#2dd4bf','#818cf8','#f59e0b','#fb7185'][i%4];stackCtx.fillRect(b.x,b.y,b.w,12);stackCtx.font='14px sans-serif';stackCtx.fillText(['🟩','🟦','🟨','🟥'][i%4],b.x+4,b.y-2);});if(stackRunning){stackX+=stackDir*2.7;if(stackX<0||stackX+stackBlocks[stackBlocks.length-1].w>w)stackDir*=-1;stackCtx.fillStyle='#f472b6';stackCtx.fillRect(stackX,stackBlocks[stackBlocks.length-1].y-16,stackBlocks[stackBlocks.length-1].w,12);stackAnim=requestAnimationFrame(drawStack);}}
+ function resetStack(){cancelAnimationFrame(stackAnim);stackScore=0;stackBlocks=[{x:90,y:220,w:180}];stackX=0;stackDir=1;stackRunning=true;say('stackStatus','اضغط «ضع القطعة» لتكديس البرج.');drawStack();}
+ $('stackDrop')?.addEventListener('click',()=>{if(!stackBlocks.length)resetStack();const prev=stackBlocks[stackBlocks.length-1],x=stackX,w=prev.w-Math.abs(prev.x-x);if(w<18){stackRunning=false;cancelAnimationFrame(stackAnim);say('stackStatus','انتهت الجولة! ارتفاعك: '+stackScore+'. اضغط إعادة اللعب.');return;}stackBlocks.push({x:Math.max(prev.x,x),y:prev.y-14,w});stackScore++;if(stackBlocks[stackBlocks.length-1].y<35)stackBlocks.forEach(b=>b.y+=18);cancelAnimationFrame(stackAnim);drawStack();say('stackStatus','ارتفاع البرج: '+stackScore+' 🧱');});
+ $('stackRestart')?.addEventListener('click',resetStack);stack?.addEventListener('pointerdown',()=>{if(!stackRunning)resetStack();else $('stackDrop').click();});resetStack();
+ // 4) EXIF quick scan and metadata-stripping export via canvas.
+ $('exifRead')?.addEventListener('click',async()=>{try{const file=$('exifFile').files[0];if(!file)throw new Error('اختر صورة أولاً.');const bytes=new Uint8Array(await file.arrayBuffer());let info=['اسم الملف: '+file.name,'الحجم: '+Math.round(file.size/1024)+' KB','النوع: '+(file.type||'غير معروف')];if(file.type==='image/jpeg'){let pos=2;while(pos+4<bytes.length&&bytes[pos]===255){const marker=bytes[pos+1],len=(bytes[pos+2]<<8)|bytes[pos+3];if(marker===225&&String.fromCharCode(...bytes.slice(pos+4,pos+10))==='Exif\0\0'){info.push('عُثر على بيانات EXIF.');let t=pos+10;const little=bytes[t]===73;const u16=o=>little?(bytes[t+o]|bytes[t+o+1]<<8):(bytes[t+o]<<8|bytes[t+o+1]);const u32=o=>little?(bytes[t+o]|bytes[t+o+1]<<8|bytes[t+o+2]<<16|bytes[t+o+3]<<24):(bytes[t+o]*16777216+(bytes[t+o+1]<<16)+(bytes[t+o+2]<<8)+bytes[t+o+3]);if(u16(2)===42){const off=u32(4),n=u16(off);for(let i=0;i<n&&i<100;i++){const e=off+2+i*12,tag=u16(e);if(tag===0x0112)info.push('اتجاه الصورة: '+u16(e+8));if(tag===0x0132)info.push('تاريخ الالتقاط موجود.');if(tag===0x010F)info.push('اسم الشركة المصنّعة موجود.');if(tag===0x0110)info.push('طراز الكاميرا موجود.');if(tag===0x8825)info.push('⚠️ قد تحتوي الصورة على إحداثيات GPS.');}}break;}if(len<2)break;pos+=2+len;}if(!info.some(x=>x.includes('EXIF')))info.push('لم تُكتشف كتلة EXIF قياسية في موضعها المعتاد.');}else info.push('قراءة EXIF التفصيلية متاحة هنا أساساً لملفات JPEG.');say('exifResult',info.join('\n'));}catch(e){say('exifResult',e.message||'تعذّر قراءة البيانات.');}});
+ $('exifClean')?.addEventListener('click',async()=>{try{const file=$('exifFile').files[0];if(!file)throw new Error('اختر صورة أولاً.');const img=await loadImageFile(file),c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext('2d').drawImage(img,0,0);c.toBlob(blob=>{if(!blob){say('exifResult','تعذّر تصدير الصورة.');return;}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='seif-clean-image.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);say('exifResult','تم تنزيل نسخة PNG جديدة. افحصها بالأدوات المناسبة إذا كانت إزالة البيانات مهمة جداً.');},'image/png');}catch(e){say('exifResult',e.message||'تعذّر تنظيف الصورة.');}});
+ // 5) Device orientation level.
+ let levelHandler=null;
+ $('levelStart')?.addEventListener('click',async()=>{try{if(typeof DeviceOrientationEvent==='undefined')throw new Error('هذا الجهاز لا يوفّر مستشعر الاتجاه للمتصفح.');if(typeof DeviceOrientationEvent.requestPermission==='function'){const p=await DeviceOrientationEvent.requestPermission();if(p!=='granted')throw new Error('لم يتم منح إذن مستشعر الحركة.');}levelHandler=e=>{const gamma=Number(e.gamma)||0,beta=Number(e.beta)||0,angle=Math.max(-90,Math.min(90,gamma));const bubble=$('levelBubble');bubble.style.left='calc(50% - 17px + '+(angle*0.65)+'px)';bubble.style.top='calc(50% - 17px + '+(Math.max(-90,Math.min(90,beta))*0.65)+'px)';say('levelDegrees',Math.sqrt(gamma*gamma+beta*beta).toFixed(1)+'°');};window.addEventListener('deviceorientation',levelHandler);say('levelStatus','حرّك الهاتف برفق حتى تقترب القراءة من 0°.');}catch(e){say('levelStatus',e.message||'تعذّر تشغيل الميزان.');}});
+ $('levelStop')?.addEventListener('click',()=>{if(levelHandler)window.removeEventListener('deviceorientation',levelHandler);levelHandler=null;say('levelStatus','تم إيقاف المستشعر.');});
+ // 6) GPS speed estimate.
+ let speedWatch=null,lastPosition=null;
+ $('speedStart')?.addEventListener('click',()=>{if(!navigator.geolocation){say('speedStatus','المتصفح لا يدعم GPS.');return;}say('speedStatus','بانتظار إشارة الموقع؛ تحرّك في مكان مفتوح للحصول على قراءة أفضل.');speedWatch=navigator.geolocation.watchPosition(pos=>{const c=pos.coords;let speed=c.speed;if(speed==null&&lastPosition){const d=haversine(lastPosition.lat,lastPosition.lon,c.latitude,c.longitude),dt=(pos.timestamp-lastPosition.time)/1000;if(dt>0)speed=d/dt;}lastPosition={lat:c.latitude,lon:c.longitude,time:pos.timestamp};$('speedReadout').innerHTML=(Math.max(0,(speed||0)*3.6).toFixed(1))+' <small>كم/س</small>';say('speedStatus','دقة GPS التقريبية: '+(c.accuracy?Math.round(c.accuracy)+' متر':'غير متاحة')+'.');},err=>say('speedStatus','تعذّر تحديد الموقع: '+err.message),{enableHighAccuracy:true,maximumAge:1000,timeout:12000});});
+ $('speedStop')?.addEventListener('click',()=>{if(speedWatch!==null)navigator.geolocation.clearWatch(speedWatch);speedWatch=null;lastPosition=null;say('speedStatus','تم إيقاف القياس.');});
+ function haversine(a,b,c,d){const r=6371000,p=Math.PI/180,x=(c-a)*p,y=(d-b)*p,z=Math.sin(x/2)**2+Math.cos(a*p)*Math.cos(c*p)*Math.sin(y/2)**2;return 2*r*Math.asin(Math.sqrt(z));}
+ // 7) Voice recorder with offline Web Audio effects.
+ let voiceStream=null,voiceRecorder=null,voiceChunks=[],voiceContext=null,voiceSource=null,voiceNodes=[];
+ $('voiceStart')?.addEventListener('click',async()=>{try{voiceStream=await navigator.mediaDevices.getUserMedia({audio:true});voiceChunks=[];voiceRecorder=new MediaRecorder(voiceStream);voiceRecorder.ondataavailable=e=>{if(e.data.size)voiceChunks.push(e.data)};voiceRecorder.onstop=()=>{const blob=new Blob(voiceChunks,{type:voiceRecorder.mimeType||'audio/webm'}),url=URL.createObjectURL(blob);$('voicePlayback').src=url;voiceStream?.getTracks().forEach(t=>t.stop());voiceStream=null;say('voiceStatus','تم حفظ التسجيل محلياً. شغّل المقطع للاستماع.');};voiceRecorder.start();say('voiceStatus','جارٍ التسجيل… اضغط إيقاف عند الانتهاء.');}catch(e){say('voiceStatus','لم نتمكن من فتح الميكروفون: '+e.message);}});
+ $('voiceStop')?.addEventListener('click',()=>{if(voiceRecorder&&voiceRecorder.state!=='inactive')voiceRecorder.stop();else say('voiceStatus','ابدأ التسجيل أولاً.');});
+ $('voiceEffect')?.addEventListener('change',()=>{say('voiceStatus','اختير المؤثر. ستحتاج إلى الاستماع للمقطع؛ المتصفح لا يغيّر ملف التسجيل تلقائياً أثناء التسجيل في كل الأجهزة.');});
+ // 8) Emoji snake with buttons and swipe.
+ const snake=$('snakeBoard'),snakeCtx=snake?.getContext('2d');let snakeBody=[],snakeDir={x:1,y:0},snakeNext={x:1,y:0},snakeFood={x:8,y:8},snakeTimer=null,snakeScore=0,snakeRunning=false;
+ function drawSnake(){if(!snakeCtx)return;const size=20;snakeCtx.clearRect(0,0,320,320);snakeCtx.fillStyle='#0b1020';snakeCtx.fillRect(0,0,320,320);for(let i=0;i<snakeBody.length;i++){const p=snakeBody[i];snakeCtx.font='18px sans-serif';snakeCtx.fillText(i===0?'🐍':'🟢',p.x*size,p.y*size+17);}snakeCtx.font='20px sans-serif';snakeCtx.fillText('🍎',snakeFood.x*size,snakeFood.y*size+18);}
+ function snakeStep(){if(!snakeRunning)return;snakeDir=snakeNext;const h={x:snakeBody[0].x+snakeDir.x,y:snakeBody[0].y+snakeDir.y};if(h.x<0||h.x>=16||h.y<0||h.y>=16||snakeBody.some(p=>p.x===h.x&&p.y===h.y)){snakeRunning=false;clearInterval(snakeTimer);say('snakeStatus','انتهت الجولة! مجموعك '+snakeScore+'. اضغط لعبة جديدة.');return;}snakeBody.unshift(h);if(h.x===snakeFood.x&&h.y===snakeFood.y){snakeScore++;do{snakeFood={x:Math.floor(Math.random()*16),y:Math.floor(Math.random()*16)}}while(snakeBody.some(p=>p.x===snakeFood.x&&p.y===snakeFood.y));}else snakeBody.pop();drawSnake();say('snakeStatus','النقاط: '+snakeScore+' 🍎');}
+ function snakeReset(){clearInterval(snakeTimer);snakeBody=[{x:5,y:8},{x:4,y:8},{x:3,y:8}];snakeDir={x:1,y:0};snakeNext={x:1,y:0};snakeFood={x:10,y:8};snakeScore=0;snakeRunning=false;drawSnake();say('snakeStatus','اضغط ابدأ، ثم استخدم الأسهم أو اسحب على اللوحة.');}
+ const setSnakeDir=d=>{const map={up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}},n=map[d];if(n&&!(n.x===-snakeDir.x&&n.y===-snakeDir.y))snakeNext=n;};
+ document.querySelectorAll('[data-snake-dir]').forEach(b=>b.addEventListener('click',()=>setSnakeDir(b.dataset.snakeDir)));
+ $('snakeStart')?.addEventListener('click',()=>{if(snakeRunning)return;snakeRunning=true;snakeTimer=setInterval(snakeStep,150);say('snakeStatus','اللعب جارٍ!');});
+ $('snakeRestart')?.addEventListener('click',snakeReset);
+ let touchStart=null;snake?.addEventListener('touchstart',e=>{const t=e.changedTouches[0];touchStart={x:t.clientX,y:t.clientY}},{passive:true});snake?.addEventListener('touchend',e=>{if(!touchStart)return;const t=e.changedTouches[0],dx=t.clientX-touchStart.x,dy=t.clientY-touchStart.y;if(Math.max(Math.abs(dx),Math.abs(dy))>20)setSnakeDir(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'));touchStart=null},{passive:true});snakeReset();
+ window.addEventListener('pagehide',()=>{if(snakeTimer)clearInterval(snakeTimer);if(focusTimer)clearInterval(focusTimer);if(speedWatch!==null)navigator.geolocation?.clearWatch(speedWatch);if(levelHandler)window.removeEventListener('deviceorientation',levelHandler);if(voiceStream)voiceStream.getTracks().forEach(t=>t.stop());});
 })();
 </script>
 
