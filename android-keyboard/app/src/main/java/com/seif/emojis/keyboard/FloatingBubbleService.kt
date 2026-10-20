@@ -120,6 +120,69 @@ class FloatingBubbleService : Service() {
             setTextColor(Color.LTGRAY)
             setPadding(5, 2, 5, 6)
         })
+        val textInput = EditText(this).apply {
+            hint = "اكتب الكلمة أو الاسم هنا..."
+            textSize = 16f
+            setSingleLine(true)
+            setTextColor(Color.WHITE)
+            setHintTextColor(Color.LTGRAY)
+            setPadding(dp(10), dp(8), dp(10), dp(8))
+            setBackgroundColor(Color.rgb(35, 43, 65))
+        }
+        box.addView(textInput, LinearLayout.LayoutParams(dp(280), dp(48)).apply {
+            setMargins(0, dp(4), 0, dp(5))
+        })
+        box.addView(TextView(this).apply {
+            text = "اختر زخرفة للنص ثم انسخها والصقها في أي تطبيق"
+            textSize = 11f
+            setTextColor(Color.LTGRAY)
+            setPadding(4, 2, 4, 6)
+        })
+        val styles = listOf(
+            "꧁  النص  ꧂" to { t: String -> "꧁༺ $t ༻꧂" },
+            "『 النص 』" to { t: String -> "『 $t 』" },
+            "亗 النص 亗" to { t: String -> "亗 $t 亗" },
+            "♛ النص ♛" to { t: String -> "♛ $t ♛" },
+            "༺ النص ༻" to { t: String -> "༺ $t ༻" },
+            "×͜× النص" to { t: String -> "×͜× $t ×͜×" },
+            "★ النص ★" to { t: String -> "★彡 $t 彡★" },
+            "♕ النص ♕" to { t: String -> "♕ $t ♕" },
+            "『ツ』 النص" to { t: String -> "『ツ』$t『ツ』" },
+            "• النص •" to { t: String -> "•°¯¨ $t ¨¯°•" }
+        )
+        val styleGrid = android.widget.GridLayout(this).apply { columnCount = 2 }
+        styles.forEach { (label, transform) ->
+            styleGrid.addView(Button(this).apply {
+                text = label
+                textSize = 13f
+                isAllCaps = false
+                setTextColor(Color.WHITE)
+                setPadding(2, 3, 2, 3)
+                setOnClickListener {
+                    val raw = textInput.text?.toString().orEmpty().trim()
+                    if (raw.isEmpty()) {
+                        Toast.makeText(this@FloatingBubbleService, "اكتب النص أولاً", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val decorated = transform(raw)
+                        val cb = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        cb.setPrimaryClip(ClipData.newPlainText("SEIF EMOJIS", decorated))
+                        Toast.makeText(this@FloatingBubbleService, "تم نسخ النص المزخرف ✓ الصقه في التطبيق", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }, android.widget.GridLayout.LayoutParams().apply {
+                width = 0
+                height = WindowManager.LayoutParams.WRAP_CONTENT
+                columnSpec = android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f)
+                setMargins(2, 2, 2, 2)
+            })
+        }
+        box.addView(styleGrid)
+        box.addView(TextView(this).apply {
+            text = "وجوه وأشكال سريعة — اضغط لنسخها"
+            textSize = 11f
+            setTextColor(Color.LTGRAY)
+            setPadding(4, dp(7), 4, 3)
+        })
         val choices = listOf(
             "⊂（♡⌂♡）⊃", "⊂(◉‿◉)つ", "ლ(・ヮ・ლ)", "(っಠ‿ಠ)っ",
             "ʕっ•ᴥ•ʔっ", "(づ｡◕‿‿◕｡)づ", "(≧▽≦)", "(＾▽＾)",
@@ -137,9 +200,7 @@ class FloatingBubbleService : Service() {
                 setOnClickListener {
                     val cb = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     cb.setPrimaryClip(ClipData.newPlainText("SEIF EMOJIS", face))
-                    swordEffect()
                     Toast.makeText(this@FloatingBubbleService, "تم النسخ — الصقه في خانة الكتابة", Toast.LENGTH_SHORT).show()
-                    removeMenu()
                 }
             }, android.widget.GridLayout.LayoutParams().apply {
                 width = 0
@@ -149,10 +210,10 @@ class FloatingBubbleService : Service() {
             })
         }
         val scroll = android.widget.ScrollView(this).apply { addView(grid) }
-        box.addView(scroll, LinearLayout.LayoutParams(dp(280), dp(230)))
-        val p = newParams().apply { x = params?.x ?: 20; y = (params?.y ?: 240) + 60 }
+        box.addView(scroll, LinearLayout.LayoutParams(dp(280), dp(150)))
+        val p = newParams().apply { x = params?.x ?: 20; y = (params?.y ?: 240) + 60; flags = flags and WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE.inv() }
         menu = box
-        try { wm.addView(box, p); expanded = true } catch (_: Exception) { menu = null }
+        try { wm.addView(box, p); expanded = true; textInput.requestFocus() } catch (_: Exception) { menu = null }
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
