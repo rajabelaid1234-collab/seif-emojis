@@ -36,7 +36,7 @@ class SeifKeyboardService : InputMethodService() {
   val search=EditText(this).apply{hint="🔎 ابحث عن إيموجي أو وجه";setSingleLine(true);textSize=14f;setTextColor(Color.WHITE);setHintTextColor(Color.LTGRAY)}
   root.addView(search)
   val tabs=LinearLayout(this).apply{gravity=Gravity.CENTER}
-  listOf("✨ SEIF","٩٩ وجوه","♡ رموز").forEach{t->tabs.addView(Button(this).apply{text=t;textSize=11f;isAllCaps=false;setOnClickListener{tab=t;render()}},LinearLayout.LayoutParams(0,-2,1f))}
+  listOf("✨ SEIF","٩٩ وجوه","♡ زخارف").forEach{t->tabs.addView(Button(this).apply{text=t;textSize=11f;isAllCaps=false;setOnClickListener{tab=t;render()}},LinearLayout.LayoutParams(0,-2,1f))}
   root.addView(tabs)
   val scroll=ScrollView(this);body=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL};scroll.addView(body);root.addView(scroll,LinearLayout.LayoutParams(-1,0,1f))
   search.addTextChangedListener(object:TextWatcher{override fun beforeTextChanged(s:CharSequence?,start:Int,count:Int,after:Int){};override fun onTextChanged(s:CharSequence?,start:Int,before:Int,count:Int){query=s?.toString()?.trim()?: "";render()};override fun afterTextChanged(s:Editable?){}})
@@ -47,7 +47,7 @@ class SeifKeyboardService : InputMethodService() {
   body.removeAllViews();val q=query.lowercase()
   if(tab=="✨ SEIF"){grid(body,faces.filter{q.isEmpty()||it.contains(q)});return}
   if(tab=="٩٩ وجوه"){grid(body,faces.filter{q.isEmpty()||it.contains(q)});return}
-  if(tab=="♡ رموز"){val s="♡ ♥ ❤ ❣ ❥ ღ ❦ ❧ ✨ ⭐ 🌟 💫 🔥 ⚡ ☀ ☁ ☂ ☃ ☾ ☽ ♠ ♣ ♦ ♪ ♫ ♬ ✓ ✔ ✕ ✖ ✗ ★ ☆ ☎ ☮ ☯ ⚠ ⚜ ☑ ☐ ➜ ➤ ➵ ➸ ➺ ➻ ➼ ➔ ➡ ⇢ ⇧ ⇩ ⇦ ↔ ↕ ↗ ↘ ↙ ↖ ∞ ∴ ∵ ≈ ≠ ≤ ≥ ± × ÷ √ ∑ ∆ π Ω α β γ δ λ ∫ ∩ ∪ ⊂ ⊃ ⊆ ⊇ ∈ ∉ ∧ ∨ ¬ ∀ ∃ ∅ ∇ ∂ ∝ ∠ ⊥".split(" ");grid(body,s.filter{q.isEmpty()||it.contains(q)});return}
+  if(tab=="♡ زخارف"){val s="꧁ ༺ ༻ ꧂ 『 』 【 】 〘 〙 乂 ツ 么 彡 亗 々 メ ★ ☆ ✦ ✧ ♡ ♥ ღ ❥ ❀ ✿ ⚡ ☯ ♛ ♚ ♜ ♞ ♟ ✓ ✔ ➤ ➳ ➵ ➺ ➻ ∞ ×͜× ঔৣ ࿐ シ ヅ 〆 ◥ ◤ ༒ ⫷ ⫸ ⟦ ⟧ 𓆩 𓆪 ⌁ 〄 〆 〤 〶 〷".split(" ");grid(body,s.filter{q.isEmpty()||it.contains(q)});return}
   groups.forEach{(name,raw)->val all=raw.split(Regex("\\s+")).filter{it.isNotBlank()};val list=all.filter{q.isEmpty()||it.contains(q)||name.lowercase().contains(q)};if(list.isNotEmpty()){body.addView(TextView(this).apply{text=name;textSize=13f;typeface=Typeface.DEFAULT_BOLD;setTextColor(Color.rgb(72,226,194));setPadding(6,8,6,3)});grid(body,list)}}
  }
  private fun grid(parent:LinearLayout,items:List<String>){
