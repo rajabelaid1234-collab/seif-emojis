@@ -1941,10 +1941,10 @@ render();
  if(type==='look'){document.getElementById('emojiLookalikeTool')?.scrollIntoView({behavior:'smooth',block:'start'});return;}
  if(type==='snake'){
   open(type,'🐍 الثعبان بالإيموجي');
-  const freshSnake=()=>({snake:[26,25,24],food:50,dir:1,over:false,points:0});
+  const freshSnake=()=>({snake:[26,25,24],food:50,dir:1,over:false,points:0,best:Number(localStorage.getItem('seif-snake-best')||0)});
   snakeState=freshSnake();
   const board=document.createElement('div');board.id='snakeBoard';board.setAttribute('aria-label','لوحة لعبة الثعبان');body.appendChild(board);
-  const status=note('النقاط: 0 — اجمع 🍎 وتجنب الجدران وجسم الثعبان.');
+  const status=note('النقاط: 0 · الرقم القياسي: '+snakeState.best+' — اجمع 🍎 وتجنب الجدران وجسم الثعبان.');
   const controls=document.createElement('div');controls.className='seif-game-controls snake-controls';
   const directionButtons=[['⬆️ أعلى',-12],['⬅️ يسار',-1],['⬇️ أسفل',12],['➡️ يمين',1]];
   const setDirection=d=>{if(!snakeState||snakeState.over)return;if((d===1&&snakeState.dir!==-1)||(d===-1&&snakeState.dir!==1)||(d===12&&snakeState.dir!==-12)||(d===-12&&snakeState.dir!==12))snakeState.dir=d;};
@@ -1962,7 +1962,7 @@ render();
     else if(i===snakeState.food){c.classList.add('food');c.textContent='🍎';}
     board.appendChild(c);
    }
-   status.textContent=snakeState.over?'انتهت الجولة! نقاطك: '+snakeState.points+' — اضغط إعادة اللعبة.':'⭐ النقاط: '+snakeState.points+' · 🍎 اجمع الفاكهة باستخدام الأسهم.';
+   status.textContent=snakeState.over?'انتهت الجولة! نقاطك: '+snakeState.points+' · الرقم القياسي: '+snakeState.best+' — اضغط إعادة اللعبة.':'⭐ النقاط: '+snakeState.points+' · 🥇 الرقم القياسي: '+snakeState.best+' · 🍎 اجمع الفاكهة باستخدام الأسهم.';
   };
   const step=()=>{
    if(!snakeState||snakeState.over)return;
@@ -1974,6 +1974,8 @@ render();
    snakeState.snake.unshift(head);
    if(eating){
     snakeState.points++;
+    if(snakeState.points>snakeState.best){snakeState.best=snakeState.points;try{localStorage.setItem('seif-snake-best',String(snakeState.best));}catch(_){}}
+    try{if(navigator.vibrate)navigator.vibrate(18);}catch(_){}
     if(snakeState.snake.length>=144){snakeState.over=true;status.textContent='فزت! ملأت اللوحة كلها 🏆';drawSnake();return;}
     let next;do{next=Math.floor(Math.random()*144);}while(snakeState.snake.includes(next));snakeState.food=next;
    }else snakeState.snake.pop();
