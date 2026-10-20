@@ -1996,16 +1996,20 @@ render();
    const dialectNames={tn:'تونس',dz:'الجزائر',ma:'المغرب',ly:'ليبيا',mr:'موريتانيا',eg:'مصر',sd:'السودان',levant:'الشام',sy:'سوريا',lb:'لبنان',jo:'الأردن',ps:'فلسطين',gulf:'الخليج',sa:'السعودية',kw:'الكويت',bh:'البحرين',qa:'قطر',ae:'الإمارات',om:'عُمان',ye:'اليمن',iraq:'العراق',msa:'الفصحى'};
    const customKey='seifDialectCustomV1';
    function allRows(){let extra=[];try{extra=JSON.parse(localStorage.getItem(customKey)||'[]')}catch(e){}return slangRows.concat(extra);}
-   function renderSlang(){
+   let slangShowAll=false;
+   function renderSlang(showAll=false){
+    if(showAll)slangShowAll=true;
     const dialect=$('slangDialect')?.value||'tn',q=($('slangSearch')?.value||'').trim().toLocaleLowerCase('ar');
     let rows=allRows().filter(x=>x[2]===dialect||dialect==='msa').filter(x=>!q||x[0].toLocaleLowerCase('ar').includes(q)||x[1].toLocaleLowerCase('ar').includes(q)||(x[3]||'').toLocaleLowerCase('ar').includes(q));
     const target=$('slangResults');if(!target)return;
     if(!rows.length){target.innerHTML='<p class="muted">لا توجد نتيجة في الكلمات المحفوظة. جرّب كلمة أخرى أو أضف ترجمتك المحلية.</p>';return;}
-    target.innerHTML=rows.slice(0,60).map(x=>'<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;margin:7px 0;border:1px solid #414b70;border-radius:12px"><div><strong>'+escapeHtml(x[0])+'</strong><div class="muted small">'+escapeHtml(x[3]||('لهجة '+dialectNames[x[2]]))+'</div></div><strong style="font-size:1.1rem">'+escapeHtml(dialect==='msa'?x[0]:x[1])+'</strong><button type="button" data-slang-copy="'+escapeHtml(dialect==='msa'?x[0]:x[1])+'" aria-label="نسخ الكلمة">📋</button></div>').join('');
+    const visible=rows.slice(0,slangShowAll?60:8);
+    target.innerHTML=visible.map(x=>'<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;margin:7px 0;border:1px solid #414b70;border-radius:12px"><div><strong>'+escapeHtml(x[0])+'</strong><div class="muted small">'+escapeHtml(x[3]||('لهجة '+dialectNames[x[2]]))+'</div></div><strong style="font-size:1.1rem">'+escapeHtml(dialect==='msa'?x[0]:x[1])+'</strong><button type="button" data-slang-copy="'+escapeHtml(dialect==='msa'?x[0]:x[1])+'" aria-label="نسخ الكلمة">📋</button></div>').join('')+
+      (rows.length>8&&!slangShowAll?'<div style="text-align:center;margin:12px 0"><button type="button" data-slang-more style="padding:10px 24px;border-radius:12px;cursor:pointer">عرض المزيد</button></div>':'');
    }
    function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-   $('slangDialect')?.addEventListener('change',renderSlang);$('slangSearch')?.addEventListener('input',renderSlang);
-   $('slangResults')?.addEventListener('click',async e=>{const b=e.target.closest('[data-slang-copy]');if(!b)return;try{await navigator.clipboard.writeText(b.dataset.slangCopy);b.textContent='✅';}catch(err){$('slangSearch').value=b.dataset.slangCopy; $('slangSearch').focus();}});
+   $('slangDialect')?.addEventListener('change',()=>{slangShowAll=false;renderSlang();});$('slangSearch')?.addEventListener('input',()=>{slangShowAll=false;renderSlang();});
+   $('slangResults')?.addEventListener('click',async e=>{const more=e.target.closest('[data-slang-more]');if(more){renderSlang(true);return;}const b=e.target.closest('[data-slang-copy]');if(!b)return;try{await navigator.clipboard.writeText(b.dataset.slangCopy);b.textContent='✅';}catch(err){$('slangSearch').value=b.dataset.slangCopy; $('slangSearch').focus();}});
    $('slangAddToggle')?.addEventListener('click',()=>{$('slangAddForm').hidden=!$('slangAddForm').hidden;});
    $('slangSave')?.addEventListener('click',()=>{const f=$('slangNewFusha').value.trim(),l=$('slangNewLocal').value.trim(),n=$('slangNewNote').value.trim();if(!f||!l){$('slangSaveStatus').textContent='اكتب المعنى بالفصحى والكلمة باللهجة أولًا.';return;}const arr=(()=>{try{return JSON.parse(localStorage.getItem(customKey)||'[]')}catch(e){return []}})();arr.push([f,l,$('slangDialect').value,n]);try{localStorage.setItem(customKey,JSON.stringify(arr));$('slangSaveStatus').textContent='حُفظت الكلمة على هذا الجهاز فقط ✅';$('slangNewFusha').value='';$('slangNewLocal').value='';$('slangNewNote').value='';renderSlang();}catch(e){$('slangSaveStatus').textContent='مساحة الحفظ غير متاحة في هذا المتصفح.';}});
    renderSlang();
