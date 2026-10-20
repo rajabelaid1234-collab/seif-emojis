@@ -384,7 +384,12 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 <section id="homeCategories" class="panel home-categories" aria-label="الأقسام الرئيسية">
  <h2>أهلاً بك في SEIF EMOJIS ✨</h2>
  <p class="muted small">اختر القسم الذي تريد استخدامه. جعلنا الواجهة أبسط للهاتف، والأدوات مرتبة حسب نوعها.</p>
- <div class="home-category-grid">
+ <div class="home-search" style="margin:12px 0 16px">
+ <label for="seifQuickSearch"><strong>🔎 ابحث في الموقع والألعاب</strong></label>
+ <input id="seifQuickSearch" type="search" placeholder="مثال: نرد، ثعبان، اسم مخفي، زخرفة..." autocomplete="off" style="width:100%;margin-top:8px">
+ <div id="seifQuickSearchResults" class="home-category-subnav" aria-live="polite"></div>
+</div>
+<div class="home-category-grid">
   <button type="button" class="home-category-card" data-home-category="games">
    <span class="home-category-icon">🎮</span><strong>الألعاب</strong><small>ألعاب الإيموجي، الألغاز، الذاكرة، السرعة والتحديات</small><span class="home-category-cta">استكشف الألعاب ←</span>
   </button>
@@ -466,6 +471,7 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
  <article class="seif-game-card"><span class="game-icon">🔦</span><strong>صيد الكنز المظلم</strong><small>ابحث عن الكأس المخفي باللمس</small><button type="button" data-game="flashlight">ابحث الآن</button></article>
  <article class="seif-game-card"><span class="game-icon">💬</span><strong>مترجم الإيموجي</strong><small>اختر معنى الرسالة قبل الوقت</small><button type="button" data-game="translator">ابدأ التخمين</button></article>
  <article class="seif-game-card"><span class="game-icon">🎯</span><strong>التصويب بالتوقيت</strong><small>أطلق الكرة عند مرور الهدف</small><button type="button" data-game="target">ابدأ التصويب</button></article>
+ <article class="seif-game-card"><span class="game-icon">🎲</span><strong>رمي النرد</strong><small>ارمِ نردًا واحدًا أو اثنين</small><button type="button" data-game="dice">ارمِ النرد</button></article>
  <article class="seif-game-card"><span class="game-icon">🎭</span><strong>أي إيموجي يشبه تعبيرك؟</strong><small>تحليل الوجه بالكاميرا</small><button type="button" data-game="look">افتح الأداة</button></article>
 </div>
 <div id="seifGamePanel" class="seif-game-panel" hidden>
@@ -1752,6 +1758,7 @@ render();
  document.getElementById('seifGameClose')?.addEventListener('click',()=>{stopTimers();panel.hidden=true;});
  document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{
  const type=b.dataset.game;
+ if(type==='dice'){open(type,'🎲 رمي النرد');const display=note('اختر عدد النرد ثم اضغط «ارمِ».');const controls=document.createElement('div');controls.className='seif-game-controls';const countLabel=document.createElement('label');countLabel.textContent='عدد النرد: ';const select=document.createElement('select');select.setAttribute('aria-label','عدد النرد');select.style.cssText='min-height:44px;padding:8px;border-radius:10px';[['1','واحد'],['2','اثنان']].forEach(([v,t])=>{const o=document.createElement('option');o.value=v;o.textContent=t;select.appendChild(o);});countLabel.appendChild(select);const roll=button('🎲 ارمِ الآن',()=>{const count=Number(select.value),values=Array.from({length:count},()=>1+Math.floor(Math.random()*6));display.textContent=values.map(v=>['⚀','⚁','⚂','⚃','⚄','⚅'][v-1]).join('  ')+'   —   '+values.join(' + ')+' = '+values.reduce((a,v)=>a+v,0);});controls.append(countLabel,roll);body.appendChild(controls);return;}
  if(type==='perfect'){open(type,'⏱️ تحدي 5 ثوانٍ بالضبط');const display=note('اضغط «ابدأ»، ثم اضغط «توقف» عندما تتوقع أن الوقت وصل إلى 5.00 ثوانٍ.');const controls=document.createElement('div');controls.className='seif-game-controls';body.appendChild(controls);let startAt=0,active=false;const startBtn=button('ابدأ ⏱️',()=>{startAt=performance.now();active=true;startBtn.disabled=true;stopBtn.disabled=false;display.textContent='انطلق! انتظر حتى 5.00 ثم اضغط توقف.';});const stopBtn=button('توقف ✋',()=>{if(!active)return;const elapsed=(performance.now()-startAt)/1000;active=false;startBtn.disabled=false;stopBtn.disabled=true;const delta=Math.abs(elapsed-5);display.textContent='وقتك: '+elapsed.toFixed(3)+' ثانية — الفرق عن 5.00: '+delta.toFixed(3)+' ثانية '+(delta<0.03?'أسطوري! 🏆':delta<0.15?'قريب جدًا! 🎯':'حاول مرة أخرى 🙂');});stopBtn.disabled=true;controls.append(startBtn,stopBtn);return;}
  if(type==='flashlight'){open(type,'🔦 مستكشف الكنز في الظلام');const arena=document.createElement('div');arena.id='flashlightArena';arena.style.cssText='position:relative;height:300px;border-radius:18px;overflow:hidden;background:#02030a;touch-action:pan-y;cursor:crosshair;margin:12px 0;background-image:radial-gradient(circle 55px at 50% 50%,#252b3c 0%,#02030a 100%)';const treasure=document.createElement('button');treasure.textContent='🏆';treasure.setAttribute('aria-label','الكنز');treasure.style.cssText='position:absolute;border:0;background:transparent;font-size:30px;left:73%;top:26%;opacity:.08;transform:translate(-50%,-50%);padding:12px';arena.appendChild(treasure);let found=false;const reveal=e=>{const r=arena.getBoundingClientRect(),x=(e.clientX-r.left),y=(e.clientY-r.top);arena.style.backgroundImage='radial-gradient(circle 68px at '+x+'px '+y+'px,#4a4b3c 0%,#11131e 50%,#02030a 100%)';const t=treasure.getBoundingClientRect();const dx=e.clientX-(t.left+t.width/2),dy=e.clientY-(t.top+t.height/2);treasure.style.opacity=Math.max(.08,1-Math.sqrt(dx*dx+dy*dy)/160).toFixed(2);if(Math.abs(dx)<45&&Math.abs(dy)<45&&!found){found=true;treasure.style.opacity='1';status.textContent='وجدت الكنز! 🏆 أحسنت في البحث!';stopTimers();}};arena.addEventListener('pointermove',reveal);arena.addEventListener('pointerdown',reveal);body.appendChild(arena);const status=note('المس الشاشة وحرّك إصبعك لتوجيه كشاف الضوء. اعثر على 🏆 خلال 10 ثوانٍ!');let remain=10;gameTimer=setInterval(()=>{remain--;if(found){stopTimers();return;}if(remain<=0){stopTimers();status.textContent='انتهى الوقت! المس «إعادة المحاولة» لتبحث من جديد.';treasure.style.opacity='1';body.appendChild(button('إعادة المحاولة 🔄',()=>{b.click();}));}else status.textContent='ابحث عن الكنز 🏆 — بقي '+remain+' ثوانٍ';},1000);return;}
  if(type==='translator'){open(type,'💬 مترجم الإيموجيات');const puzzles=[{m:'🏃‍♂️💨 ⚽ 🥅 🎉',a:'سجّل هدفًا واحتفل',o:['سجّل هدفًا واحتفل','ذهب للتسوق','نام طوال اليوم'],e:0},{m:'🌧️☕📖🛋️',a:'يوم ممطر للاسترخاء والقراءة',o:['رحلة إلى البحر','يوم ممطر للاسترخاء والقراءة','سباق سيارات'],e:1},{m:'🍕🎬👫❤️',a:'سهرة فيلم مع شخص تحبه',o:['امتحان رياضيات','سهرة فيلم مع شخص تحبه','رحلة عمل'],e:1},{m:'📱🔋🪫😱',a:'نفدت بطارية الهاتف',o:['نفدت بطارية الهاتف','وصلت هدية','بدأت المباراة'],e:0},{m:'🎂🎁🎈🥳',a:'احتفال بعيد ميلاد',o:['يوم تنظيف','احتفال بعيد ميلاد','مغادرة المنزل'],e:1}];let n=0;const q=note(''),choices=document.createElement('div');choices.className='seif-game-controls';body.appendChild(choices);const draw=()=>{const p=puzzles[n%puzzles.length];q.textContent=p.m;choices.innerHTML='';p.o.forEach((v,i)=>choices.appendChild(button(v,()=>{q.textContent=(i===p.e?'صحيح! 🎉 ':'ليس هذا المعنى 🙂 ')+p.a;choices.innerHTML='';choices.appendChild(button('الرسالة التالية ➜',()=>{n++;draw();}));})));};draw();return;}
@@ -1768,6 +1775,20 @@ render();
  if(type==='slide'){open(type,'🧩 ترتيب الإيموجيات');slideState=['🐱','🍎','🌸','🐶','🍇','⭐','🦋','💖',''];const board=document.createElement('div');board.id='slideBoard';body.appendChild(board);const status=note('رتّب الإيموجيات حسب الصفوف.');const solved=['🐱','🍎','🌸','🐶','🍇','⭐','🦋','💖',''];const draw=()=>{board.innerHTML='';slideState.forEach((v,i)=>{const x=button(v||' ',()=>{const e=slideState.indexOf('');if([i-3,i+3,i-1,i+1].includes(e)&&!(i%3===0&&e===i-1)&&!(i%3===2&&e===i+1)){[slideState[i],slideState[e]]=[slideState[e],slideState[i]];draw();if(slideState.every((v,j)=>v===solved[j]))status.textContent='ممتاز! أكملت اللغز 🎉';}});x.className='slide-piece'+(v?'':' empty');board.appendChild(x);});};let empty=8,prev=-1;for(let k=0;k<45;k++){const neighbors=[empty-3,empty+3,...(empty%3? [empty-1]:[]),...(empty%3<2?[empty+1]:[])].filter(i=>i>=0&&i<9&&i!==prev);const pick=neighbors[Math.floor(Math.random()*neighbors.length)];[slideState[empty],slideState[pick]]=[slideState[pick],slideState[empty]];prev=empty;empty=pick;}draw();return;}
  }));
  })();
+
+ // Quick search across game cards and main tools; taps jump to the matching section.
+ const quickSearch=document.getElementById('seifQuickSearch'),quickResults=document.getElementById('seifQuickSearchResults');
+ if(quickSearch&&quickResults){
+  const searchable=()=>Array.from(document.querySelectorAll('.seif-game-card,section[id],.extra-tool[id],#keyboardInstall')).filter(el=>el.id!=='seifGamePanel'&&el.id!=='homeCategories'&&!el.closest('#seifGamePanel'));
+  quickSearch.addEventListener('input',()=>{
+   const q=quickSearch.value.trim().toLocaleLowerCase();
+   quickResults.innerHTML='';
+   if(!q)return;
+   const matches=searchable().filter(el=>(el.innerText||el.textContent||'').toLocaleLowerCase().includes(q)).slice(0,10);
+   if(!matches.length){const p=document.createElement('p');p.className='muted small';p.textContent='لم نجد نتيجة. جرّب كلمة أخرى.';quickResults.appendChild(p);return;}
+   matches.forEach(el=>{const b=document.createElement('button');b.type='button';b.textContent=(el.querySelector('h2,h3,strong')?.textContent||el.id).trim().slice(0,70);b.addEventListener('click',()=>{document.body.classList.remove('home-filter-games','home-filter-emoji','home-filter-online','home-filter-offline');el.scrollIntoView({behavior:'smooth',block:'start'});el.style.outline='2px solid #55e4c5';setTimeout(()=>el.style.outline='',1400);});quickResults.appendChild(b);});
+  });
+ }
 
  makeGreeting();makePalette();
  let deferredInstallPrompt=null;
