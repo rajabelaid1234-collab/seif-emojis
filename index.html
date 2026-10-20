@@ -246,7 +246,7 @@ body.seif-offline-app .offline-hub-grid{display:grid;grid-template-columns:repea
 body.seif-offline-app .offline-hub-card{padding:15px;border-radius:16px;border:1px solid #465779;background:linear-gradient(145deg,#192442,#0e1629);min-width:0}
 body.seif-offline-app .offline-filter-row button{min-width:0;padding:8px 4px;font-size:.9rem}body.seif-offline-app .offline-tool-list button:disabled{opacity:.58;line-height:1.4;white-space:normal}body.seif-offline-app .offline-hub-card h3{margin:0 0 8px;color:#b9f7ee}
 body.seif-offline-app .offline-tool-list{display:grid;gap:8px;margin-top:12px}
-body.seif-offline-app:not(.offline-focused) main.wrap>*:not(header):not(#offlineOnlineHub):not(#offlineBackBar){display:none!important}
+body.seif-offline-app .language-switch{display:none!important}body.seif-offline-app:not(.offline-focused) main.wrap>*:not(header):not(#offlineOnlineHub):not(#offlineBackBar){display:none!important}
 body.seif-offline-app #offlineBackBar{display:none}
 body.seif-offline-app.offline-focused #offlineBackBar{display:block}
 body.seif-offline-app.offline-focused #offlineOnlineHub{display:none!important}
@@ -313,7 +313,7 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 .seif-game-panel[hidden]{display:none}
 .seif-game-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:8px 0}
 .seif-game-controls button{flex:1 1 100px}
-#snakeBoard{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;width:min(100%,330px);aspect-ratio:1;margin:10px auto}
+#snakeBoard{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;width:min(100%,330px);aspect-ratio:1;margin:10px auto}.snake-controls{display:grid!important;grid-template-columns:repeat(3,minmax(66px,84px));grid-template-rows:repeat(2,52px);gap:7px;justify-content:center}.snake-controls button{min-height:50px!important;padding:7px!important;touch-action:manipulation}.snake-controls button:nth-child(1){grid-column:2;grid-row:1}.snake-controls button:nth-child(2){grid-column:1;grid-row:2}.snake-controls button:nth-child(3){grid-column:2;grid-row:2}.snake-controls button:nth-child(4){grid-column:3;grid-row:2}
 .snake-cell{background:#1b2540;border-radius:3px;min-width:0;aspect-ratio:1}
 .snake-cell.snake{background:#34d399}.snake-cell.food{background:#f87171}
 #oddBoard{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;max-width:420px;margin:12px auto}
@@ -1885,7 +1885,7 @@ render();
   })();
 
   // Maze with connected corridors; level generator preserves a guaranteed path.
-  const mazeBoard=$('mazeBoard');let mazeLevel=1,mazePlayer={r:0,c:0},mazeGrid=[];
+  const mazeBoard=$('mazeBoard');let mazeLevel=1,mazePlayer={r:0,c:0},mazeGrid=[],mazeWon=false;
   function makeMaze(level){
     const n=7,grid=Array.from({length:n},(_,r)=>Array.from({length:n},(_,c)=>(r===0&&c===0)||(r===n-1&&c===n-1)?0:(Math.random()<Math.min(.28,.12+level*.025)?1:0)));
     // Carve a guaranteed winding route from start to finish.
@@ -1895,8 +1895,8 @@ render();
   let mazeHintPath=[];
   function findMazePath(){const q=[[0,0]],prev=Array.from({length:7},()=>Array(7).fill(null));prev[0][0]=[-1,-1];while(q.length){const [r,c]=q.shift();if(r===6&&c===6)break;for(const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]){const nr=r+dr,nc=c+dc;if(nr<0||nc<0||nr>6||nc>6||mazeGrid[nr][nc]||prev[nr][nc])continue;prev[nr][nc]=[r,c];q.push([nr,nc]);}}if(!prev[6][6])return [];const path=[];let p=[6,6];while(p[0]!==0||p[1]!==0){path.push(p);p=prev[p[0]][p[1]];}path.push([0,0]);return path.reverse();}
   function drawMaze(){if(!mazeBoard)return;mazeBoard.innerHTML='';mazeGrid.forEach((row,r)=>row.forEach((v,c)=>{const cell=document.createElement('div');const onPath=mazeHintPath.some(p=>p[0]===r&&p[1]===c);cell.className='maze-cell'+(v?' wall':'')+((r===6&&c===6)?' goal':'')+(onPath?' maze-hint-path':'');cell.textContent=mazePlayer.r===r&&mazePlayer.c===c?'🐣':(r===6&&c===6?'🏆':v?'🧱':onPath?'·':'');cell.setAttribute('role','gridcell');mazeBoard.appendChild(cell);}));$('mazeLevel').textContent='المستوى '+mazeLevel;if(mazePlayer.r!==6||mazePlayer.c!==6)$('mazeStatus').textContent='استخدم الأسهم للتحرك. عند الجدار اختر اتجاهًا آخر.';}
-  function newMaze(){mazeGrid=makeMaze(mazeLevel);mazePlayer={r:0,c:0};mazeHintPath=[];drawMaze();}
-  function moveMaze(dr,dc){const r=mazePlayer.r+dr,c=mazePlayer.c+dc;if(r<0||c<0||r>6||c>6){$('mazeStatus').textContent='وصلت إلى حافة المتاهة؛ جرّب اتجاهًا آخر.';return;}if(mazeGrid[r][c]){$('mazeStatus').textContent='🧱 يوجد جدار هنا؛ اختر سهمًا آخر.';return;}mazePlayer={r,c};drawMaze();if(r===6&&c===6){$('mazeStatus').textContent='🎉 ممتاز! فتحت المستوى التالي.';mazeLevel++;setTimeout(newMaze,650);}}
+  function newMaze(){mazeGrid=makeMaze(mazeLevel);mazePlayer={r:0,c:0};mazeHintPath=[];mazeWon=false;drawMaze();}
+  function moveMaze(dr,dc){if(mazeWon)return;const r=mazePlayer.r+dr,c=mazePlayer.c+dc;if(r<0||c<0||r>6||c>6){$('mazeStatus').textContent='وصلت إلى حافة المتاهة؛ جرّب اتجاهًا آخر.';return;}if(mazeGrid[r][c]){$('mazeStatus').textContent='🧱 يوجد جدار هنا؛ اختر سهمًا آخر.';return;}mazePlayer={r,c};drawMaze();if(r===6&&c===6){mazeWon=true;$('mazeStatus').textContent='🎉 ممتاز! فتحت المستوى التالي.';mazeLevel++;setTimeout(newMaze,650);}}
   const mazeDirections={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]};document.querySelector('.maze-controls')?.addEventListener('click',e=>{const b=e.target.closest('[data-maze-dir]');if(!b)return;const d=mazeDirections[b.dataset.mazeDir];if(d)moveMaze(d[0],d[1]);});$('mazeRestart')?.addEventListener('click',newMaze);$('mazeHint')?.addEventListener('click',()=>{mazeHintPath=findMazePath();drawMaze();$('mazeStatus').textContent=mazeHintPath.length?'🧭 الطريق المضيء يقودك إلى 🏆.':'تعذّر إيجاد طريق؛ أنشئ متاهة جديدة.';});let mazeTouch=null;mazeBoard?.addEventListener('touchstart',e=>{const t=e.changedTouches[0];mazeTouch=[t.clientX,t.clientY];},{passive:true});mazeBoard?.addEventListener('touchend',e=>{if(!mazeTouch)return;const t=e.changedTouches[0],dx=t.clientX-mazeTouch[0],dy=t.clientY-mazeTouch[1];mazeTouch=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;if(Math.abs(dx)>Math.abs(dy))moveMaze(0,dx<0?-1:1);else moveMaze(dy<0?-1:1,0);},{passive:true});document.addEventListener('keydown',e=>{if(!document.getElementById('emojiMazeGame')||!document.getElementById('emojiMazeGame').offsetParent)return;const active=document.activeElement;if(active&&(/INPUT|TEXTAREA|SELECT/.test(active.tagName)||active.isContentEditable))return;const m={'ArrowUp':[-1,0],'ArrowDown':[1,0],'ArrowLeft':[0,-1],'ArrowRight':[0,1]};if(m[e.key]){e.preventDefault();moveMaze(...m[e.key]);}});newMaze();
   // Would You Rather: intentionally device-local until a real shared backend is configured.
   const wyrItems=[['🍕 بيتزا للأبد','🍦 آيس كريم للأبد'],['🚀 السفر للمستقبل','🦖 العودة للماضي'],['🐶 فهم لغة الحيوانات','🦜 التحدث بكل اللغات'],['🏝️ جزيرة خاصة','🏰 قلعة فخمة'],['⚡ سرعة خارقة','🫥 الاختفاء متى شئت'],['🌙 النوم 3 ساعات فقط','🍔 أكل ما تحب بلا تعب'],['🎮 ألعاب بلا نهاية','🎬 أفلام ومسلسلات بلا نهاية'],['💰 مال كثير ووقت قليل','🕰️ وقت كثير ومال كافٍ'],['🦸 قوة خارقة','🧠 ذكاء خارق'],['🌊 العيش قرب البحر','🌲 العيش وسط الغابة'],['🐱 قطة تتكلم','🐉 تنين أليف'],['✈️ سفر مجاني دائمًا','🍽️ طعام مجاني دائمًا'],['🎤 صوت غنائي رائع','🎨 موهبة رسم مذهلة'],['📱 بلا هاتف أسبوعًا','🍫 بلا حلويات شهرًا'],['🪐 زيارة الفضاء','🌌 الغوص لأعمق مكان'],['🧊 شتاء دائم','☀️ صيف دائم'],['🧙 سحر حقيقي','🤖 روبوت يساعدك بكل شيء'],['🏆 الفوز بكل لعبة','🎯 النجاح بكل اختبار'],['🕵️ معرفة الحقيقة دائمًا','🎭 إخفاء مشاعرك دائمًا'],['🐢 عمر طويل هادئ','⚡ حياة قصيرة مليئة بالمغامرات']];
@@ -1945,7 +1945,7 @@ render();
   snakeState=freshSnake();
   const board=document.createElement('div');board.id='snakeBoard';board.setAttribute('aria-label','لوحة لعبة الثعبان');body.appendChild(board);
   const status=note('النقاط: 0 — اجمع 🍎 وتجنب الجدران وجسم الثعبان.');
-  const controls=document.createElement('div');controls.className='seif-game-controls';
+  const controls=document.createElement('div');controls.className='seif-game-controls snake-controls';
   const directionButtons=[['⬆️ أعلى',-12],['⬅️ يسار',-1],['⬇️ أسفل',12],['➡️ يمين',1]];
   const setDirection=d=>{if(!snakeState||snakeState.over)return;if((d===1&&snakeState.dir!==-1)||(d===-1&&snakeState.dir!==1)||(d===12&&snakeState.dir!==-12)||(d===-12&&snakeState.dir!==12))snakeState.dir=d;};
   directionButtons.forEach(([label,d])=>controls.appendChild(button(label,()=>setDirection(d))));
