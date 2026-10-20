@@ -751,6 +751,7 @@ if(seifOfflineApp){
  document.querySelectorAll('[data-offline-open]').forEach(btn=>btn.addEventListener('click',()=>{
    const target=$(btn.dataset.offlineOpen);if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}
  }));
+ if(location.hash==='#games'||location.hash==='#emoji'){setTimeout(()=>{const target=$(location.hash==='#games'?'seifGamesHub':'invisibleNameTool');target?.scrollIntoView({behavior:'smooth',block:'start'});},250);}
  document.querySelectorAll('[data-offline-tab]').forEach(btn=>btn.addEventListener('click',()=>{
    const tab=document.querySelector('[data-tab="'+btn.dataset.offlineTab+'"]');
    if(tab){tab.click();document.querySelector('.tabs')?.scrollIntoView({behavior:'smooth',block:'start'});}
