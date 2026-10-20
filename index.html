@@ -281,7 +281,7 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 #mazeBoard{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;width:min(100%,390px);margin:12px auto;touch-action:manipulation}
 .maze-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#1a2541;font-size:clamp(1rem,5vw,1.65rem);min-width:0}
 .maze-cell.wall{background:#52607e}.maze-cell.goal{background:#195b4f}.maze-cell.maze-hint-path{outline:2px solid #5eead4;outline-offset:-3px;color:#5eead4}
-.maze-controls{display:grid;grid-template-columns:repeat(3,minmax(54px,68px));grid-template-rows:repeat(2,54px);justify-content:center;gap:7px;margin:14px auto;direction:ltr;touch-action:manipulation}
+.maze-controls{display:grid;grid-template-columns:repeat(3,minmax(54px,68px));grid-template-rows:repeat(2,54px);justify-content:center;gap:7px;margin:14px auto;direction:ltr;touch-action:manipulation}.maze-controls [data-maze-dir="up"]{grid-column:2;grid-row:1}.maze-controls [data-maze-dir="left"]{grid-column:1;grid-row:2}.maze-controls [data-maze-dir="down"]{grid-column:2;grid-row:2}.maze-controls [data-maze-dir="right"]{grid-column:3;grid-row:2}
 .maze-controls button{min-height:52px!important;min-width:52px!important;font-size:1.45rem!important;touch-action:manipulation}.maze-controls button:active{transform:scale(.94);filter:brightness(1.25)}
 #oddEmojiBoard{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;margin:12px 0}
 .odd-cell{padding:0!important;aspect-ratio:1;min-width:0!important;font-size:clamp(1rem,5.5vw,2rem)!important;border-radius:8px}
@@ -436,15 +436,15 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 
 <div class="game-card" id="arabicSlangTool">
 <h3>🌍 قاموس اللهجات العربية</h3>
-<p class="muted small">ابحث بالفصحى أو باللهجة، ثم اختر الدولة لمعرفة المقابل المحلي. هذه نسخة أولية قابلة للتوسيع وليست كل كلمات اللهجات.</p>
+<p class="muted small">ابحث بكلمة فصحى أو عامية، ثم اختر الدولة. القاموس يعمل دون إنترنت ويضم كلمات شائعة قابلة للتوسيع؛ اللهجات تختلف حتى داخل البلد الواحد.</p>
 <div class="game-action-grid">
  <select id="slangDialect" aria-label="اختر اللهجة">
-  <option value="tn">🇹🇳 تونس</option><option value="dz">🇩🇿 الجزائر</option><option value="ma">🇲🇦 المغرب</option><option value="eg">🇪🇬 مصر</option><option value="levant">🇵🇸🇯🇴🇱🇧🇸🇾 الشام</option><option value="gulf">🇸🇦🇰🇼 الخليج</option><option value="iraq">🇮🇶 العراق</option><option value="msa">📚 العربية الفصحى</option>
+  <option value="tn">🇹🇳 تونس</option><option value="dz">🇩🇿 الجزائر</option><option value="ma">🇲🇦 المغرب</option><option value="ly">🇱🇾 ليبيا</option><option value="mr">🇲🇷 موريتانيا (الحسانية)</option><option value="eg">🇪🇬 مصر</option><option value="sd">🇸🇩 السودان</option><option value="levant">🇸🇾🇱🇧🇯🇴🇵🇸 الشام (عام)</option><option value="sy">🇸🇾 سوريا</option><option value="lb">🇱🇧 لبنان</option><option value="jo">🇯🇴 الأردن</option><option value="ps">🇵🇸 فلسطين</option><option value="iraq">🇮🇶 العراق</option><option value="sa">🇸🇦 السعودية</option><option value="kw">🇰🇼 الكويت</option><option value="bh">🇧🇭 البحرين</option><option value="qa">🇶🇦 قطر</option><option value="ae">🇦🇪 الإمارات</option><option value="om">🇴🇲 عُمان</option><option value="ye">🇾🇪 اليمن</option><option value="gulf">🌍 الخليج (عام)</option><option value="msa">📚 العربية الفصحى</option>
  </select>
  <input id="slangSearch" type="search" placeholder="اكتب كلمة: الآن، جميل، ماذا…">
 </div>
 <div id="slangResults" aria-live="polite" style="margin-top:12px"></div>
-<p class="muted small">قد تختلف الكلمة بين المدن والأجيال؛ أضف كلماتك المحلية من زر الإضافة.</p>
+<p class="muted small">قد تختلف الكلمة بين المدن والأجيال. القاموس لا يدّعي حصر كل كلمات اللهجات؛ يمكنك إضافة كلماتك وحفظها محليًا على جهازك.</p>
 <div class="action-row"><button type="button" id="slangAddToggle">➕ أضف كلمة محلية</button></div>
 <div id="slangAddForm" hidden>
  <input id="slangNewFusha" placeholder="المعنى بالفصحى">
@@ -471,7 +471,7 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 <h3>🧱 متاهة الإيموجي السريعة</h3>
 <p class="muted small">حرّك 🐣 بالأسهم أو الأزرار حتى تصل إلى 🏆. كل مستوى أصعب من السابق، واللعبة تعمل دون إنترنت.</p>
 <p id="mazeLevel" class="muted small">المستوى 1</p><div id="mazeBoard" role="grid" aria-label="متاهة الإيموجي"></div>
-<div class="maze-controls" aria-label="التحكم بالمتاهة"><span></span><button type="button" data-maze-dir="up" aria-label="أعلى">⬆️<span class="maze-arrow-label">أعلى</span></button><span></span><button type="button" data-maze-dir="left" aria-label="يسار">⬅️<span class="maze-arrow-label">يسار</span></button><button type="button" data-maze-dir="down" aria-label="أسفل">⬇️<span class="maze-arrow-label">أسفل</span></button><button type="button" data-maze-dir="right" aria-label="يمين">➡️<span class="maze-arrow-label">يمين</span></button></div>
+<div class="maze-controls" aria-label="أزرار حركة المتاهة"><button type="button" data-maze-dir="up" aria-label="تحرك إلى الأعلى">⬆️<span class="maze-arrow-label">أعلى</span></button><button type="button" data-maze-dir="left" aria-label="تحرك إلى اليسار">⬅️<span class="maze-arrow-label">يسار</span></button><button type="button" data-maze-dir="down" aria-label="تحرك إلى الأسفل">⬇️<span class="maze-arrow-label">أسفل</span></button><button type="button" data-maze-dir="right" aria-label="تحرك إلى اليمين">➡️<span class="maze-arrow-label">يمين</span></button></div>
 <p id="mazeStatus" aria-live="polite" class="muted small">ابدأ رحلتك نحو الكأس!</p><div class="action-row"><button type="button" id="mazeHint">🧭 أظهر الطريق</button><button type="button" id="mazeRestart">🔄 متاهة جديدة</button></div>
 </div>
 <div class="game-card" id="wouldRatherGame">
@@ -1784,7 +1784,31 @@ render();
     ['الآن','الحين','gulf'],['ماذا','وش؟','gulf'],['كثير','وايد','gulf'],['جيد','زين','gulf'],['أين؟','وين؟','gulf'],['لماذا؟','ليش؟','gulf'],['أريد','أبي / أبغى','gulf'],
     ['الآن','هسّه','iraq'],['ماذا','شنو؟','iraq'],['كثير','هواية','iraq'],['جيد','زين','iraq'],['أين؟','وين؟','iraq'],['لماذا؟','ليش؟','iraq'],['أريد','أريد / أريد أگدر','iraq']
    ];
-   const dialectNames={tn:'تونس',dz:'الجزائر',ma:'المغرب',eg:'مصر',levant:'الشام',gulf:'الخليج',iraq:'العراق',msa:'الفصحى'};
+
+   const expandedSlang=[
+    ['كيف حالك؟',{ly:'شن حالك؟',mr:'كيف حالك؟',sd:'كيفنك؟',sy:'كيفك؟',lb:'كيفك؟',jo:'كيفك؟',ps:'كيفك؟',sa:'كيف حالك؟',kw:'شلونك؟',bh:'شلونك؟',qa:'شلونك؟',ae:'شحالك؟',om:'كيف حالك؟',ye:'كيف حالك؟'}],
+    ['ماذا؟',{ly:'شنو؟',mr:'شنو؟',sd:'شنو؟',sy:'شو؟',lb:'شو؟',jo:'شو؟',ps:'شو؟',sa:'وش؟',kw:'شنو؟',bh:'شنو؟',qa:'شنو؟',ae:'شو؟',om:'شو؟',ye:'إيش؟'}],
+    ['أين؟',{ly:'وين؟',mr:'فين؟',sd:'وين؟',sy:'وين؟',lb:'وين؟',jo:'وين؟',ps:'وين؟',sa:'وين؟',kw:'وين؟',bh:'وين؟',qa:'وين؟',ae:'وين؟',om:'وين؟',ye:'فين؟'}],
+    ['لماذا؟',{ly:'علاش؟',mr:'علاش؟',sd:'ليه؟',sy:'ليش؟',lb:'ليش؟',jo:'ليش؟',ps:'ليش؟',sa:'ليه؟',kw:'ليش؟',bh:'ليش؟',qa:'ليش؟',ae:'ليش؟',om:'ليش؟',ye:'ليش؟'}],
+    ['الآن',{ly:'توا',mr:'دابا',sd:'هسع',sy:'هلأ',lb:'هلأ',jo:'هسا',ps:'هسا',sa:'الحين',kw:'الحين',bh:'الحين',qa:'الحين',ae:'الحين',om:'الحين',ye:'دحين'}],
+    ['كثير',{ly:'هلبة',mr:'بزاف',sd:'كتير',sy:'كتير',lb:'كتير',jo:'كتير',ps:'كتير',sa:'كثير / واجد',kw:'وايد',bh:'وايد',qa:'وايد',ae:'وايد',om:'وايد',ye:'كثير'}],
+    ['جيد / حسنًا',{ly:'كويس',mr:'مزيان',sd:'كويس',sy:'منيح',lb:'منيح',jo:'منيح',ps:'منيح',sa:'زين',kw:'زين',bh:'زين',qa:'زين',ae:'زين',om:'زين',ye:'تمام'}],
+    ['أريد',{ly:'نبي',mr:'بغيت',sd:'داير',sy:'بدي',lb:'بدي',jo:'بدي',ps:'بدي',sa:'أبغى',kw:'أبي',bh:'أبي',qa:'أبي',ae:'أبا',om:'أريد',ye:'أبغى'}],
+    ['ماذا تفعل؟',{ly:'شن تدير؟',mr:'شنو كتدير؟',sd:'بتعمل شنو؟',sy:'شو عم تعمل؟',lb:'شو عم تعمل؟',jo:'شو بتعمل؟',ps:'شو بتعمل؟',sa:'وش تسوي؟',kw:'شنو تسوي؟',bh:'شنو تسوي؟',qa:'شنو تسوي؟',ae:'شو تسوي؟',om:'شو تسوي؟',ye:'إيش تعمل؟'}],
+    ['جميل',{ly:'حلو',mr:'زوين',sd:'سمح',sy:'حلو',lb:'حلو',jo:'حلو',ps:'حلو',sa:'حلو',kw:'حلو',bh:'حلو',qa:'حلو',ae:'حلو',om:'حلو',ye:'حلو'}],
+    ['صديق',{ly:'صاحب',mr:'صاحبي',sd:'صاحبي',sy:'رفيق',lb:'رفيق',jo:'صاحبي',ps:'صاحبي',sa:'خوي',kw:'رفيجي',bh:'رفيجي',qa:'رفيجي',ae:'ربيعي',om:'صاحبي',ye:'صاحبي'}],
+    ['انتظر',{ly:'استنى',mr:'تسنى',sd:'أنتظر شوية',sy:'استنى شوي',lb:'نطر شوي',jo:'استنى شوي',ps:'استنى شوي',sa:'انتظر شوي',kw:'نطر شوي',bh:'نطر شوي',qa:'نطر شوي',ae:'انطر شوي',om:'انتظر شوي',ye:'استنى شوي'}],
+    ['لا أعرف',{ly:'ما نعرفش',mr:'ما عرفتش',sd:'ما عارف',sy:'ما بعرف',lb:'ما بعرف',jo:'ما بعرف',ps:'ما بعرف',sa:'ما أدري',kw:'ما أدري',bh:'ما أدري',qa:'ما أدري',ae:'ما أعرف',om:'ما أعرف',ye:'ما أدري'}],
+    ['المال',{ly:'فلوس',mr:'الفلوس',sd:'قروش',sy:'مصاري',lb:'مصاري',jo:'مصاري',ps:'مصاري',sa:'فلوس',kw:'فلوس',bh:'فلوس',qa:'فلوس',ae:'فلوس',om:'فلوس',ye:'فلوس'}],
+    ['الطعام',{ly:'ماكلة',mr:'الماكلة',sd:'أكل',sy:'أكل',lb:'أكل',jo:'أكل',ps:'أكل',sa:'أكل',kw:'أكل',bh:'أكل',qa:'أكل',ae:'أكل',om:'أكل',ye:'أكل'}],
+    ['ممتاز',{ly:'باهي برشة',mr:'زوين بزاف',sd:'تمام شديد',sy:'كتير منيح',lb:'كتير منيح',jo:'ممتاز',ps:'ممتاز',sa:'ممتاز',kw:'عجيب',bh:'عجيب',qa:'زين',ae:'وايد زين',om:'زين',ye:'تمام'}],
+    ['صباح الخير',{ly:'صباح الخير',mr:'صباح الخير',sd:'صباح الخير',sy:'يسعد صباحك',lb:'يسعد صباحك',jo:'يسعد صباحك',ps:'يسعد صباحك',sa:'صباح الخير',kw:'صباح الخير',bh:'صباح الخير',qa:'صباح الخير',ae:'صباح الخير',om:'صباح الخير',ye:'صباح الخير'}],
+    ['شكرًا',{ly:'يعطيك الصحة',mr:'شكرا بزاف',sd:'تسلم',sy:'يسلمو',lb:'يسلمو',jo:'يسلمو',ps:'يسلمو',sa:'يعطيك العافية',kw:'مشكور',bh:'مشكور',qa:'مشكور',ae:'مشكور',om:'مشكور',ye:'تسلم'}]
+   ];
+   const extraCodes=['ly','mr','sd','sy','lb','jo','ps','sa','kw','bh','qa','ae','om','ye'];
+   expandedSlang.forEach(([fusha,values])=>extraCodes.forEach(code=>{if(values[code])slangRows.push([fusha,values[code],code,'صيغة شائعة — قد تختلف محليًا']);}));
+
+   const dialectNames={tn:'تونس',dz:'الجزائر',ma:'المغرب',ly:'ليبيا',mr:'موريتانيا',eg:'مصر',sd:'السودان',levant:'الشام',sy:'سوريا',lb:'لبنان',jo:'الأردن',ps:'فلسطين',gulf:'الخليج',sa:'السعودية',kw:'الكويت',bh:'البحرين',qa:'قطر',ae:'الإمارات',om:'عُمان',ye:'اليمن',iraq:'العراق',msa:'الفصحى'};
    const customKey='seifDialectCustomV1';
    function allRows(){let extra=[];try{extra=JSON.parse(localStorage.getItem(customKey)||'[]')}catch(e){}return slangRows.concat(extra);}
    function renderSlang(){
@@ -1823,7 +1847,7 @@ render();
   function drawMaze(){if(!mazeBoard)return;mazeBoard.innerHTML='';mazeGrid.forEach((row,r)=>row.forEach((v,c)=>{const cell=document.createElement('div');const onPath=mazeHintPath.some(p=>p[0]===r&&p[1]===c);cell.className='maze-cell'+(v?' wall':'')+((r===6&&c===6)?' goal':'')+(onPath?' maze-hint-path':'');cell.textContent=mazePlayer.r===r&&mazePlayer.c===c?'🐣':(r===6&&c===6?'🏆':v?'🧱':onPath?'·':'');cell.setAttribute('role','gridcell');mazeBoard.appendChild(cell);}));$('mazeLevel').textContent='المستوى '+mazeLevel;if(mazePlayer.r!==6||mazePlayer.c!==6)$('mazeStatus').textContent='استخدم الأسهم للتحرك. عند الجدار اختر اتجاهًا آخر.';}
   function newMaze(){mazeGrid=makeMaze(mazeLevel);mazePlayer={r:0,c:0};mazeHintPath=[];drawMaze();}
   function moveMaze(dr,dc){const r=mazePlayer.r+dr,c=mazePlayer.c+dc;if(r<0||c<0||r>6||c>6){$('mazeStatus').textContent='وصلت إلى حافة المتاهة؛ جرّب اتجاهًا آخر.';return;}if(mazeGrid[r][c]){$('mazeStatus').textContent='🧱 يوجد جدار هنا؛ اختر سهمًا آخر.';return;}mazePlayer={r,c};drawMaze();if(r===6&&c===6){$('mazeStatus').textContent='🎉 ممتاز! فتحت المستوى التالي.';mazeLevel++;setTimeout(newMaze,650);}}
-  const mazeDirections={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]};document.querySelectorAll('[data-maze-dir]').forEach(b=>b.addEventListener('click',()=>{const d=mazeDirections[b.dataset.mazeDir];if(d)moveMaze(d[0],d[1]);}));$('mazeRestart')?.addEventListener('click',newMaze);$('mazeHint')?.addEventListener('click',()=>{mazeHintPath=findMazePath();drawMaze();$('mazeStatus').textContent=mazeHintPath.length?'🧭 الطريق المضيء يقودك إلى 🏆.':'تعذّر إيجاد طريق؛ أنشئ متاهة جديدة.';});let mazeTouch=null;mazeBoard?.addEventListener('touchstart',e=>{const t=e.changedTouches[0];mazeTouch=[t.clientX,t.clientY];},{passive:true});mazeBoard?.addEventListener('touchend',e=>{if(!mazeTouch)return;const t=e.changedTouches[0],dx=t.clientX-mazeTouch[0],dy=t.clientY-mazeTouch[1];mazeTouch=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;if(Math.abs(dx)>Math.abs(dy))moveMaze(0,dx<0?-1:1);else moveMaze(dy<0?-1:1,0);},{passive:true});document.addEventListener('keydown',e=>{if(!document.getElementById('emojiMazeGame')||!document.getElementById('emojiMazeGame').offsetParent)return;const m={'ArrowUp':[-1,0],'ArrowDown':[1,0],'ArrowLeft':[0,-1],'ArrowRight':[0,1]};if(m[e.key]){e.preventDefault();moveMaze(...m[e.key]);}});newMaze();
+  const mazeDirections={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]};document.querySelector('.maze-controls')?.addEventListener('click',e=>{const b=e.target.closest('[data-maze-dir]');if(!b)return;const d=mazeDirections[b.dataset.mazeDir];if(d)moveMaze(d[0],d[1]);});$('mazeRestart')?.addEventListener('click',newMaze);$('mazeHint')?.addEventListener('click',()=>{mazeHintPath=findMazePath();drawMaze();$('mazeStatus').textContent=mazeHintPath.length?'🧭 الطريق المضيء يقودك إلى 🏆.':'تعذّر إيجاد طريق؛ أنشئ متاهة جديدة.';});let mazeTouch=null;mazeBoard?.addEventListener('touchstart',e=>{const t=e.changedTouches[0];mazeTouch=[t.clientX,t.clientY];},{passive:true});mazeBoard?.addEventListener('touchend',e=>{if(!mazeTouch)return;const t=e.changedTouches[0],dx=t.clientX-mazeTouch[0],dy=t.clientY-mazeTouch[1];mazeTouch=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;if(Math.abs(dx)>Math.abs(dy))moveMaze(0,dx<0?-1:1);else moveMaze(dy<0?-1:1,0);},{passive:true});document.addEventListener('keydown',e=>{if(!document.getElementById('emojiMazeGame')||!document.getElementById('emojiMazeGame').offsetParent)return;const active=document.activeElement;if(active&&(/INPUT|TEXTAREA|SELECT/.test(active.tagName)||active.isContentEditable))return;const m={'ArrowUp':[-1,0],'ArrowDown':[1,0],'ArrowLeft':[0,-1],'ArrowRight':[0,1]};if(m[e.key]){e.preventDefault();moveMaze(...m[e.key]);}});newMaze();
   // Would You Rather: intentionally device-local until a real shared backend is configured.
   const wyrItems=[['🍕 بيتزا للأبد','🍦 آيس كريم للأبد'],['🚀 السفر للمستقبل','🦖 العودة للماضي'],['🐶 فهم لغة الحيوانات','🦜 التحدث بكل اللغات'],['🏝️ جزيرة خاصة','🏰 قلعة فخمة'],['⚡ سرعة خارقة','🫥 الاختفاء متى شئت'],['🌙 النوم 3 ساعات فقط','🍔 أكل ما تحب بلا تعب'],['🎮 ألعاب بلا نهاية','🎬 أفلام ومسلسلات بلا نهاية'],['💰 مال كثير ووقت قليل','🕰️ وقت كثير ومال كافٍ'],['🦸 قوة خارقة','🧠 ذكاء خارق'],['🌊 العيش قرب البحر','🌲 العيش وسط الغابة'],['🐱 قطة تتكلم','🐉 تنين أليف'],['✈️ سفر مجاني دائمًا','🍽️ طعام مجاني دائمًا'],['🎤 صوت غنائي رائع','🎨 موهبة رسم مذهلة'],['📱 بلا هاتف أسبوعًا','🍫 بلا حلويات شهرًا'],['🪐 زيارة الفضاء','🌌 الغوص لأعمق مكان'],['🧊 شتاء دائم','☀️ صيف دائم'],['🧙 سحر حقيقي','🤖 روبوت يساعدك بكل شيء'],['🏆 الفوز بكل لعبة','🎯 النجاح بكل اختبار'],['🕵️ معرفة الحقيقة دائمًا','🎭 إخفاء مشاعرك دائمًا'],['🐢 عمر طويل هادئ','⚡ حياة قصيرة مليئة بالمغامرات']];
   let wyrIndex=0;const wyrKey='seif-wyr-v1';function wyrStats(){try{return JSON.parse(localStorage.getItem(wyrKey)||'{}')}catch(e){return {}}}
