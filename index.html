@@ -1635,7 +1635,7 @@ render();
      const offlineApp=location.hostname==='appassets.androidplatform.net';
      if(!window.faceapi){await new Promise((resolve,reject)=>{const sc=document.createElement('script');sc.src=offlineApp?'./face-api.min.js':'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js';sc.onload=resolve;sc.onerror=()=>reject(new Error('تعذّر تحميل مكتبة تحليل الوجه.'));document.head.appendChild(sc);});}
      const base=offlineApp?'./models':'https://justadudewhohacks.github.io/face-api.js/models';
-     await Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(base),faceapi.nets.faceExpressionNet.loadFromUri(base)]);
+     await Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(base),faceapi.nets.faceLandmark68TinyNet.loadFromUri(base),faceapi.nets.faceExpressionNet.loadFromUri(base)]);
    })().catch(err=>{lookModelReady=null;throw err;});
    return lookModelReady;
  }
@@ -1650,7 +1650,7 @@ render();
    const button=document.getElementById('lookAnalyze');button.disabled=true;lookResult.hidden=true;
    try{
      await loadLookModel();
-     const detection=await faceapi.detectSingleFace(lookSource,new faceapi.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.35})).withFaceExpressions();
+     const detection=await faceapi.detectSingleFace(lookSource,new faceapi.TinyFaceDetectorOptions({inputSize:416,scoreThreshold:.25})).withFaceLandmarks(true).withFaceExpressions();
      if(!detection){lookStatus.textContent='لم يُعثر على وجه واضح. حسّن الإضاءة، واجعل وجهك مواجهًا للكاميرا، ثم أعد المحاولة.';return;}
      const entries=Object.entries(detection.expressions).sort((a,b)=>b[1]-a[1]),[key,score]=entries[0],chosen=lookEmojiMap[key]||lookEmojiMap.neutral;
      lookResult.innerHTML='<div style="font-size:4rem">'+chosen.emoji+'</div><strong>'+chosen.label+'</strong><div class="look-score">'+Math.round(score*100)+'%</div><div class="muted small">ثقة النموذج في التعبير المكتشف</div>';
