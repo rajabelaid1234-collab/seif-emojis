@@ -277,6 +277,7 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 #emojiGames button,#emojiGames input{min-height:44px;font-size:1rem;touch-action:manipulation}
 #emojiGames .game-action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 #emojiGames .game-action-grid button{white-space:normal;line-height:1.35;padding:10px 7px}
+.maze-controls button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.05}.maze-arrow-label{display:block;font-size:.62rem;line-height:1.1;font-weight:700;color:#dbeafe}
 #mazeBoard{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;width:min(100%,390px);margin:12px auto;touch-action:manipulation}
 .maze-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#1a2541;font-size:clamp(1rem,5vw,1.65rem);min-width:0}
 .maze-cell.wall{background:#52607e}.maze-cell.goal{background:#195b4f}.maze-cell.maze-hint-path{outline:2px solid #5eead4;outline-offset:-3px;color:#5eead4}
@@ -364,6 +365,7 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
     <button type="button" data-offline-open="library">🥰 مكتبة الإيموجيات والرموز</button>
     <button type="button" data-offline-open="arabicSlangTool">🌍 قاموس اللهجات العربية</button>
     <button type="button" data-offline-open="dailyQuotesTool">💡 حكمة اليوم</button>
+    <button type="button" data-offline-open="strongPasswordTool">🔐 مولّد كلمات السر</button>
     <button type="button" data-offline-open="fancy">✨ زخرفة النصوص والأسماء</button>
    </div>
   </article>
@@ -469,7 +471,7 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 <h3>🧱 متاهة الإيموجي السريعة</h3>
 <p class="muted small">حرّك 🐣 بالأسهم أو الأزرار حتى تصل إلى 🏆. كل مستوى أصعب من السابق، واللعبة تعمل دون إنترنت.</p>
 <p id="mazeLevel" class="muted small">المستوى 1</p><div id="mazeBoard" role="grid" aria-label="متاهة الإيموجي"></div>
-<div class="maze-controls" aria-label="التحكم بالمتاهة"><span></span><button type="button" data-maze-move="-1,0" aria-label="تحرك للأعلى">⬆️</button><span></span><button type="button" data-maze-move="0,-1" aria-label="تحرك لليسار">⬅️</button><button type="button" data-maze-move="1,0" aria-label="تحرك للأسفل">⬇️</button><button type="button" data-maze-move="0,1" aria-label="تحرك لليمين">➡️</button></div>
+<div class="maze-controls" aria-label="التحكم بالمتاهة"><span></span><button type="button" data-maze-dir="up" aria-label="أعلى">⬆️<span class="maze-arrow-label">أعلى</span></button><span></span><button type="button" data-maze-dir="left" aria-label="يسار">⬅️<span class="maze-arrow-label">يسار</span></button><button type="button" data-maze-dir="down" aria-label="أسفل">⬇️<span class="maze-arrow-label">أسفل</span></button><button type="button" data-maze-dir="right" aria-label="يمين">➡️<span class="maze-arrow-label">يمين</span></button></div>
 <p id="mazeStatus" aria-live="polite" class="muted small">ابدأ رحلتك نحو الكأس!</p><div class="action-row"><button type="button" id="mazeHint">🧭 أظهر الطريق</button><button type="button" id="mazeRestart">🔄 متاهة جديدة</button></div>
 </div>
 <div class="game-card" id="wouldRatherGame">
@@ -592,6 +594,23 @@ body.home-filter-offline #emojiLookalikeTool,body.home-filter-offline #emojiSoun
 <section id="nameLab" class="section panel">
 <h2 style="font-size:1.6rem">🎼 أدوات زخرفة الأسماء الذكية</h2>
 <p class="muted">زخارف موسيقية، إطارات قوية، فقاعات حروف، وفحص سريع لطول الاسم قبل نسخه. النتائج تقريبية لأن حدود المنصات قد تتغير.</p>
+
+<div class="toolcard" id="strongPasswordTool">
+<h3>🔐 مولّد كلمات السر الفولاذية</h3>
+<p class="muted small">ينشئ كلمة سر قوية محليًا في جهازك باستخدام crypto.getRandomValues؛ لا تُرسل كلمة السر إلى الإنترنت.</p>
+<label for="strongPassLength">الطول: <strong id="strongPassLengthLabel">20</strong></label>
+<input id="strongPassLength" type="range" min="8" max="64" value="20" style="width:100%">
+<div class="actions">
+<label><input type="checkbox" id="strongPassLower" checked> حروف صغيرة</label>
+<label><input type="checkbox" id="strongPassUpper" checked> حروف كبيرة</label>
+<label><input type="checkbox" id="strongPassDigits" checked> أرقام</label>
+<label><input type="checkbox" id="strongPassSymbols" checked> رموز</label>
+</div>
+<button type="button" class="primary" id="strongPassGenerate">🔐 إنشاء كلمة سر</button>
+<textarea id="strongPassOutput" class="output" rows="2" readonly dir="ltr" aria-label="كلمة السر الناتجة">اضغط إنشاء</textarea>
+<button type="button" id="strongPassCopy">📋 نسخ كلمة السر</button>
+<p id="strongPassStatus" class="notice" aria-live="polite"></p>
+</div>
 <div class="toolgrid">
 <div class="toolcard">
 <h3>🎵 صانع الزخرفة الموسيقية</h3>
@@ -1799,7 +1818,7 @@ render();
   function drawMaze(){if(!mazeBoard)return;mazeBoard.innerHTML='';mazeGrid.forEach((row,r)=>row.forEach((v,c)=>{const cell=document.createElement('div');const onPath=mazeHintPath.some(p=>p[0]===r&&p[1]===c);cell.className='maze-cell'+(v?' wall':'')+((r===6&&c===6)?' goal':'')+(onPath?' maze-hint-path':'');cell.textContent=mazePlayer.r===r&&mazePlayer.c===c?'🐣':(r===6&&c===6?'🏆':v?'🧱':onPath?'·':'');cell.setAttribute('role','gridcell');mazeBoard.appendChild(cell);}));$('mazeLevel').textContent='المستوى '+mazeLevel;if(mazePlayer.r!==6||mazePlayer.c!==6)$('mazeStatus').textContent='استخدم الأسهم للتحرك. عند الجدار اختر اتجاهًا آخر.';}
   function newMaze(){mazeGrid=makeMaze(mazeLevel);mazePlayer={r:0,c:0};mazeHintPath=[];drawMaze();}
   function moveMaze(dr,dc){const r=mazePlayer.r+dr,c=mazePlayer.c+dc;if(r<0||c<0||r>6||c>6){$('mazeStatus').textContent='وصلت إلى حافة المتاهة؛ جرّب اتجاهًا آخر.';return;}if(mazeGrid[r][c]){$('mazeStatus').textContent='🧱 يوجد جدار هنا؛ اختر سهمًا آخر.';return;}mazePlayer={r,c};drawMaze();if(r===6&&c===6){$('mazeStatus').textContent='🎉 ممتاز! فتحت المستوى التالي.';mazeLevel++;setTimeout(newMaze,650);}}
-  document.querySelectorAll('[data-maze-move]').forEach(b=>b.addEventListener('click',()=>moveMaze(...b.dataset.mazeMove.split(',').map(Number))));$('mazeRestart')?.addEventListener('click',newMaze);$('mazeHint')?.addEventListener('click',()=>{mazeHintPath=findMazePath();drawMaze();$('mazeStatus').textContent=mazeHintPath.length?'🧭 الطريق المضيء يقودك إلى 🏆.':'تعذّر إيجاد طريق؛ أنشئ متاهة جديدة.';});let mazeTouch=null;mazeBoard?.addEventListener('touchstart',e=>{const t=e.changedTouches[0];mazeTouch=[t.clientX,t.clientY];},{passive:true});mazeBoard?.addEventListener('touchend',e=>{if(!mazeTouch)return;const t=e.changedTouches[0],dx=t.clientX-mazeTouch[0],dy=t.clientY-mazeTouch[1];mazeTouch=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;if(Math.abs(dx)>Math.abs(dy))moveMaze(0,dx<0?-1:1);else moveMaze(dy<0?-1:1,0);},{passive:true});document.addEventListener('keydown',e=>{if(!document.getElementById('emojiMazeGame')||!document.getElementById('emojiMazeGame').offsetParent)return;const m={'ArrowUp':[-1,0],'ArrowDown':[1,0],'ArrowLeft':[0,-1],'ArrowRight':[0,1]};if(m[e.key]){e.preventDefault();moveMaze(...m[e.key]);}});newMaze();
+  const mazeDirections={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]};document.querySelectorAll('[data-maze-dir]').forEach(b=>b.addEventListener('click',()=>{const d=mazeDirections[b.dataset.mazeDir];if(d)moveMaze(d[0],d[1]);}));$('mazeRestart')?.addEventListener('click',newMaze);$('mazeHint')?.addEventListener('click',()=>{mazeHintPath=findMazePath();drawMaze();$('mazeStatus').textContent=mazeHintPath.length?'🧭 الطريق المضيء يقودك إلى 🏆.':'تعذّر إيجاد طريق؛ أنشئ متاهة جديدة.';});let mazeTouch=null;mazeBoard?.addEventListener('touchstart',e=>{const t=e.changedTouches[0];mazeTouch=[t.clientX,t.clientY];},{passive:true});mazeBoard?.addEventListener('touchend',e=>{if(!mazeTouch)return;const t=e.changedTouches[0],dx=t.clientX-mazeTouch[0],dy=t.clientY-mazeTouch[1];mazeTouch=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;if(Math.abs(dx)>Math.abs(dy))moveMaze(0,dx<0?-1:1);else moveMaze(dy<0?-1:1,0);},{passive:true});document.addEventListener('keydown',e=>{if(!document.getElementById('emojiMazeGame')||!document.getElementById('emojiMazeGame').offsetParent)return;const m={'ArrowUp':[-1,0],'ArrowDown':[1,0],'ArrowLeft':[0,-1],'ArrowRight':[0,1]};if(m[e.key]){e.preventDefault();moveMaze(...m[e.key]);}});newMaze();
   // Would You Rather: intentionally device-local until a real shared backend is configured.
   const wyrItems=[['🍕 بيتزا للأبد','🍦 آيس كريم للأبد'],['🚀 السفر للمستقبل','🦖 العودة للماضي'],['🐶 فهم لغة الحيوانات','🦜 التحدث بكل اللغات'],['🏝️ جزيرة خاصة','🏰 قلعة فخمة'],['⚡ سرعة خارقة','🫥 الاختفاء متى شئت'],['🌙 النوم 3 ساعات فقط','🍔 أكل ما تحب بلا تعب'],['🎮 ألعاب بلا نهاية','🎬 أفلام ومسلسلات بلا نهاية'],['💰 مال كثير ووقت قليل','🕰️ وقت كثير ومال كافٍ'],['🦸 قوة خارقة','🧠 ذكاء خارق'],['🌊 العيش قرب البحر','🌲 العيش وسط الغابة'],['🐱 قطة تتكلم','🐉 تنين أليف'],['✈️ سفر مجاني دائمًا','🍽️ طعام مجاني دائمًا'],['🎤 صوت غنائي رائع','🎨 موهبة رسم مذهلة'],['📱 بلا هاتف أسبوعًا','🍫 بلا حلويات شهرًا'],['🪐 زيارة الفضاء','🌌 الغوص لأعمق مكان'],['🧊 شتاء دائم','☀️ صيف دائم'],['🧙 سحر حقيقي','🤖 روبوت يساعدك بكل شيء'],['🏆 الفوز بكل لعبة','🎯 النجاح بكل اختبار'],['🕵️ معرفة الحقيقة دائمًا','🎭 إخفاء مشاعرك دائمًا'],['🐢 عمر طويل هادئ','⚡ حياة قصيرة مليئة بالمغامرات']];
   let wyrIndex=0;const wyrKey='seif-wyr-v1';function wyrStats(){try{return JSON.parse(localStorage.getItem(wyrKey)||'{}')}catch(e){return {}}}
@@ -1851,6 +1870,19 @@ render();
  if(type==='whack'){open(type,'⚡ تحدي السرعة — 30 ثانية');score=0;whackSeconds=30;const status=note('النقاط: 0 | الوقت: 30');const board=document.createElement('div');board.id='whackBoard';body.appendChild(board);const tick=()=>{if(whackSeconds<=0){stopTimers();status.textContent='انتهى الوقت! نتيجتك: '+score+' نقطة 🏆';board.querySelectorAll('button').forEach(x=>x.disabled=true);return;}status.textContent='النقاط: '+score+' | الوقت: '+whackSeconds+' ث';whackSeconds--;board.innerHTML='';for(let i=0;i<9;i++){const emoji=['😂','👻','😎','💖','🐸','💣'][Math.floor(Math.random()*6)];board.appendChild(button(emoji,()=>{if(emoji==='💣')score=Math.max(0,score-2);else score++;status.textContent='النقاط: '+score+' | الوقت: '+whackSeconds+' ث';}));}};tick();gameTimer=setInterval(tick,1000);return;}
  if(type==='slide'){open(type,'🧩 ترتيب الإيموجيات');slideState=['🐱','🍎','🌸','🐶','🍇','⭐','🦋','💖',''];const board=document.createElement('div');board.id='slideBoard';body.appendChild(board);const status=note('رتّب الإيموجيات حسب الصفوف.');const solved=['🐱','🍎','🌸','🐶','🍇','⭐','🦋','💖',''];const draw=()=>{board.innerHTML='';slideState.forEach((v,i)=>{const x=button(v||' ',()=>{const e=slideState.indexOf('');if([i-3,i+3,i-1,i+1].includes(e)&&!(i%3===0&&e===i-1)&&!(i%3===2&&e===i+1)){[slideState[i],slideState[e]]=[slideState[e],slideState[i]];draw();if(slideState.every((v,j)=>v===solved[j]))status.textContent='ممتاز! أكملت اللغز 🎉';}});x.className='slide-piece'+(v?'':' empty');board.appendChild(x);});};let empty=8,prev=-1;for(let k=0;k<45;k++){const neighbors=[empty-3,empty+3,...(empty%3? [empty-1]:[]),...(empty%3<2?[empty+1]:[])].filter(i=>i>=0&&i<9&&i!==prev);const pick=neighbors[Math.floor(Math.random()*neighbors.length)];[slideState[empty],slideState[pick]]=[slideState[pick],slideState[empty]];prev=empty;empty=pick;}draw();return;}
  }));
+ })();
+
+
+ // Secure local password generator (cryptographic randomness; no network requests).
+ (function(){
+  const $=id=>document.getElementById(id);
+  const length=$('strongPassLength'),label=$('strongPassLengthLabel'),output=$('strongPassOutput'),status=$('strongPassStatus');
+  if(!length||!output)return;
+  length.addEventListener('input',()=>label.textContent=length.value);
+  function secureInt(max){if(!window.crypto||!crypto.getRandomValues)throw new Error('المولّد الآمن غير مدعوم في هذا المتصفح.');const limit=Math.floor(256/max)*max;const bytes=new Uint8Array(1);do{crypto.getRandomValues(bytes)}while(bytes[0]>=limit);return bytes[0]%max;}
+  function generate(){const groups=[];if($('strongPassLower').checked)groups.push('abcdefghijklmnopqrstuvwxyz');if($('strongPassUpper').checked)groups.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');if($('strongPassDigits').checked)groups.push('0123456789');if($('strongPassSymbols').checked)groups.push('!@#$%^&*()-_=+[]{};:,.?/');if(!groups.length){status.textContent='اختر نوعًا واحدًا على الأقل.';return;}if(Number(length.value)<groups.length){status.textContent='اختر طولًا أكبر ليسع جميع الأنواع المختارة.';return;}try{const pool=groups.join(''),chars=groups.map(g=>g[secureInt(g.length)]);while(chars.length<Number(length.value))chars.push(pool[secureInt(pool.length)]);for(let i=chars.length-1;i>0;i--){const j=secureInt(i+1);[chars[i],chars[j]]=[chars[j],chars[i]];}output.value=chars.join('');status.textContent='تم إنشاء كلمة سر على جهازك فقط. احفظها في مدير كلمات سر آمن.';}catch(e){status.textContent=e.message;}}
+  $('strongPassGenerate').addEventListener('click',generate);
+  $('strongPassCopy').addEventListener('click',async()=>{if(!output.value||output.value==='اضغط إنشاء'){status.textContent='أنشئ كلمة السر أولًا.';return;}try{await navigator.clipboard.writeText(output.value);status.textContent='تم النسخ بنجاح ✅';}catch(e){output.focus();output.select();status.textContent=document.execCommand('copy')?'تم النسخ بنجاح ✅':'تعذّر النسخ التلقائي؛ حدّد النص وانسخه يدويًا.';}});
  })();
 
  // Quick search across game cards and main tools; taps jump to the matching section.
