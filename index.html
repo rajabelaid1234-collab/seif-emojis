@@ -680,6 +680,18 @@ body.seif-offline-app.offline-focused .offline-single-game .creative-card:not(.o
 .sound-emoji small{font-size:10px;color:#aeece1}
 .sound-emoji:active{transform:scale(.94)}
 .sound-emoji[hidden]{display:none}
+
+/* SEIF mobile-first creative tools polish */
+.creative-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+.creative-card{min-width:0;overflow:hidden;display:flex;flex-direction:column;gap:8px}
+.creative-card input,.creative-card textarea,.creative-card select,.creative-card audio,.creative-card canvas{max-width:100%;min-width:0}
+.creative-card .tool-actions{display:flex;flex-wrap:wrap;gap:7px}
+.creative-card .tool-actions button{flex:1 1 100px;min-width:0;min-height:42px;padding:8px 9px}
+.creative-card h3{line-height:1.45}
+body.seif-offline-app .creative-card{scroll-margin-top:12px}
+@media(max-width:760px){.creative-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.creative-card{padding:12px}.creative-card h3{font-size:1rem}.creative-card .tool-actions button{font-size:.88rem}}
+@media(max-width:390px){.creative-grid{grid-template-columns:minmax(0,1fr)}.creative-card{padding:14px}.creative-card .tool-actions button{font-size:.95rem}}
+
 </style>
 <script>
 (function(){
