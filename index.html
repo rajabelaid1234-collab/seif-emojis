@@ -2442,4 +2442,128 @@ $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream
 })();
 </script>
 
+
+<style id="seif-new-lab-style">
+#seif-new-lab{direction:rtl;text-align:right;border:1px solid #625a96;border-radius:22px;padding:20px;margin:24px 0;background:linear-gradient(145deg,#171d35,#0c1224);color:#f7f7ff}
+#seif-new-lab *{box-sizing:border-box}#seif-new-lab h2,#seif-new-lab h3{color:#8ff5e2}#seif-new-lab .snl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:13px}
+#seif-new-lab .snl-card{min-width:0;background:#10172b;border:1px solid #354362;border-radius:16px;padding:15px}
+#seif-new-lab .snl-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}#seif-new-lab input,#seif-new-lab select,#seif-new-lab textarea{width:100%;min-width:0;margin:5px 0;background:#080f20;color:#fff;border:1px solid #465475;border-radius:10px;padding:10px}
+#seif-new-lab button{margin:4px 2px}#seif-new-lab .snl-out{min-height:42px;padding:12px;margin:8px 0;background:#080f20;border:1px dashed #625a96;border-radius:12px;overflow-wrap:anywhere;white-space:pre-wrap}
+#seif-new-lab .snl-emoji{font-size:2rem;direction:ltr;text-align:center}#seif-new-lab .snl-favs{display:flex;flex-wrap:wrap;gap:8px}#seif-new-lab .snl-fav{padding:7px 10px;background:#202a46;border-radius:10px;overflow-wrap:anywhere}
+#seif-new-lab .snl-muted{color:#b8c4e3;font-size:.9rem;line-height:1.7}
+@media(max-width:600px){#seif-new-lab{padding:12px}#seif-new-lab .snl-card{padding:11px}}
+</style>
+<section id="seif-new-lab" aria-labelledby="seif-new-lab-title">
+  <div style="text-align:center">
+    <span class="pill">✨ إضافات جديدة</span>
+    <h2 id="seif-new-lab-title" style="font-size:clamp(1.5rem,4vw,2.2rem)">مختبر SEIF EMOJIS 🎮</h2>
+    <p class="snl-muted">ألعاب تخمين، تركيب إيموجيات، زخرفة أسماء ومفضلة سريعة — تعمل محلياً في متصفحك.</p>
+  </div>
+  <div class="snl-grid">
+    <article class="snl-card">
+      <h3>🧪 تركيب الإيموجيات</h3>
+      <div class="snl-row"><div style="flex:1"><label for="snl-emoji-a">الإيموجي الأول</label><select id="snl-emoji-a"><option>🦊</option><option>🐱</option><option>🐼</option><option>🐸</option><option>👻</option><option>💀</option><option>🐉</option><option>🦄</option><option>❤️</option><option>🌙</option><option>⭐</option><option>🍕</option></select></div><div style="flex:1"><label for="snl-emoji-b">الإيموجي الثاني</label><select id="snl-emoji-b"><option>🔥</option><option>💖</option><option>⚡</option><option>🌈</option><option>👑</option><option>🌊</option><option>❄️</option><option>🎮</option><option>🌸</option><option>🪽</option><option>💎</option><option>🍀</option></select></div></div>
+      <div class="snl-out snl-emoji" id="snl-mix-preview">🦊 + 🔥</div>
+      <p class="snl-muted">هذا تركيب فني بصري من إيموجيين، وليس دمجاً أصلياً من خدمة Emoji Kitchen.</p>
+      <button class="primary" id="snl-mix-make">إنشاء التصميم</button><button id="snl-mix-save">⭐ أضف للمفضلة</button><button id="snl-mix-download">⬇️ تنزيل PNG</button>
+      <p class="notice" id="snl-mix-status" aria-live="polite"></p>
+    </article>
+    <article class="snl-card">
+      <h3>🧠 من أنا؟ بالإيموجي</h3>
+      <div class="snl-out snl-emoji" id="snl-quiz-clue">🎬 🦁 👑</div>
+      <label for="snl-quiz-answer">اكتب الإجابة</label><input id="snl-quiz-answer" placeholder="ما اسم الفيلم أو الشخصية؟">
+      <div class="snl-row"><button class="primary" id="snl-quiz-check">تحقق من الإجابة</button><button id="snl-quiz-next">لغز آخر ↻</button></div>
+      <p class="notice" id="snl-quiz-status" aria-live="polite">النقاط: 0</p>
+    </article>
+    <article class="snl-card">
+      <h3>📜 خمّن المثل الشعبي</h3>
+      <div class="snl-out snl-emoji" id="snl-proverb-clue">🐦 ✋ 🐦🐦 🌳</div>
+      <label for="snl-proverb-answer">ما هو المثل؟</label><input id="snl-proverb-answer" placeholder="اكتب المثل الشعبي">
+      <div class="snl-row"><button class="primary" id="snl-proverb-check">تحقق</button><button id="snl-proverb-next">مثل آخر ↻</button></div>
+      <p class="notice" id="snl-proverb-status" aria-live="polite"></p>
+    </article>
+    <article class="snl-card">
+      <h3>👑 مولّد أسماء الألعاب</h3>
+      <label for="snl-name-input">اسمك أو لقبك</label><input id="snl-name-input" placeholder="مثلاً: SEIF">
+      <div class="snl-row"><button class="primary" id="snl-name-make">ولّد أسماء</button><button id="snl-name-fav">⭐ احفظ النتائج</button></div>
+      <div class="snl-out" id="snl-name-output">『ＳＥＩＦ』亗</div>
+      <p class="snl-muted">بعض الألعاب تمنع رموزاً معينة؛ جرّب الاسم داخل اللعبة قبل اعتماده.</p>
+    </article>
+    <article class="snl-card">
+      <h3>🌿 زخرفة النصوص العربية</h3>
+      <label for="snl-decor-input">اكتب النص</label><input id="snl-decor-input" placeholder="مثلاً: سيف">
+      <div class="snl-row"><button class="primary" id="snl-decor-make">زخرف النص</button><button id="snl-decor-fav">⭐ احفظ الزخارف</button></div>
+      <div class="snl-out" id="snl-decor-output">۞ سيف ۞</div>
+    </article>
+    <article class="snl-card">
+      <h3>🏆 شارك إنجازك</h3>
+      <label for="snl-score-game">اللعبة</label><select id="snl-score-game"><option>الثعبان 🐍</option><option>برج الإيموجيات 🧱</option><option>من أنا؟ 🧠</option></select>
+      <label for="snl-score-value">عدد النقاط</label><input id="snl-score-value" type="number" min="0" step="1" value="10">
+      <div class="snl-out" id="snl-score-card">🏆 حققت 10 نقطة في SEIF EMOJIS! تحدّني إذا استطعت 🔥</div>
+      <button class="primary" id="snl-score-share">مشاركة النتيجة</button><button id="snl-score-copy">نسخ نص التحدي</button><button id="snl-score-image">تنزيل بطاقة PNG</button>
+      <p class="notice" id="snl-score-status" aria-live="polite"></p>
+    </article>
+  </div>
+  <div class="snl-card" style="margin-top:14px">
+    <div class="snl-row" style="justify-content:space-between"><h3>⭐ مفضلتي السريعة</h3><button id="snl-fav-clear">مسح المفضلة</button></div>
+    <p class="snl-muted">تُحفظ العناصر على هذا الجهاز والمتصفح باستخدام LocalStorage.</p>
+    <div class="snl-favs" id="snl-fav-list"><span class="snl-muted">لم تحفظ شيئاً بعد.</span></div>
+    <p class="notice" id="snl-fav-status" aria-live="polite"></p>
+  </div>
+</section>
+<script id="seif-new-lab-script">
+(function(){
+ const $=id=>document.getElementById(id);
+ const say=(id,msg)=>{const e=$(id);if(e)e.textContent=msg;};
+ const KEY='seifEmojisQuickFavoritesV1';
+ const readFavs=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}};
+ const drawFavs=()=>{const host=$('snl-fav-list');if(!host)return;host.textContent='';const items=readFavs();if(!items.length){host.textContent='لم تحفظ شيئاً بعد.';host.className='snl-favs snl-muted';return;}host.className='snl-favs';items.forEach((v,i)=>{const b=document.createElement('button');b.className='snl-fav';b.type='button';b.textContent='📌 '+v;b.title='اضغط لنسخ العنصر';b.addEventListener('click',()=>copyText(v,'snl-fav-status','تم نسخ العنصر.'));host.appendChild(b);});};
+ function addFav(value){const v=String(value||'').trim();if(!v)return say('snl-fav-status','لا يوجد نص لحفظه.');const a=readFavs();if(a.includes(v))return say('snl-fav-status','هذا العنصر موجود في المفضلة.');a.unshift(v);try{localStorage.setItem(KEY,JSON.stringify(a.slice(0,100)));say('snl-fav-status','تم الحفظ على هذا الجهاز ⭐');drawFavs();}catch(e){say('snl-fav-status','تعذر الحفظ؛ قد تكون مساحة التخزين ممتلئة أو معطلة.');}}
+ async function copyText(v,id,msg){try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(v);else{const t=document.createElement('textarea');t.value=v;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();const ok=document.execCommand('copy');t.remove();if(!ok)throw Error('copy failed');}say(id,msg||'تم النسخ بنجاح.');}catch(e){say(id,'تعذر النسخ التلقائي. حدّد النص وانسخه يدوياً.');}}
+ function canvasCard(lines){const c=document.createElement('canvas'),ctx=c.getContext('2d');c.width=1000;c.height=560;const g=ctx.createLinearGradient(0,0,1000,560);g.addColorStop(0,'#11172b');g.addColorStop(.55,'#30245e');g.addColorStop(1,'#092f3c');ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);ctx.strokeStyle='#8ff5e2';ctx.lineWidth=4;ctx.strokeRect(22,22,956,516);ctx.textAlign='center';ctx.direction='rtl';ctx.fillStyle='#8ff5e2';ctx.font='bold 44px sans-serif';ctx.fillText('SEIF EMOJIS',500,100);ctx.fillStyle='#ffffff';ctx.font='bold 34px sans-serif';lines.forEach((line,i)=>ctx.fillText(line,500,230+i*64,900));ctx.fillStyle='#c4b5fd';ctx.font='24px sans-serif';ctx.fillText(location.href.split('#')[0],500,485,900);return new Promise(resolve=>c.toBlob(resolve,'image/png')); }
+ async function downloadCard(lines,name,statusId){try{const blob=await canvasCard(lines);if(!blob)throw Error('PNG');const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);if(statusId)say(statusId,'تم تجهيز بطاقة PNG للتنزيل.');}catch(e){if(statusId)say(statusId,'تعذر إنشاء صورة في هذا المتصفح.');}}
+ const updateMix=()=>say('snl-mix-preview',$('snl-emoji-a').value+'  +  '+$('snl-emoji-b').value);
+ $('snl-emoji-a').addEventListener('change',updateMix);$('snl-emoji-b').addEventListener('change',updateMix);
+ $('snl-mix-make').addEventListener('click',()=>{updateMix();say('snl-mix-status','تم إنشاء التركيب البصري. يمكنك تنزيله كصورة أو حفظه.');});
+ $('snl-mix-save').addEventListener('click',()=>addFav($('snl-emoji-a').value+' + '+$('snl-emoji-b').value));
+ $('snl-mix-download').addEventListener('click',()=>downloadCard([$('snl-emoji-a').value+'  +  '+$('snl-emoji-b').value,'تركيب إيموجيات إبداعي'],'seif-emoji-mix.png','snl-mix-status'));
+ const quizzes=[
+ {clue:'🎬 🦁 👑',answers:['الأسد الملك','الاسد الملك','lion king','the lion king']},
+ {clue:'🧊👸❄️⛄',answers:['فروزن','ملكة الثلج','frozen']},
+ {clue:'🕷️🧑🏙️',answers:['سبايدرمان','الرجل العنكبوت','spiderman','spider man']},
+ {clue:'🧽🟨🌊',answers:['سبونج بوب','سبونجبوب','spongebob']},
+ {clue:'🧙‍♂️💍🌋',answers:['سيد الخواتم','لورد اوف ذا رينغز','lord of the rings']}
+ ];let qi=0,qs=0,qDone=false;
+ function showQuiz(){qi=Math.floor(Math.random()*quizzes.length);qDone=false;$('snl-quiz-clue').textContent=quizzes[qi].clue;$('snl-quiz-answer').value='';say('snl-quiz-status','النقاط: '+qs+' — خمّن الإجابة!');}
+ $('snl-quiz-check').addEventListener('click',()=>{if(qDone)return say('snl-quiz-status','انتقل إلى اللغز التالي للمتابعة.');const a=$('snl-quiz-answer').value.trim().toLocaleLowerCase().replace(/[ًٌٍَُِّْـ]/g,'').replace(/[أإآ]/g,'ا').replace(/\s+/g,' ');if(!a)return say('snl-quiz-status','اكتب إجابتك أولاً.');if(quizzes[qi].answers.some(x=>x.toLocaleLowerCase().replace(/[أإآ]/g,'ا')===a)){qs++;qDone=true;say('snl-quiz-status','إجابة صحيحة! 🎉 النقاط: '+qs);}else say('snl-quiz-status','ليست صحيحة بعد، حاول مرة أخرى.');});
+ $('snl-quiz-next').addEventListener('click',showQuiz);showQuiz();
+ const proverbs=[
+ {clue:'🐦✋ خير من 🐦🐦🌳',answers:['عصفور في اليد خير من عشرة على الشجرة','عصفور في اليد خير من اثنين على الشجرة','عصفور باليد ولا عشرة على الشجرة']},
+ {clue:'🕰️ 🥇',answers:['الوقت من ذهب','الوقت كالسيف']},
+ {clue:'🤝 ➡️ ❤️',answers:['اليد الواحدة لا تصفق','يد واحدة لا تصفق']},
+ {clue:'🧹 🏠 👨‍👩‍👧‍👦',answers:['الجار قبل الدار']},
+ {clue:'🐒 👁️ 👑',answers:['القرد في عين أمه غزال','كل قرد في عين أمه غزال']}
+ ];let pi=0;
+ const norm=s=>s.trim().toLocaleLowerCase().replace(/[ًٌٍَُِّْـ]/g,'').replace(/[أإآ]/g,'ا').replace(/[،.!؟?]/g,'').replace(/\s+/g,' ');
+ function showProverb(){pi=Math.floor(Math.random()*proverbs.length);$('snl-proverb-clue').textContent=proverbs[pi].clue;$('snl-proverb-answer').value='';say('snl-proverb-status','خمّن المثل الشعبي.');}
+ $('snl-proverb-check').addEventListener('click',()=>{const a=norm($('snl-proverb-answer').value);if(!a)return say('snl-proverb-status','اكتب المثل أولاً.');if(proverbs[pi].answers.some(x=>norm(x)===a))say('snl-proverb-status','أحسنت! إجابة صحيحة 🎉');else say('snl-proverb-status','ليست مطابقة تماماً؛ جرّب صياغة أخرى.');});
+ $('snl-proverb-next').addEventListener('click',showProverb);showProverb();
+ const styles=['꧁༺ {x} ༻꧂','亗『{x}』亗','么 {x} 么','♛・{x}・♛','乂 {x} 乂','彡★ {x} ★彡','◥꧁ {x} ꧂◤','【﻿{x}】','𓆩 {x} 𓆪','☯ {x} ☯','乛{ x }乛','『ツ』{x}『ツ』'];
+ function makeNames(){const raw=$('snl-name-input').value.trim()||'SEIF';const full=raw.toLocaleUpperCase();const wide=Array.from(full).map(ch=>/[A-Z0-9]/.test(ch)?String.fromCharCode(ch.charCodeAt(0)+0xFEE0):ch).join('');$('snl-name-output').textContent=styles.map(s=>s.replace('{x}',full).replace('{ x }',wide)).join('\n');}
+ $('snl-name-make').addEventListener('click',makeNames);$('snl-name-fav').addEventListener('click',()=>addFav($('snl-name-output').textContent));makeNames();
+ const decor=['۞ {x} ۞','༺❀ {x} ❀༻','﴿ {x} ﴾','꧁༒ {x} ༒꧂','𓆩♡𓆪 {x} 𓆩♡𓆪','✧･ﾟ: {x} :･ﾟ✧','【 {x} 】','❁ {x} ❁','☾ {x} ☽','༄ؘ ۪۪۫۫ ▹ {x} ◃ ۪۪۫۫ ༄ؘ'];
+ function makeDecor(){const raw=$('snl-decor-input').value.trim()||'سيف';$('snl-decor-output').textContent=decor.map(s=>s.replace('{x}',raw)).join('\n');}
+ $('snl-decor-make').addEventListener('click',makeDecor);$('snl-decor-fav').addEventListener('click',()=>addFav($('snl-decor-output').textContent));makeDecor();
+ function scoreLines(){const n=Math.max(0,Math.floor(Number($('snl-score-value').value)||0));return ['حققت '+n+' نقطة في SEIF EMOJIS!', 'اللعبة: '+$('snl-score-game').value,'تحدّني إذا استطعت! 🔥'];}
+ function scoreText(){return '🏆 '+scoreLines().join('\n')+'\n'+location.href.split('#')[0];}
+ $('snl-score-value').addEventListener('input',()=>say('snl-score-card',scoreText()));
+ $('snl-score-game').addEventListener('change',()=>say('snl-score-card',scoreText()));
+ $('snl-score-copy').addEventListener('click',()=>copyText(scoreText(),'snl-score-status','تم نسخ نص التحدي.'));
+ $('snl-score-share').addEventListener('click',async()=>{const text=scoreText();try{if(navigator.share)await navigator.share({title:'إنجازي في SEIF EMOJIS',text:text,url:location.href.split('#')[0]});else await copyText(text,'snl-score-status','لا تدعم المشاركة المباشرة هنا؛ تم نسخ نص التحدي.');say('snl-score-status','تم فتح خيارات المشاركة.');}catch(e){if(e.name!=='AbortError')say('snl-score-status','تعذرت المشاركة؛ استخدم زر نسخ نص التحدي.');}});
+ $('snl-score-image').addEventListener('click',()=>downloadCard(scoreLines(),'seif-emojis-achievement.png','snl-score-status'));
+ $('snl-fav-clear').addEventListener('click',()=>{try{localStorage.removeItem(KEY);drawFavs();say('snl-fav-status','تم مسح المفضلة من هذا المتصفح.');}catch(e){say('snl-fav-status','تعذر الوصول إلى التخزين المحلي.');}});
+ drawFavs();
+})();
+</script>
+
 </body></html>
