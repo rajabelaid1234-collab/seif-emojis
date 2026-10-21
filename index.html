@@ -468,7 +468,11 @@ img.emoji{display:inline-block!important;width:1.15em!important;height:1.15em!im
    <label for="stegoDecodePassword">أدخل كلمة المرور نفسها</label>
    <input id="stegoDecodePassword" type="password" autocomplete="current-password" placeholder="كلمة المرور المشتركة" style="width:100%">
    <div class="tool-actions"><button id="stegoDecode" class="primary" type="button">🔓 فك التشفير واستعادة الملف</button></div>
-   <p id="stegoResult" class="tool-result tool-status" aria-live="polite">سيظهر هنا نجاح العملية أو سبب الخطأ. لا يمكن ضمان الاسترجاع إذا أعادت منصة اجتماعية ضغط الصورة أو حذفت مقاطع JPEG.</p>
+   <p id="stegoResult" class="tool-result tool-status" aria-live="polite">سيظهر هنا نجاح العملية أو سبب الخطأ. بعد التشفير يجب أن تكون الصورة الناتجة بيضاء؛ البيانات موجودة في بيانات JPEG الوصفية وليست مرسومة على الصورة.</p>
+   <div id="stegoPreviewWrap" hidden style="margin-top:12px">
+    <p><strong>معاينة الصورة الناتجة (يجب أن تبدو بيضاء):</strong></p>
+    <img id="stegoPreview" alt="معاينة صورة SEIF الحاملة البيضاء" style="display:block;width:min(100%,360px);aspect-ratio:1/1;object-fit:contain;background:#fff;border:1px solid #bbb;border-radius:8px">
+   </div>
   </article>
   <article class="creative-card" id="focusTimerTool">
    <h3>⏱️ مؤقت التركيز</h3>
@@ -2309,8 +2313,13 @@ $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream
    const encrypted=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,plain));
    const packageBytes=new Uint8Array(salt.length+iv.length+encrypted.length);packageBytes.set(salt,0);packageBytes.set(iv,16);packageBytes.set(encrypted,28);
    const whiteJpeg=await makeWhiteJpeg(),finalBlob=addPayloadToJpeg(whiteJpeg,packageBytes);
+   // Preview the actual carrier. Its visible pixels are generated as pure white;
+   // the encrypted payload is stored in JPEG comment segments, not drawn on the canvas.
+   const previewUrl=URL.createObjectURL(finalBlob);
+   const preview=$('stegoPreview'),previewWrap=$('stegoPreviewWrap');
+   if(preview&&previewWrap){if(preview.dataset.objectUrl)URL.revokeObjectURL(preview.dataset.objectUrl);preview.src=previewUrl;preview.dataset.objectUrl=previewUrl;previewWrap.hidden=false;}
    downloadBlob(finalBlob,'seif-encrypted-image.jpg');
-   say('stegoResult','نجح التشفير والتنزيل. على الجهاز الثاني افتح الأداة نفسها، اختر ملف seif-encrypted-image.jpg وأدخل كلمة المرور نفسها. انقل الملف كمستند/ملف، وليس كصورة مضغوطة.');
+   say('stegoResult','تم إنشاء الملف وتنزيله. تحقق من المعاينة: يجب أن تكون بيضاء. على الجهاز الثاني اختر الملف نفسه وأدخل كلمة المرور نفسها. انقله كملف/مستند، وليس كصورة مضغوطة.');
   }catch(e){say('stegoResult',e.message||'حدث خطأ أثناء التشفير.');}
   finally{btn.disabled=false;}
  });
