@@ -1850,8 +1850,8 @@ render();
      const offlineApp=location.hostname==='appassets.androidplatform.net';
      if(!window.faceapi){
        const libraryUrls=offlineApp?['./face-api.min.js']: [
-        'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/build/face-api.min.js',
-        'https://unpkg.com/face-api.js@0.22.2/build/face-api.min.js'
+        'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js',
+        'https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js'
        ];
        let loaded=false,lastError=null;
        for(const src of libraryUrls){
