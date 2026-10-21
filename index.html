@@ -1861,21 +1861,20 @@ render();
        if(!loaded)throw lastError||new Error('تعذّر تحميل مكتبة face-api.js');
      }
      const modelBases=offlineApp?['./models']: [
-      'https://justadudewhohacks.github.io/face-api.js/models',
-      'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights',
-      'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'
+      'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.2/weights',
+      'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights',
+      'https://justadudewhohacks.github.io/face-api.js/models'
      ];
-     let lastError=null,loaded=false;
-     for(const base of modelBases){
-       try{
-         await Promise.all([
-          faceapi.nets.tinyFaceDetector.loadFromUri(base),
-          faceapi.nets.faceExpressionNet.loadFromUri(base)
-         ]);
-         loaded=true;break;
-       }catch(e){lastError=e;}
+     async function loadNetWithFallback(net,label){
+       let lastError=null;
+       for(const base of modelBases){
+         try{await net.loadFromUri(base);return;}
+         catch(e){lastError=e;}
+       }
+       throw new Error('تعذّر تحميل '+label+' من كل المصادر. '+(lastError&&lastError.message?lastError.message:'تحقق من الاتصال بالإنترنت.'));
      }
-     if(!loaded)throw new Error('لم يتم تحميل ملفات النموذج من المصادر المتاحة. '+(lastError&&lastError.message?lastError.message:'تحقق من اتصال الإنترنت أو جرّب متصفحًا أحدث.'));
+     await loadNetWithFallback(faceapi.nets.tinyFaceDetector,'نموذج اكتشاف الوجه');
+     await loadNetWithFallback(faceapi.nets.faceExpressionNet,'نموذج تعبيرات الوجه');
    })().catch(err=>{lookModelReady=null;throw err;});
    return lookModelReady;
  }
