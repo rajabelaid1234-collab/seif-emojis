@@ -2392,7 +2392,26 @@ $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream
  $('voiceEffect')?.addEventListener('change',()=>{say('voiceStatus','سيُطبّق المؤثر المختار على التسجيل التالي.');});
  // 8) Emoji snake with buttons and swipe.
  const snake=$('snakeBoard'),snakeCtx=snake?.getContext('2d');let snakeBody=[],snakeDir={x:1,y:0},snakeNext={x:1,y:0},snakeFood={x:8,y:8},snakeTimer=null,snakeScore=0,snakeRunning=false;
- function drawSnake(){if(!snakeCtx)return;const size=20;snakeCtx.clearRect(0,0,320,320);snakeCtx.fillStyle='#0b1020';snakeCtx.fillRect(0,0,320,320);for(let i=0;i<snakeBody.length;i++){const p=snakeBody[i];snakeCtx.font='18px sans-serif';snakeCtx.fillText(i===0?'🐍':'🟢',p.x*size,p.y*size+17);}snakeCtx.font='20px sans-serif';snakeCtx.fillText('🍎',snakeFood.x*size,snakeFood.y*size+18);}
+ function drawSnake(){
+  if(!snakeCtx||!snake)return;
+  const size=20,boardSize=320;
+  snakeCtx.clearRect(0,0,boardSize,boardSize);
+  snakeCtx.fillStyle='#080f20';snakeCtx.fillRect(0,0,boardSize,boardSize);
+  // Draw a visible grid so the board is clear even when emoji fonts are missing.
+  snakeCtx.strokeStyle='#1e2b46';snakeCtx.lineWidth=1;
+  for(let i=0;i<=16;i++){snakeCtx.beginPath();snakeCtx.moveTo(i*size,0);snakeCtx.lineTo(i*size,boardSize);snakeCtx.stroke();snakeCtx.beginPath();snakeCtx.moveTo(0,i*size);snakeCtx.lineTo(boardSize,i*size);snakeCtx.stroke();}
+  // Fruit uses vector shapes instead of emoji glyphs for reliable rendering on older Windows PCs.
+  const fx=snakeFood.x*size,fy=snakeFood.y*size;
+  snakeCtx.fillStyle='#fb4d68';snakeCtx.beginPath();snakeCtx.arc(fx+10,fy+11,7,0,Math.PI*2);snakeCtx.fill();
+  snakeCtx.strokeStyle='#7ee787';snakeCtx.lineWidth=3;snakeCtx.beginPath();snakeCtx.moveTo(fx+10,fy+5);snakeCtx.lineTo(fx+13,fy+1);snakeCtx.stroke();
+  // Draw the snake with bright rounded blocks; no emoji font required.
+  snakeBody.forEach((p,i)=>{
+    const x=p.x*size+2,y=p.y*size+2;
+    snakeCtx.fillStyle=i===0?'#a3ff65':'#22c55e';
+    snakeCtx.beginPath();snakeCtx.roundRect?snakeCtx.roundRect(x,y,16,16,5):snakeCtx.rect(x,y,16,16);snakeCtx.fill();
+    if(i===0){snakeCtx.fillStyle='#102018';snakeCtx.beginPath();snakeCtx.arc(x+11,y+5,1.5,0,Math.PI*2);snakeCtx.fill();snakeCtx.beginPath();snakeCtx.arc(x+11,y+11,1.5,0,Math.PI*2);snakeCtx.fill();}
+  });
+}
  function snakeStep(){if(!snakeRunning)return;snakeDir=snakeNext;const h={x:snakeBody[0].x+snakeDir.x,y:snakeBody[0].y+snakeDir.y};if(h.x<0||h.x>=16||h.y<0||h.y>=16||snakeBody.some(p=>p.x===h.x&&p.y===h.y)){snakeRunning=false;clearInterval(snakeTimer);say('snakeStatus','انتهت الجولة! مجموعك '+snakeScore+'. اضغط لعبة جديدة.');return;}snakeBody.unshift(h);if(h.x===snakeFood.x&&h.y===snakeFood.y){snakeScore++;do{snakeFood={x:Math.floor(Math.random()*16),y:Math.floor(Math.random()*16)}}while(snakeBody.some(p=>p.x===snakeFood.x&&p.y===snakeFood.y));}else snakeBody.pop();drawSnake();say('snakeStatus','النقاط: '+snakeScore+' 🍎');}
  function snakeReset(){clearInterval(snakeTimer);snakeBody=[{x:5,y:8},{x:4,y:8},{x:3,y:8}];snakeDir={x:1,y:0};snakeNext={x:1,y:0};snakeFood={x:10,y:8};snakeScore=0;snakeRunning=false;drawSnake();say('snakeStatus','اضغط ابدأ، ثم استخدم الأسهم أو اسحب على اللوحة.');}
  const setSnakeDir=d=>{const map={up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}},n=map[d];if(n&&!(n.x===-snakeDir.x&&n.y===-snakeDir.y))snakeNext=n;};
