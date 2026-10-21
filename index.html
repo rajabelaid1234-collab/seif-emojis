@@ -313,8 +313,8 @@ body.seif-offline-app #emojiSoundLab:before{content:"🌐 هذا القسم يح
 .seif-game-panel[hidden]{display:none}
 .seif-game-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:8px 0}
 .seif-game-controls button{flex:1 1 100px}
-#snakeBoard{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;width:min(100%,330px);aspect-ratio:1;margin:10px auto}.snake-controls{display:grid!important;grid-template-columns:repeat(3,minmax(66px,84px));grid-template-rows:repeat(2,52px);gap:7px;justify-content:center}.snake-controls button{min-height:50px!important;padding:7px!important;touch-action:manipulation}.snake-controls button:nth-child(1){grid-column:2;grid-row:1}.snake-controls button:nth-child(2){grid-column:1;grid-row:2}.snake-controls button:nth-child(3){grid-column:2;grid-row:2}.snake-controls button:nth-child(4){grid-column:3;grid-row:2}
-.snake-cell{background:#1b2540;border-radius:3px;min-width:0;aspect-ratio:1}
+#snakeBoard{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:1px;width:min(100%,480px);aspect-ratio:1;margin:10px auto}.snake-controls{display:grid!important;direction:ltr;grid-template-columns:repeat(3,minmax(66px,84px));grid-template-rows:repeat(2,52px);gap:7px;justify-content:center}.snake-controls button{min-height:50px!important;padding:7px!important;touch-action:manipulation}.snake-controls button:nth-child(1){grid-column:2;grid-row:1}.snake-controls button:nth-child(2){grid-column:1;grid-row:2}.snake-controls button:nth-child(3){grid-column:2;grid-row:2}.snake-controls button:nth-child(4){grid-column:3;grid-row:2}#emojiSnakeTool .tool-actions:first-of-type{display:grid;direction:ltr;grid-template-columns:repeat(3,minmax(56px,76px));grid-template-rows:repeat(2,48px);gap:7px;justify-content:center}#emojiSnakeTool .tool-actions:first-of-type button{min-height:46px;touch-action:manipulation}#emojiSnakeTool .tool-actions:first-of-type button:nth-child(1){grid-column:2;grid-row:1}#emojiSnakeTool .tool-actions:first-of-type button:nth-child(2){grid-column:1;grid-row:2}#emojiSnakeTool .tool-actions:first-of-type button:nth-child(3){grid-column:2;grid-row:2}#emojiSnakeTool .tool-actions:first-of-type button:nth-child(4){grid-column:3;grid-row:2}
+.snake-cell{background:#101a2c;border:1px solid #263752;border-radius:2px;min-width:0;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:clamp(7px,1.5vw,15px);overflow:hidden}.snake-cell.snake{box-shadow:inset 0 0 0 1px #86efac}
 .snake-cell.snake{background:#34d399}.snake-cell.food{background:#f87171}
 #oddBoard{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;max-width:420px;margin:12px auto}
 .odd-item{font-size:clamp(1.2rem,5vw,2rem);padding:8px 0;border-radius:9px;background:#1b2540;border:1px solid #34415f}
@@ -521,7 +521,7 @@ img.emoji{display:inline-block!important;width:1.15em!important;height:1.15em!im
   <article class="creative-card" id="emojiSnakeTool">
    <h3>🐍 الثعبان بالإيموجي</h3>
    <p class="muted small">اجمع الفاكهة لتكبر. استخدم أزرار الاتجاهات أو اسحب على لوحة اللعب.</p>
-   <canvas id="snakeBoard" width="320" height="320" aria-label="لعبة الثعبان"></canvas>
+   <canvas id="snakeBoard" width="480" height="480" style="display:block;width:min(100%,480px);height:auto;margin:12px auto;border:2px solid #344766;border-radius:12px;box-shadow:0 8px 24px #0005" aria-label="لعبة الثعبان"></canvas>
    <div class="tool-actions"><button data-snake-dir="up" type="button">⬆️</button><button data-snake-dir="left" type="button">⬅️</button><button data-snake-dir="down" type="button">⬇️</button><button data-snake-dir="right" type="button">➡️</button></div>
    <div class="tool-actions"><button id="snakeStart" class="primary" type="button">▶ ابدأ / تابع</button><button id="snakeRestart" type="button">🔄 لعبة جديدة</button></div>
    <p id="snakeStatus" class="tool-status" aria-live="polite">اجمع 🍎 وتجنب الاصطدام!</p>
@@ -2090,12 +2090,12 @@ render();
  if(type==='look'){document.getElementById('emojiLookalikeTool')?.scrollIntoView({behavior:'smooth',block:'start'});return;}
  if(type==='snake'){
   open(type,'🐍 الثعبان بالإيموجي');
-  const freshSnake=()=>({snake:[26,25,24],food:50,dir:1,over:false,points:0,best:Number(localStorage.getItem('seif-snake-best')||0)});
+  const freshSnake=()=>({snake:[42,41,40,39],food:210,dir:1,over:false,points:0,best:Number(localStorage.getItem('seif-snake-best')||0)});
   snakeState=freshSnake();
-  const board=document.createElement('div');board.id='snakeBoard';board.setAttribute('aria-label','لوحة لعبة الثعبان');body.appendChild(board);
+  const board=document.createElement('div');board.id='snakeBoard';board.style.gridTemplateColumns='repeat(20,minmax(0,1fr))';board.setAttribute('aria-label','لوحة لعبة الثعبان');body.appendChild(board);
   const status=note('النقاط: 0 · الرقم القياسي: '+snakeState.best+' — اجمع 🍎 وتجنب الجدران وجسم الثعبان.');
   const controls=document.createElement('div');controls.className='seif-game-controls snake-controls';
-  const directionButtons=[['⬆️ أعلى',-12],['⬅️ يسار',-1],['⬇️ أسفل',12],['➡️ يمين',1]];
+  const directionButtons=[['⬆️ أعلى',-20],['⬅️ يسار',-1],['⬇️ أسفل',20],['➡️ يمين',1]];
   const setDirection=d=>{if(!snakeState||snakeState.over)return;if((d===1&&snakeState.dir!==-1)||(d===-1&&snakeState.dir!==1)||(d===12&&snakeState.dir!==-12)||(d===-12&&snakeState.dir!==12))snakeState.dir=d;};
   directionButtons.forEach(([label,d])=>controls.appendChild(button(label,()=>setDirection(d))));
   const restart=button('🔄 إعادة اللعبة',()=>{snakeState=freshSnake();drawSnake();});
@@ -2103,7 +2103,7 @@ render();
   const drawSnake=()=>{
    if(!snakeState)return;
    board.innerHTML='';
-   for(let i=0;i<144;i++){
+   for(let i=0;i<400;i++){
     const c=document.createElement('div');c.className='snake-cell';
     const seg=snakeState.snake.indexOf(i);
     if(seg===0){c.classList.add('snake');c.textContent='🐍';}
@@ -2116,7 +2116,7 @@ render();
   const step=()=>{
    if(!snakeState||snakeState.over)return;
    const oldHead=snakeState.snake[0],head=oldHead+snakeState.dir;
-   if(head<0||head>=144||(snakeState.dir===1&&oldHead%12===11)||(snakeState.dir===-1&&oldHead%12===0)){snakeState.over=true;drawSnake();return;}
+   if(head<0||head>=400||(snakeState.dir===1&&oldHead%20===19)||(snakeState.dir===-1&&oldHead%20===0)){snakeState.over=true;drawSnake();return;}
    const eating=head===snakeState.food;
    const collisionBody=eating?snakeState.snake:snakeState.snake.slice(0,-1);
    if(collisionBody.includes(head)){snakeState.over=true;drawSnake();return;}
@@ -2125,14 +2125,14 @@ render();
     snakeState.points++;
     if(snakeState.points>snakeState.best){snakeState.best=snakeState.points;try{localStorage.setItem('seif-snake-best',String(snakeState.best));}catch(_){}}
     try{if(navigator.vibrate)navigator.vibrate(18);}catch(_){}
-    if(snakeState.snake.length>=144){snakeState.over=true;status.textContent='فزت! ملأت اللوحة كلها 🏆';drawSnake();return;}
-    let next;do{next=Math.floor(Math.random()*144);}while(snakeState.snake.includes(next));snakeState.food=next;
+    if(snakeState.snake.length>=400){snakeState.over=true;status.textContent='فزت! ملأت اللوحة كلها 🏆';drawSnake();return;}
+    let next;do{next=Math.floor(Math.random()*400);}while(snakeState.snake.includes(next));snakeState.food=next;
    }else snakeState.snake.pop();
    drawSnake();
   };
   board.addEventListener('pointerdown',e=>{board.dataset.touchX=String(e.clientX);board.dataset.touchY=String(e.clientY);});
   board.addEventListener('pointerup',e=>{const x=Number(board.dataset.touchX),y=Number(board.dataset.touchY),dx=e.clientX-x,dy=e.clientY-y;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;if(Math.abs(dx)>Math.abs(dy))setDirection(dx<0?-1:1);else setDirection(dy<0?-12:12);});
-  document.addEventListener('keydown',e=>{if(panel.hidden||title.textContent!=='🐍 الثعبان بالإيموجي')return;const map={ArrowUp:-12,ArrowDown:12,ArrowLeft:-1,ArrowRight:1,w:-12,s:12,a:-1,d:1};if(map[e.key]!==undefined){e.preventDefault();setDirection(map[e.key]);}});
+  document.addEventListener('keydown',e=>{if(panel.hidden||title.textContent!=='🐍 الثعبان بالإيموجي')return;const map={ArrowUp:-20,ArrowDown:20,ArrowLeft:-1,ArrowRight:1,w:-20,s:20,a:-1,d:1};if(map[e.key]!==undefined){e.preventDefault();setDirection(map[e.key]);}});
   snakeTimer=setInterval(step,260);drawSnake();return;
  }
  if(type==='math'){open(type,'🧮 معادلات الإيموجي');const vals=[['🍎 + 🍎 = 10','🍎 = 5'],['🍎 + 🍌 = 8','🍌 = 3'],['🍇 × 🍇 = 9','🍇 = 3'],['🍓 + 🍇 = 7','🍓 = 4']];let idx=0;const q=note('');const choices=document.createElement('div');choices.className='seif-game-controls';body.appendChild(choices);const next=()=>{q.textContent=vals[idx][0];choices.innerHTML='';['3','4','5','6','7'].forEach(n=>choices.appendChild(button(n,()=>{const ans=vals[idx][1].split('= ')[1];q.textContent=(n===ans?'صحيح! 🎉 ':'ليس تمامًا 🙂 ')+vals[idx][1];choices.innerHTML='';choices.appendChild(button('اللغز التالي ➜',()=>{idx=(idx+1)%vals.length;next();}));})));};next();return;}
@@ -2394,12 +2394,12 @@ $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream
  const snake=$('snakeBoard'),snakeCtx=snake?.getContext('2d');let snakeBody=[],snakeDir={x:1,y:0},snakeNext={x:1,y:0},snakeFood={x:8,y:8},snakeTimer=null,snakeScore=0,snakeRunning=false;
  function drawSnake(){
   if(!snakeCtx||!snake)return;
-  const size=20,boardSize=320;
+  const size=20,boardSize=480,gridCount=24;
   snakeCtx.clearRect(0,0,boardSize,boardSize);
   snakeCtx.fillStyle='#080f20';snakeCtx.fillRect(0,0,boardSize,boardSize);
   // Draw a visible grid so the board is clear even when emoji fonts are missing.
   snakeCtx.strokeStyle='#1e2b46';snakeCtx.lineWidth=1;
-  for(let i=0;i<=16;i++){snakeCtx.beginPath();snakeCtx.moveTo(i*size,0);snakeCtx.lineTo(i*size,boardSize);snakeCtx.stroke();snakeCtx.beginPath();snakeCtx.moveTo(0,i*size);snakeCtx.lineTo(boardSize,i*size);snakeCtx.stroke();}
+  for(let i=0;i<=gridCount;i++){snakeCtx.beginPath();snakeCtx.moveTo(i*size,0);snakeCtx.lineTo(i*size,boardSize);snakeCtx.stroke();snakeCtx.beginPath();snakeCtx.moveTo(0,i*size);snakeCtx.lineTo(boardSize,i*size);snakeCtx.stroke();}
   // Fruit uses vector shapes instead of emoji glyphs for reliable rendering on older Windows PCs.
   const fx=snakeFood.x*size,fy=snakeFood.y*size;
   snakeCtx.fillStyle='#fb4d68';snakeCtx.beginPath();snakeCtx.arc(fx+10,fy+11,7,0,Math.PI*2);snakeCtx.fill();
@@ -2412,8 +2412,8 @@ $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream
     if(i===0){snakeCtx.fillStyle='#102018';snakeCtx.beginPath();snakeCtx.arc(x+11,y+5,1.5,0,Math.PI*2);snakeCtx.fill();snakeCtx.beginPath();snakeCtx.arc(x+11,y+11,1.5,0,Math.PI*2);snakeCtx.fill();}
   });
 }
- function snakeStep(){if(!snakeRunning)return;snakeDir=snakeNext;const h={x:snakeBody[0].x+snakeDir.x,y:snakeBody[0].y+snakeDir.y};if(h.x<0||h.x>=16||h.y<0||h.y>=16||snakeBody.some(p=>p.x===h.x&&p.y===h.y)){snakeRunning=false;clearInterval(snakeTimer);say('snakeStatus','انتهت الجولة! مجموعك '+snakeScore+'. اضغط لعبة جديدة.');return;}snakeBody.unshift(h);if(h.x===snakeFood.x&&h.y===snakeFood.y){snakeScore++;do{snakeFood={x:Math.floor(Math.random()*16),y:Math.floor(Math.random()*16)}}while(snakeBody.some(p=>p.x===snakeFood.x&&p.y===snakeFood.y));}else snakeBody.pop();drawSnake();say('snakeStatus','النقاط: '+snakeScore+' 🍎');}
- function snakeReset(){clearInterval(snakeTimer);snakeBody=[{x:5,y:8},{x:4,y:8},{x:3,y:8}];snakeDir={x:1,y:0};snakeNext={x:1,y:0};snakeFood={x:10,y:8};snakeScore=0;snakeRunning=false;drawSnake();say('snakeStatus','اضغط ابدأ، ثم استخدم الأسهم أو اسحب على اللوحة.');}
+ function snakeStep(){if(!snakeRunning)return;snakeDir=snakeNext;const h={x:snakeBody[0].x+snakeDir.x,y:snakeBody[0].y+snakeDir.y};if(h.x<0||h.x>=24||h.y<0||h.y>=24||snakeBody.some(p=>p.x===h.x&&p.y===h.y)){snakeRunning=false;clearInterval(snakeTimer);say('snakeStatus','انتهت الجولة! مجموعك '+snakeScore+'. اضغط لعبة جديدة.');return;}snakeBody.unshift(h);if(h.x===snakeFood.x&&h.y===snakeFood.y){snakeScore++;do{snakeFood={x:Math.floor(Math.random()*24),y:Math.floor(Math.random()*24)}}while(snakeBody.some(p=>p.x===snakeFood.x&&p.y===snakeFood.y));}else snakeBody.pop();drawSnake();say('snakeStatus','النقاط: '+snakeScore+' 🍎');}
+ function snakeReset(){clearInterval(snakeTimer);snakeBody=[{x:11,y:12},{x:10,y:12},{x:9,y:12},{x:8,y:12}];snakeDir={x:1,y:0};snakeNext={x:1,y:0};snakeFood={x:17,y:12};snakeScore=0;snakeRunning=false;drawSnake();say('snakeStatus','اضغط ابدأ، ثم استخدم الأسهم أو اسحب على اللوحة.');}
  const setSnakeDir=d=>{const map={up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}},n=map[d];if(n&&!(n.x===-snakeDir.x&&n.y===-snakeDir.y))snakeNext=n;};
  document.querySelectorAll('[data-snake-dir]').forEach(b=>b.addEventListener('click',()=>setSnakeDir(b.dataset.snakeDir)));
  $('snakeStart')?.addEventListener('click',()=>{if(snakeRunning)return;snakeRunning=true;snakeTimer=setInterval(snakeStep,150);say('snakeStatus','اللعب جارٍ!');});
