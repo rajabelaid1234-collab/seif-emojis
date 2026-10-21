@@ -2244,10 +2244,16 @@ $('seifVideoRecord').addEventListener('click',async()=>{if(!canvas.captureStream
    part.set(STEGO_TAG,0);part.set(u32be(seq),STEGO_TAG.length);part.set(u32be(count),STEGO_TAG.length+4);part.set(chunk,STEGO_TAG.length+8);
    parts.push(makeJpegComment(part));
   }
-  const total=2+parts.reduce((n,p)=>n+p.length,0)+(jpeg.length-2),out=new Uint8Array(total);
-  out.set(jpeg.slice(0,2),0);let offset=2;
+  let insertAt=2;
+  // Keep the JFIF APP0 header first when present, for better JPEG-reader compatibility.
+  if(jpeg.length>4&&jpeg[2]===255&&jpeg[3]===224){
+   const appLength=(jpeg[4]<<8)|jpeg[5];
+   if(appLength>=2&&6+appLength<=jpeg.length)insertAt=4+appLength;
+  }
+  const total=jpeg.length+parts.reduce((n,p)=>n+p.length,0),out=new Uint8Array(total);
+  out.set(jpeg.slice(0,insertAt),0);let offset=insertAt;
   for(const part of parts){out.set(part,offset);offset+=part.length;}
-  out.set(jpeg.slice(2),offset);
+  out.set(jpeg.slice(insertAt),offset);
   return new Blob([out],{type:'image/jpeg'});
  }
  async function readPayloadFromJpeg(file){
