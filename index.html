@@ -619,6 +619,11 @@ img.emoji{display:inline-block!important;width:1.15em!important;height:1.15em!im
 <h2>🎮 ألعاب SEIF EMOJIS — تعمل دون إنترنت</h2>
 <p class="muted">اختر لعبة من البطاقات. الواجهة مصممة للمس على الهاتف، والنتائج تُحسب على جهازك.</p>
 <div class="seif-game-grid">
+ <article class="seif-game-card"><span class="game-icon">🚀</span><strong>Space Impact</strong><small>قد المركبة وأطلق ⚡ على الفضائيين 👾</small><button type="button" data-game="space">ابدأ المهمة</button></article>
+ <article class="seif-game-card"><span class="game-icon">🔴</span><strong>Bounce بالإيموجي</strong><small>اقفز بالكرة الحمراء واجمع الحلقات الذهبية وتجنب الشوك</small><button type="button" data-game="bounce">ابدأ القفز</button></article>
+ <article class="seif-game-card"><span class="game-icon">💎</span><strong>Diamond Rush</strong><small>استكشف المعبد واجمع الألماس وتجنب الصخور</small><button type="button" data-game="diamond">استكشف المعبد</button></article>
+ <article class="seif-game-card"><span class="game-icon">🔴</span><strong>Rapid Roll</strong><small>وجّه الكرة بين المنصات وابتعد عن الشوك</small><button type="button" data-game="rapid">ابدأ النزول</button></article>
+ <article class="seif-game-card"><span class="game-icon">🎱</span><strong>Pocket Carrom</strong><small>اسحب من القرص الأبيض للتصويب نحو الجيوب</small><button type="button" data-game="carrom">ابدأ اللعب</button></article>
  <article class="seif-game-card"><span class="game-icon">🧠</span><strong>الذاكرة البصرية</strong><small>احفظ تسلسل الإيموجيات وكرره، وتزداد الصعوبة مع كل مرحلة</small><button type="button" data-game="simon">ابدأ التحدي</button></article>
  <article class="seif-game-card"><span class="game-icon">🛡️</span><strong>احمِ الإيموجي</strong><small>حرّك الدرع وامنع الأجسام الساقطة من إصابة الوجه</small><button type="button" data-game="shield">ابدأ الحماية</button></article>
  <article class="seif-game-card"><span class="game-icon">⭕</span><strong>XO لشخصين</strong><small>لاعبان على نفس الشاشة: ❌ ضد ⭕</small><button type="button" data-game="xo">العبا معًا</button></article>
@@ -2122,6 +2127,71 @@ render();
   const a=button('🔵 اللاعب 1\nاضغط بسرعة!',()=>{if(active)scores[0]++;update();}),b=button('🔴 اللاعب 2\nاضغط بسرعة!',()=>{if(active)scores[1]++;update();});[a,b].forEach((x,i)=>{x.style.cssText='min-height:130px;font-size:1.25rem;white-space:pre-line;border-radius:16px;background:'+(i?'#7f1d1d':'#1e40af');row.appendChild(x);});
   function update(){scoreLine.textContent='🔵 اللاعب 1: '+scores[0]+'  |  🔴 اللاعب 2: '+scores[1];}
   const start=button('▶ ابدأ الجولة (10 ثوانٍ)',()=>{scores=[0,0];seconds=10;active=true;a.disabled=b.disabled=false;update();start.disabled=true;status.textContent='انطلق! اضغط بأسرع ما يمكنك.';gameTimer=setInterval(()=>{seconds--;status.textContent='⏱️ الوقت المتبقي: '+seconds+' ثانية';if(seconds<=0){clearInterval(gameTimer);gameTimer=null;active=false;start.disabled=false;a.disabled=b.disabled=true;status.textContent=scores[0]===scores[1]?'تعادل! 🤝':(scores[0]>scores[1]?'فاز اللاعب 1 🔵':'فاز اللاعب 2 🔴')+' — النتيجة النهائية.';}},1000);});body.appendChild(start);a.disabled=b.disabled=true;return;
+ }
+ if(['space','bounce','diamond','rapid','carrom'].includes(type)){
+  const labels={space:'🚀 Space Impact',bounce:'🔴 Bounce بالإيموجي',diamond:'💎 Diamond Rush',rapid:'🔴 Rapid Roll',carrom:'🎱 Pocket Carrom'};
+  open(type,labels[type]);
+  const canvas=document.createElement('canvas');canvas.width=480;canvas.height=560;canvas.style.cssText='display:block;width:min(100%,480px);height:auto;margin:10px auto;border:3px solid #6b7280;border-radius:8px;background:#07111f;touch-action:none;image-rendering:pixelated';body.appendChild(canvas);
+  const ctx=canvas.getContext('2d');const status=note('');const help=note('');
+  const controls=document.createElement('div');controls.style.cssText='display:flex;gap:8px;justify-content:center;flex-wrap:wrap';body.appendChild(controls);
+  let score=0,over=false,paused=false,keys={},last=0,player={x:70,y:280,vx:0,vy:0},shots=[],foes=[],rings=[],gems=[],platforms=[],rocks=[],pockets=[],ball={x:240,y:280,vx:0,vy:0},aim=null;
+  const reset=()=>{
+   score=0;over=false;paused=false;keys={};shots=[];foes=[];rings=[];gems=[];rocks=[];platforms=[];last=0;player={x:70,y:280,vx:0,vy:0};ball={x:240,y:280,vx:0,vy:0};
+   if(type==='diamond'){player={x:40,y:50,vx:0,vy:0};for(let r=0;r<9;r++)for(let c=0;c<7;c++){if((r+c)%3===0)gems.push({x:36+c*65,y:35+r*55,got:false});}rocks=[{x:145,y:150,r:18},{x:335,y:315,r:22},{x:205,y:425,r:16}];}
+   if(type==='bounce'){player={x:100,y:420,vx:2,vy:0};rings=[{x:155,y:355,got:false},{x:300,y:275,got:false},{x:190,y:175,got:false},{x:365,y:110,got:false}];rocks=[{x:240,y:485,r:20},{x:320,y:485,r:20}];}
+   if(type==='rapid'){player={x:240,y:100,vx:0,vy:1};platforms=[];for(let i=0;i<8;i++)platforms.push({x:(i%2?270:40)+Math.random()*80,y:140+i*65,w:120});}
+   if(type==='carrom'){ball={x:240,y:425,vx:0,vy:0};pockets=[{x:26,y:26},{x:454,y:26},{x:26,y:534},{x:454,y:534}];rocks=[];for(let i=0;i<5;i++)rocks.push({x:205+(i%3)*35,y:180+Math.floor(i/3)*38,r:13});}
+  };
+  const startBtn=button('🔄 إعادة اللعبة',reset);controls.appendChild(startBtn);
+  if(type==='space'){help.textContent='التحكم: الأسهم أو WASD للحركة، والمسافة لإطلاق النار. على الهاتف المس/حرّك المركبة وأطلق من الزر.';const fire=button('⚡ إطلاق النار',()=>shots.push({x:player.x+24,y:player.y,vx:7}));controls.appendChild(fire);}
+  if(type==='bounce')help.textContent='استخدم ← → أو A وD للتحرك، و↑ أو المسافة للقفز. اجمع الحلقات الذهبية ولا تلمس الشوك.';
+  if(type==='diamond')help.textContent='تحرك بالأسهم أو WASD داخل المعبد واجمع كل الألماسات. تجنب الصخور!';
+  if(type==='rapid')help.textContent='حرّك الكرة يمينًا ويسارًا فوق المنصات المتحركة. لا تسقط أسفل الشاشة!';
+  if(type==='carrom')help.textContent='انقر قرب القرص الأبيض واسحب عكس اتجاه التصويب ثم أفلت لتضرب الأقراص نحو الجيوب.';
+  const down=e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' ','a','A','d','D','w','W','s','S'].includes(e.key)&&!panel.hidden){e.preventDefault();keys[e.key.toLowerCase()===' '?'space':e.key]=true;if(type==='space'&&e.key===' ')shots.push({x:player.x+25,y:player.y,vx:8});if(type==='bounce'&&(e.key==='ArrowUp'||e.key===' '||e.key==='w'||e.key==='W')&&Math.abs(player.vy)<1)player.vy=-10;}};
+  const up=e=>{delete keys[e.key];delete keys[e.key.toLowerCase()===' '?'space':e.key];};
+  document.addEventListener('keydown',down);document.addEventListener('keyup',up);
+  const close=document.getElementById('seifGameClose');close?.addEventListener('click',()=>{document.removeEventListener('keydown',down);document.removeEventListener('keyup',up);},{once:true});
+  let pointerStart=null;
+  canvas.addEventListener('pointerdown',e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)*480/r.width,y=(e.clientY-r.top)*560/r.height;pointerStart={x,y};if(type==='carrom'){ball.vx=(ball.x-x)*.07;ball.vy=(ball.y-y)*.07;}else if(type==='space'){player.x=x;player.y=y;}else{player.x=x; if(type==='bounce'&&Math.abs(player.vy)<1)player.vy=-9;}});
+  canvas.addEventListener('pointermove',e=>{if(!pointerStart||type==='carrom')return;const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)*480/r.width,y=(e.clientY-r.top)*560/r.height;if(type==='space'){player.x=x;player.y=y;}else if(type==='diamond'){player.x=x;player.y=y;}else player.x=x;});
+  canvas.addEventListener('pointerup',()=>{pointerStart=null;});
+  const draw=()=>{
+   ctx.fillStyle=type==='diamond'?'#211a2d':type==='carrom'?'#286344':'#07111f';ctx.fillRect(0,0,480,560);
+   if(type==='space'){
+    ctx.fillStyle='#dbeafe';for(let i=0;i<40;i++){const x=(i*83+score*2)%480,y=(i*137)%560;ctx.fillRect(x,y,2,2);}
+    if(Math.random()<.045)foes.push({x:490,y:25+Math.random()*500,r:13+Math.random()*9,hp:1});
+    player.x=Math.max(20,Math.min(460,player.x+((keys.ArrowRight||keys.d)?4:0)-((keys.ArrowLeft||keys.a)?4:0)));player.y=Math.max(25,Math.min(535,player.y+((keys.ArrowDown||keys.s)?4:0)-((keys.ArrowUp||keys.w)?4:0)));
+    ctx.font='30px sans-serif';ctx.textAlign='center';ctx.fillText('🚀',player.x,player.y+10);
+    shots.forEach(a=>{a.x+=a.vx;ctx.fillStyle='#67e8f9';ctx.fillRect(a.x,a.y-3,17,6);});shots=shots.filter(a=>a.x<500);
+    foes.forEach(f=>{f.x-=2+score*.002;ctx.font='27px sans-serif';ctx.fillText('👾',f.x,f.y+8);shots.forEach(a=>{if(Math.abs(a.x-f.x)<20&&Math.abs(a.y-f.y)<22){f.hit=true;a.x=600;score++;}});if(f.x<player.x+15&&Math.abs(f.y-player.y)<25)over=true;});foes=foes.filter(f=>f.x>-35&&!f.hit);
+   }else if(type==='bounce'){
+    ctx.fillStyle='#d1a94b';rings.forEach(r=>{ctx.beginPath();ctx.strokeStyle=r.got?'#475569':'#facc15';ctx.lineWidth=7;ctx.arc(r.x,r.y,18,0,Math.PI*2);ctx.stroke();if(!r.got&&Math.hypot(player.x-r.x,player.y-r.y)<25){r.got=true;score++;}});
+    ctx.fillStyle='#f87171';ctx.beginPath();ctx.arc(player.x,player.y,15,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.fillRect(player.x+4,player.y-5,4,4);
+    ctx.fillStyle='#fb7185';rocks.forEach(r=>{ctx.beginPath();ctx.moveTo(r.x-r.r,r.y+r.r);ctx.lineTo(r.x,r.y-r.r);ctx.lineTo(r.x+r.r,r.y+r.r);ctx.fill();if(Math.hypot(player.x-r.x,player.y-r.y)<r.r+10)over=true;});
+    player.vy+=.35;player.y+=player.vy;player.x+=((keys.ArrowRight||keys.d)?4:0)-((keys.ArrowLeft||keys.a)?4:0);player.x=Math.max(16,Math.min(464,player.x));if(player.y>500){player.y=500;player.vy=0;}if(player.y<15){player.y=15;player.vy=2;}
+   }else if(type==='diamond'){
+    ctx.strokeStyle='#c4b5fd';ctx.lineWidth=5;ctx.strokeRect(10,10,460,540);
+    gems.forEach(g=>{if(!g.got){ctx.fillStyle='#67e8f9';ctx.beginPath();ctx.moveTo(g.x,g.y-13);ctx.lineTo(g.x+11,g.y);ctx.lineTo(g.x,g.y+13);ctx.lineTo(g.x-11,g.y);ctx.closePath();ctx.fill();if(Math.hypot(player.x-g.x,player.y-g.y)<22){g.got=true;score++;}}});
+    rocks.forEach(r=>{ctx.fillStyle='#9ca3af';ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,Math.PI*2);ctx.fill();if(Math.hypot(player.x-r.x,player.y-r.y)<r.r+12)over=true;});
+    ctx.font='30px sans-serif';ctx.textAlign='center';ctx.fillText('🧑‍🚀',player.x,player.y+10);
+    player.x+=((keys.ArrowRight||keys.d)?3:0)-((keys.ArrowLeft||keys.a)?3:0);player.y+=((keys.ArrowDown||keys.s)?3:0)-((keys.ArrowUp||keys.w)?3:0);player.x=Math.max(28,Math.min(452,player.x));player.y=Math.max(30,Math.min(530,player.y));if(gems.every(g=>g.got)){over=true;status.textContent='🏆 اكتمل استكشاف المعبد!';}
+   }else if(type==='rapid'){
+    ctx.fillStyle='#24354b';platforms.forEach(p=>{p.y-=1.5;p.x+=Math.sin((p.y+score)*.02)*1.2;ctx.fillRect(p.x,p.y,p.w,12);if(p.y<0)p.y=560+Math.random()*90;});
+    player.vy+=.16;player.y+=player.vy;player.x+=((keys.ArrowRight||keys.d)?4:0)-((keys.ArrowLeft||keys.a)?4:0);player.x=Math.max(10,Math.min(470,player.x));platforms.forEach(p=>{if(player.vy>0&&player.y+12>=p.y&&player.y+12<=p.y+18&&player.x>p.x&&player.x<p.x+p.w){player.vy=-5;score++;}});
+    ctx.fillStyle='#f87171';ctx.beginPath();ctx.arc(player.x,player.y,13,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fb7185';for(let x=0;x<480;x+=24){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+12,20);ctx.lineTo(x+24,0);ctx.fill();}if(player.y>555)over=true;
+   }else if(type==='carrom'){
+    ctx.strokeStyle='#f4d38c';ctx.lineWidth=12;ctx.strokeRect(18,18,444,524);pockets=[{x:30,y:30},{x:450,y:30},{x:30,y:530},{x:450,y:530}];pockets.forEach(p=>{ctx.fillStyle='#07111f';ctx.beginPath();ctx.arc(p.x,p.y,20,0,Math.PI*2);ctx.fill();});
+    rocks.forEach((r,i)=>{r.x+=r.vx||0;r.y+=r.vy||0;r.vx=(r.vx||0)*.985;r.vy=(r.vy||0)*.985;if(Math.abs(r.vx)+Math.abs(r.vy)<.08){r.vx=0;r.vy=0;}ctx.fillStyle=i%2?'#111827':'#f9fafb';ctx.beginPath();ctx.arc(r.x,r.y,r.r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d6b779';ctx.lineWidth=2;ctx.stroke();pockets.forEach(p=>{if(Math.hypot(r.x-p.x,r.y-p.y)<22){r.pocketed=true;score++;}});});rocks=rocks.filter(r=>!r.pocketed);
+    ctx.fillStyle='#f8fafc';ctx.beginPath();ctx.arc(ball.x,ball.y,15,0,Math.PI*2);ctx.fill();ball.x+=ball.vx;ball.y+=ball.vy;ball.vx*=.985;ball.vy*=.985;if(ball.x<35||ball.x>445)ball.vx*=-.8;if(ball.y<35||ball.y>525)ball.vy*=-.8;ball.x=Math.max(35,Math.min(445,ball.x));ball.y=Math.max(35,Math.min(525,ball.y));
+   }
+   ctx.fillStyle='#fff';ctx.font='bold 17px sans-serif';ctx.textAlign='left';ctx.fillText('النقاط: '+score,14,26);
+   if(over){ctx.fillStyle='#000b';ctx.fillRect(35,225,410,90);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 25px sans-serif';ctx.fillText('انتهت الجولة!',240,263);ctx.font='16px sans-serif';ctx.fillText('اضغط إعادة اللعبة للمحاولة',240,292);status.textContent='انتهت الجولة! مجموع النقاط: '+score+'.';}
+   else status.textContent='⭐ النقاط: '+score+(type==='diamond'?' · 💎 متبقية: '+gems.filter(g=>!g.got).length:'');
+  };
+  const tick=()=>{if(!panel.hidden&&!over&&!paused)draw();};
+  const timer=setInterval(tick,35);gameTimer=timer;reset();draw();
+  return;
  }
  if(type==='dice'){open(type,'🎲 رمي النرد');const display=note('اختر عدد النرد ثم اضغط «ارمِ».');const controls=document.createElement('div');controls.className='seif-game-controls';const countLabel=document.createElement('label');countLabel.textContent='عدد النرد: ';const select=document.createElement('select');select.setAttribute('aria-label','عدد النرد');select.style.cssText='min-height:44px;padding:8px;border-radius:10px';[['1','واحد'],['2','اثنان']].forEach(([v,t])=>{const o=document.createElement('option');o.value=v;o.textContent=t;select.appendChild(o);});countLabel.appendChild(select);const roll=button('🎲 ارمِ الآن',()=>{const count=Number(select.value),values=Array.from({length:count},()=>1+Math.floor(Math.random()*6));display.textContent=values.map(v=>['⚀','⚁','⚂','⚃','⚄','⚅'][v-1]).join('  ')+'   —   '+values.join(' + ')+' = '+values.reduce((a,v)=>a+v,0);});controls.append(countLabel,roll);body.appendChild(controls);return;}
  if(type==='perfect'){open(type,'⏱️ تحدي 5 ثوانٍ بالضبط');const display=note('اضغط «ابدأ»، ثم اضغط «توقف» عندما تتوقع أن الوقت وصل إلى 5.00 ثوانٍ.');const controls=document.createElement('div');controls.className='seif-game-controls';body.appendChild(controls);let startAt=0,active=false;const startBtn=button('ابدأ ⏱️',()=>{startAt=performance.now();active=true;startBtn.disabled=true;stopBtn.disabled=false;display.textContent='انطلق! انتظر حتى 5.00 ثم اضغط توقف.';});const stopBtn=button('توقف ✋',()=>{if(!active)return;const elapsed=(performance.now()-startAt)/1000;active=false;startBtn.disabled=false;stopBtn.disabled=true;const delta=Math.abs(elapsed-5);display.textContent='وقتك: '+elapsed.toFixed(3)+' ثانية — الفرق عن 5.00: '+delta.toFixed(3)+' ثانية '+(delta<0.03?'أسطوري! 🏆':delta<0.15?'قريب جدًا! 🎯':'حاول مرة أخرى 🙂');});stopBtn.disabled=true;controls.append(startBtn,stopBtn);return;}
